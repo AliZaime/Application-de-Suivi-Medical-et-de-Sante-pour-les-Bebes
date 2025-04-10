@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Message
+from django.contrib.auth.models import User  # Use the built-in User model
 
-class MessageSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
+        model = User
         fields = '__all__'
