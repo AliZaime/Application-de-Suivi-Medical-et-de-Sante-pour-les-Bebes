@@ -1,7 +1,17 @@
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Button,
+} from "react-native";
+import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
-import axios from 'axios';
+import axios from "axios";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -16,7 +26,7 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.11.109:8000/api/user/auth/', userData)
+      .post('http://192.168.0.125:8000/api/user/auth/', userData)
       .then((response) => {
         setMessage('Connexion réussie !');
         console.log("Utilisateur connecté :", response.data);
@@ -29,66 +39,132 @@ export default function LoginForm() {
   };
 
   return (
+
     <View style={styles.container}>
-      <Text style={styles.title}>Connexion</Text>
+          {/* Header avec vague et logo */}
+          <View style={styles.header}>
+            <Svg
+              viewBox="0 0 500 150"
+              preserveAspectRatio="none"
+              style={styles.wave}
+            >
+              <Path
+                d="M-0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L-0.00,150.00 Z"
+                fill="#fff"
+              />
+            </Svg>
+            <Image
+              source={require("../assets/images/baby-icon.png")}
+              style={styles.logo}
+            />
+            <Text style={styles.title}>Baby health</Text>
+          </View>
+    
+          {/* Formulaire */}
+      <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Mot de passe"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Se connecter</Text>
+          </TouchableOpacity>
+          
+          {message && <Text style={styles.message}>{message}</Text>}
 
-      <Button title="Se connecter" onPress={handleLogin} />
-      
-      {message && <Text style={styles.message}>{message}</Text>}
-
-      <Text style={styles.link} onPress={() => router.push("/Register")}>
-        Pas encore de compte ? Inscrivez-vous
-      </Text>
+          <Text style={styles.link} onPress={() => router.push("/Register")}>
+            Pas encore de compte ? Inscrivez-vous
+          </Text>
+      </View>
     </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
+    backgroundColor: "white",
+    height: "100%",
+  },
+  header: {
+    position: "relative",
+    backgroundColor: "#F4C7C3",
     alignItems: "center",
-    padding: 20,
+    paddingBottom: 60,
+    paddingTop: 50,
+  },
+  wave: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: 250,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+    zIndex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: "black",
+    zIndex: 1,
+    marginTop: 20,
+  },
+  formContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    alignItems: "center",
+    backgroundColor: "white",
   },
   input: {
     width: "100%",
-    height: 40,
-    borderColor: "#ccc",
+    backgroundColor: "#fff",
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    borderColor: "#F2D7D5",
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  button: {
+    backgroundColor: "#F4C7C3",
+    borderRadius: 25,
+    paddingVertical: 14,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   link: {
-    marginTop: 10,
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  message: {
-    marginTop: 10,
+    color: "#F4A4A0",
+    marginTop: 20,
     fontSize: 14,
-    color: "red",
+    textDecorationLine: "underline",
   },
 });
