@@ -1,7 +1,14 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User  # Use the built-in User model
+from .models import Parent
+from django.contrib.auth.hashers import make_password
 
-class UserSerializer(serializers.ModelSerializer):
+class ParentSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
-        model = User
-        fields = '__all__'
+        model = Parent
+        fields = ['parent_id', 'name', 'email', 'phone', 'password', 'notification_preferences']
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])  # hash du mot de passe
+        return super().create(validated_data)

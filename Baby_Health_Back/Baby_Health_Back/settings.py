@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'Baby_Health',
         'USER' : 'admin',
         'PASSWORD' : 'Group10BabyHealth',
-        'HOST' : 'bybuhealth.cu7ccyaao03a.us-east-1.rds.amazonaws.com',
+        'HOST' : 'babyhealth.cu7ccyaao03a.us-east-1.rds.amazonaws.com',
         'PORT' : 3306,
     }
 }
@@ -120,6 +120,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)
