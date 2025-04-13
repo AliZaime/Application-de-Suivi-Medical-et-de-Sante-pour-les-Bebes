@@ -51,8 +51,22 @@ def login_parent(request):
         parent = Parent.objects.get(email=email)
         if check_password(password, parent.password):  # vérification du hash
             serializer = ParentSerializer(parent)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                'message': 'Connexion réussie',
+                'parent_id': parent.parent_id,  # 👈 ici l'id
+                'parent': serializer.data
+            }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Mot de passe incorrect'}, status=status.HTTP_400_BAD_REQUEST)
     except Parent.DoesNotExist:
         return Response({'error': 'Utilisateur non trouvé'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_parent_by_id(request, parent_id):
+    try:
+        parent = Parent.objects.get(parent_id=parent_id)
+        serializer = ParentSerializer(parent)
+        return Response(serializer.data)
+    except Parent.DoesNotExist:
+        return Response({'error': 'Parent non trouvé'}, status=500)

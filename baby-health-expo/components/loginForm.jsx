@@ -12,6 +12,7 @@ import {
 import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -27,8 +28,10 @@ export default function LoginForm() {
 
     axios
       .post('http://192.168.0.125:8000/api/user/auth/', userData)
-      .then((response) => {
+      .then(async (response) => {
         setMessage('Connexion réussie !');
+        const parentId = response.data.parent_id;
+        await AsyncStorage.setItem("parent_id", parentId.toString());
         console.log("Utilisateur connecté :", response.data);
         router.replace("/(tabs)/home");
       })
