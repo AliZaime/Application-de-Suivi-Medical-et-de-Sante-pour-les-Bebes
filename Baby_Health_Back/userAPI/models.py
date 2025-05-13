@@ -22,7 +22,7 @@ class Baby(models.Model):
     gender = models.CharField(max_length=255)
     blood_type = models.CharField(max_length=255)
     profile_picture = models.CharField(max_length=255)
-    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='babies')
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='babies')
 
     class Meta:
         db_table = 'baby_profile'
