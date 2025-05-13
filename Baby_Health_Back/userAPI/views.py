@@ -75,8 +75,12 @@ def get_parent_by_id(request, parent_id):
 def add_baby(request):
     serializer = BabySerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response({'message': 'Bébé créé avec succès'}, status=status.HTTP_201_CREATED)
+        baby = serializer.save()
+        return Response({
+            'message': 'Bébé créé avec succès',
+            'baby': BabySerializer(baby).data
+        }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     
