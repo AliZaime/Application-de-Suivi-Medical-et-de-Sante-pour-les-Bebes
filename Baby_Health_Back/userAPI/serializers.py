@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Parent
+from .models import Parent, Baby
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -11,4 +11,12 @@ class ParentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])  # hash du mot de passe
+        return super().create(validated_data)
+
+class BabySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Baby
+        fields = ['baby_id', 'name', 'date_of_birth', 'gender', 'blood_type', 'profil_picture', 'parent_id']
+        
+    def create(self, validated_data):
         return super().create(validated_data)

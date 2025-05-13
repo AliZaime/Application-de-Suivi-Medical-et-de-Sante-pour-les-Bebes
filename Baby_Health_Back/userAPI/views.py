@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer
+from .serializers import ParentSerializer, BabySerializer
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -18,7 +18,7 @@ from django.contrib.auth import authenticate
 
 
 from django.contrib.auth.hashers import check_password
-from .models import Parent
+from .models import Parent,Baby
 
 
 class TestView(APIView):
@@ -70,3 +70,13 @@ def get_parent_by_id(request, parent_id):
         return Response(serializer.data)
     except Parent.DoesNotExist:
         return Response({'error': 'Parent non trouvé'}, status=500)
+
+@api_view(['POST'])
+def add_baby(request):
+    serializer = BabySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Bébé créé avec succès'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
