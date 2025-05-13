@@ -21,7 +21,7 @@ class Baby(models.Model):
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=255)
     blood_type = models.CharField(max_length=255)
-    profil_picture = models.ImageField(upload_to='baby_pictures/', null=True, blank=True)
+    profil_picture = models.CharField(max_length=255)
     parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='babies')
 
     class Meta:
