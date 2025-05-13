@@ -13,3 +13,19 @@ class Parent(models.Model):
 
     def __str__(self):
         return self.email
+    
+    
+class Baby(models.Model):
+    baby_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    date_of_birth = models.DateField()
+    gender = models.CharField(max_length=255)
+    blood_type = models.CharField(max_length=255)
+    profil_picture = models.ImageField(upload_to='baby_pictures/', null=True, blank=True)
+    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='babies')
+
+    class Meta:
+        db_table = 'baby_profile'
+
+    def __str__(self):
+        return self.name
