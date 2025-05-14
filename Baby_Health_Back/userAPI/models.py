@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Parent(models.Model):
     parent_id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)  # 👈 lien vers l'utilisateur connecté
+    #user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)  # 👈 lien vers l'utilisateur connecté
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
