@@ -27,13 +27,13 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.0.125:8000/api/user/auth/', userData)
+      .post('https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/auth/', userData)
       .then(async (response) => {
         setMessage('Connexion réussie !');
         const parentId = response.data.parent_id;
         await AsyncStorage.setItem("parent_id", parentId.toString());
         console.log("Utilisateur connecté :", response.data);
-        router.replace("/(tabs)/home");
+        router.replace("/addBaby");
       })
       .catch((error) => {
         console.error("Erreur de connexion :", error.response?.data || error.message);

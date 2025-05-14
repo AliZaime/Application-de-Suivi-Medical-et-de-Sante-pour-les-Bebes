@@ -73,7 +73,11 @@ def get_parent_by_id(request, parent_id):
 
 @api_view(['POST'])
 def add_baby(request):
-    serializer = BabySerializer(data=request.data)
+    parent = Parent.objects.get(user=request.user)  # 👈 récupère le parent lié à l'utilisateur connecté
+    data = request.data.copy()
+    data['parent'] = parent.parent_id  # 👈 injecte le bon parent_id dans les données
+
+    serializer = BabySerializer(data=data)
     if serializer.is_valid():
         baby = serializer.save()
         return Response({
