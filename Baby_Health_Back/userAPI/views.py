@@ -56,7 +56,8 @@ def register_parent(request):
             'user': user.id,  # 🔗 lien vers le User créé
             'name': name,
             'email': email,
-            'phone': phone
+            'phone': phone,
+            "notification_preferences": notification_preferences
         }
 
         serializer = ParentSerializer(data=parent_data)
