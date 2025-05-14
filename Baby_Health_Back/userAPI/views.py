@@ -83,4 +83,36 @@ def add_baby(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def get_baby_by_id(request, baby_id):
+    try:
+        baby = Baby.objects.get(baby_id=baby_id)
+        serializer = BabySerializer(baby)
+        return Response(serializer.data)
+    except Baby.DoesNotExist:
+        return Response({'error': 'Bébé non trouvé'}, status=500)
     
+@api_view(['GET'])
+def get_babies_by_parent_id(request, parent_id):
+    try:
+        parent = Parent.objects.get(parent_id=parent_id)
+        babies = parent.babies.all()
+        serializer = BabySerializer(babies, many=True)
+        return Response(serializer.data)
+    except Parent.DoesNotExist:
+        return Response({'error': 'Parent non trouvé'}, status=500)
+
+@api_view(['POST'])
+def update_baby(request, baby_id):
+    try:
+        baby = Baby.objects.get(baby_id=baby_id)
+        serializer = BabySerializer(baby, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Baby.DoesNotExist:
+        return Response({'error': 'Bébé non trouvé'}, status=500)
+
+
+
