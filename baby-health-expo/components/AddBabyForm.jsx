@@ -19,6 +19,7 @@ export default function AddBabyForm() {
     const [gender, setGender] = useState("");
     const [blood_type, setBloodType] = useState("");
     const [profile_picture, setProfilePicture] = useState("");
+    const [message, setMessage] = useState("");
 
     const handleSubmit = () => {
         const babyData = {
