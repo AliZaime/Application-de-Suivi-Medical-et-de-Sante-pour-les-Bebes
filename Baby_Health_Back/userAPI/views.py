@@ -40,8 +40,6 @@ class TestView(APIView):
 def register_parent(request):
     serializer = ParentSerializer(data=request.data)
     if serializer.is_valid():
-        # Hachage du mot de passe avant l'enregistrement
-        serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
         serializer.save()
         return Response({'message': 'Parent créé avec succès'}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
