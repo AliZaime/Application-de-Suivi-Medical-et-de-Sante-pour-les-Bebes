@@ -57,6 +57,9 @@ def login_parent(request):
 
     try:
         parent = Parent.objects.get(email=email)
+        print("password (entrée) =>", password)
+        print("password (hashé) =>", parent.password)
+        print("check_password =>", check_password(password, parent.password))
         if check_password(password, parent.password):
             serializer = ParentSerializer(parent)
             return Response({
