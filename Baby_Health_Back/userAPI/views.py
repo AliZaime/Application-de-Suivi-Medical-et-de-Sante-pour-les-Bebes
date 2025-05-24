@@ -38,77 +38,37 @@ class TestView(APIView):
 
 @api_view(['POST'])
 def register_parent(request):
-    name = request.data.get('name')
-    email = request.data.get('email')
-    password = request.data.get('password')
-    phone = request.data.get('phone')
-    notification_preferences = request.data.get('notification_preferences')
+    serializer = ParentSerializer(data=request.data)
+    if serializer.is_valid():
+        # Hachage du mot de passe avant l'enregistrement
+        serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+        serializer.save()
+        return Response({'message': 'Parent créé avec succès'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    if User.objects.filter(username=email).exists():
-        return Response({'error': 'Utilisateur déjà existant'}, status=400)
 
-    try:
-        # 1. Créer l'utilisateur Django
-        user = User.objects.create_user(username=email, email=email, password=password)
-
-        # 2. Préparer les données pour le serializer
-        parent_data = {
-            'user': user.id,  # 🔗 lien vers le User créé
-            'name': name,
-            'email': email,
-            'phone': phone,
-            "notification_preferences": notification_preferences
-        }
-
-        serializer = ParentSerializer(data=parent_data)
-
-        if serializer.is_valid():
-            parent = serializer.save()
-
-            # 3. Créer le token JWT
-            refresh = RefreshToken.for_user(user)
-
-            return Response({
-                'message': 'Compte parent créé avec succès',
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
-                'parent': serializer.data
-            }, status=201)
-
-        else:
-            user.delete()  # rollback si erreur dans le serializer
-            return Response(serializer.errors, status=400)
-
-    except Exception as e:
-        return Response({'error': str(e)}, status=500)
+from django.contrib.auth.hashers import check_password
+from .models import Parent
 
 @api_view(['POST'])
 def login_parent(request):
     email = request.data.get('email')
     password = request.data.get('password')
 
-    user = authenticate(username=email, password=password)
-
-    if user is not None:
-        try:
-            # récupérer le parent lié à ce user
-            parent = Parent.objects.get(user=user)
+    try:
+        parent = Parent.objects.get(email=email)
+        if check_password(password, parent.password):
             serializer = ParentSerializer(parent)
-
-            # générer les tokens
-            refresh = RefreshToken.for_user(user)
-
             return Response({
                 'message': 'Connexion réussie',
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
+                'parent_id': parent.parent_id,
                 'parent': serializer.data
             }, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Mot de passe incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+    except Parent.DoesNotExist:
+        return Response({'error': 'Utilisateur non trouvé'}, status=status.HTTP_400_BAD_REQUEST)
 
-        except Parent.DoesNotExist:
-            return Response({'error': 'Profil parent introuvable'}, status=404)
-
-    return Response({'error': 'Email ou mot de passe incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])
