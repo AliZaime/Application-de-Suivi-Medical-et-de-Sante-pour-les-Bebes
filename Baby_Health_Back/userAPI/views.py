@@ -52,6 +52,8 @@ from .models import Parent
 
 @api_view(['POST'])
 def login_parent(request):
+    print("Requête reçue :", request.data)  # 👈 ajoute ça pour inspecter
+    
     email = request.data.get('email')
     password = request.data.get('password')
 
