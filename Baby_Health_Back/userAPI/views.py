@@ -40,13 +40,10 @@ class TestView(APIView):
 def register_parent(request):
     serializer = ParentSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save()  # ✅ Ne touche pas au mot de passe ici
         return Response({'message': 'Parent créé avec succès'}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-from django.contrib.auth.hashers import check_password
-from .models import Parent
 
 @api_view(['POST'])
 def login_parent(request):
@@ -57,9 +54,6 @@ def login_parent(request):
 
     try:
         parent = Parent.objects.get(email=email)
-        print("password (entrée) =>", password)
-        print("password (hashé) =>", parent.password)
-        print("check_password =>", check_password(password, parent.password))
         if check_password(password, parent.password):
             serializer = ParentSerializer(parent)
             return Response({
