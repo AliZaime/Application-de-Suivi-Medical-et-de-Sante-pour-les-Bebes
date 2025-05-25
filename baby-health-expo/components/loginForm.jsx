@@ -22,24 +22,49 @@ export default function LoginForm() {
 
   const handleLogin = () => {
     const userData = {
-      email: email.trim().toLowerCase(), // bon format
+      email: email.trim().toLowerCase(),
       password
     };
 
     axios
-      .post('https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/auth/', userData)
+      .post('http://192.168.11.107:8000/api/user/login_parent/', userData)
       .then(async (response) => {
         setMessage('Connexion réussie !');
-        const parentId = response.data.parent_id;
+        
+        console.log("Réponse reçue :", response.data);
+        
+        const parentId = response.data?.parent_id;
+        const token = response.data?.token;  // ✅ récupère le token JWT
+        
+        if (!token || !parentId) {
+          setMessage("Données manquantes dans la réponse !");
+          return;
+        }
+
         await AsyncStorage.setItem("parent_id", parentId.toString());
+        await AsyncStorage.setItem("token", token);  // ✅ stocke le token
+
+
+        const babyResponse = await axios.get(`http://192.168.11.107:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babies = babyResponse.data;
+
+
+
         console.log("Utilisateur connecté :", response.data);
-        router.replace("/addBaby");
+        
+
+        if (babies.length === 0) {
+          router.replace("/addBaby"); // 👶 aucun bébé → aller à l’ajout
+        } else {
+          router.replace("/home"); // ✅ au moins un bébé → aller à l’accueil
+        }
       })
       .catch((error) => {
         console.error("Erreur de connexion :", error.response?.data || error.message);
         setMessage(error.response?.data?.error || "Erreur lors de la connexion.");
       });
   };
+
 
   return (
 

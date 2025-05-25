@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   View,
   Text,
@@ -21,26 +23,68 @@ export default function AddBabyForm() {
     const [profile_picture, setProfilePicture] = useState("");
     const [message, setMessage] = useState("");
 
-    const handleSubmit = () => {
-        const babyData = {
-            name: name.trim(),
-            date_of_birth: date_of_birth.trim(),
-            gender: gender.trim(),
-            blood_type: blood_type.trim(),
-            profile_picture: profile_picture.trim()
+    const handleSubmit = async () => {
+  const babyData = {
+    name: name.trim(),
+    date_of_birth: date_of_birth.trim(),
+    gender: gender.trim(),
+    blood_type: blood_type.trim(),
+    profile_picture: profile_picture.trim()
+  };
 
-        }
-        axios
-            .post("https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/add_baby/", babyData)
-            .then((response) => {
-                setMessage("ajout du bébé réussie !");
-                router.push("/home");
-            })
-            .catch((error) => {
-                setMessage("Erreur lors de l'ajout.");
-                console.error(error.response?.data || error.message);
-            });
+  try {
+    const token = await AsyncStorage.getItem("token");
+
+    if (!token) {
+      setMessage("Token non trouvé. Veuillez vous reconnecter.");
+      return;
     }
+
+    const response = await axios.post(
+      "http://192.168.11.107:8000/api/user/add_baby/",
+      babyData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    setMessage("Ajout du bébé réussi !");
+    router.push("/home");
+
+  } catch (error) {
+    let errorMsg = "Erreur lors de l'ajout.";
+
+    if (error.response) {
+      // 🔴 Erreur côté serveur avec réponse
+      console.log("Erreur response.data:", error.response.data);
+      console.log("Erreur status:", error.response.status);
+      console.log("Erreur headers:", error.response.headers);
+
+      if (error.response.data?.error) {
+        errorMsg = error.response.data.error;
+      } else if (typeof error.response.data === "string") {
+        errorMsg = error.response.data;
+      } else {
+        errorMsg = JSON.stringify(error.response.data, null, 2);
+      }
+
+    } else if (error.request) {
+      // ⚠️ La requête a été faite mais aucune réponse
+      console.log("Erreur request:", error.request);
+      errorMsg = "Aucune réponse reçue du serveur.";
+    } else {
+      // ❌ Erreur inattendue
+      console.log("Erreur générique:", error.message);
+      errorMsg = error.message;
+    }
+
+    setMessage(errorMsg);
+  }
+};
+
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
