@@ -16,7 +16,6 @@ class ParentSerializer(serializers.ModelSerializer):
 class BabySerializer(serializers.ModelSerializer):
     class Meta:
         model = Baby
-        fields = ['baby_id', 'name', 'date_of_birth', 'gender', 'blood_type', 'profile_picture', 'parent_id']
-        
+        fields = ['baby_id', 'name', 'date_of_birth', 'gender', 'blood_type', 'profile_picture', 'parent']        
     def create(self, validated_data):
         return super().create(validated_data)

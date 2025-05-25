@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User  # Assure-toi d'importer depuis auth.models
 from rest_framework_simplejwt.tokens import RefreshToken
 
+import jwt
+from datetime import datetime, timedelta
+from django.conf import settings  
 
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
@@ -47,24 +50,31 @@ def register_parent(request):
 
 @api_view(['POST'])
 def login_parent(request):
-    print("Requête reçue :", request.data)  # 👈 ajoute ça pour inspecter
-    
     email = request.data.get('email')
     password = request.data.get('password')
 
     try:
         parent = Parent.objects.get(email=email)
         if check_password(password, parent.password):
+            # 🔐 Créer un token JWT manuellement
+            payload = {
+                'parent_id': parent.parent_id,
+                'exp': datetime.utcnow() + timedelta(days=1),
+                'iat': datetime.utcnow()
+            }
+            token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+            
             serializer = ParentSerializer(parent)
             return Response({
                 'message': 'Connexion réussie',
+                'token': token,
                 'parent_id': parent.parent_id,
                 'parent': serializer.data
             }, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Mot de passe incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Mot de passe incorrect'}, status=400)
     except Parent.DoesNotExist:
-        return Response({'error': 'Utilisateur non trouvé'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Utilisateur non trouvé'}, status=400)
 
 
 
@@ -78,16 +88,20 @@ def get_parent_by_id(request, parent_id):
         return Response({'error': 'Parent non trouvé'}, status=500)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def add_baby(request):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return Response({'error': 'Token manquant ou invalide'}, status=401)
+
+    token = auth_header.split(" ")[1]
     try:
-        # 🔐 Récupère le parent associé à l'utilisateur connecté
-        parent = Parent.objects.get(user=request.user)
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        parent_id = payload['parent_id']
+        parent = Parent.objects.get(parent_id=payload['parent_id'])
 
-        # 📦 Copie des données et injection automatique du parent
         data = request.data.copy()
-        data['parent'] = parent.id
-
+        data['parent'] = parent.parent_id
+        print("Données reçues :", request.data)
         serializer = BabySerializer(data=data)
         if serializer.is_valid():
             baby = serializer.save()
@@ -97,6 +111,10 @@ def add_baby(request):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    except jwt.ExpiredSignatureError:
+        return Response({'error': 'Token expiré'}, status=401)
+    except jwt.InvalidTokenError:
+        return Response({'error': 'Token invalide'}, status=401)
     except Parent.DoesNotExist:
         return Response({'error': 'Parent introuvable'}, status=404)
 
