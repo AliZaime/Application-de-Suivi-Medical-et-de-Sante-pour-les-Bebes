@@ -1,7 +1,4 @@
-// app/growth.jsx
-import React from 'react';
-import GrowthTracker from '../../components/GrowthTracker';
-
-export default function GrowthPage() {
-  return <GrowthTracker />;
-}
+import HomeTraking from "../../components/home_tarking";
+export default function traking_Home() {
+  return <HomeTraking />;
+} 

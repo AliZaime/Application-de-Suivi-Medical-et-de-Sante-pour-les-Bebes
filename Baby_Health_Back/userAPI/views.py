@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer
+from .serializers import ParentSerializer, BabySerializer, BabyTrackingSerializer
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -24,7 +24,7 @@ from rest_framework.decorators import permission_classes
 
 
 from django.contrib.auth.hashers import check_password
-from .models import Parent,Baby
+from .models import Parent, Baby, BabyTracking
 
 
 class TestView(APIView):
@@ -151,4 +151,12 @@ def update_baby(request, baby_id):
         return Response({'error': 'Bébé non trouvé'}, status=500)
 
 
+@api_view(['GET'])
+def get_tracking_by_baby_id(request, baby_id):
+    try:
+        trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')
+        serializer = BabyTrackingSerializer(trackings, many=True)
+        return Response(serializer.data)
+    except:
+        return Response({"error": "Erreur lors du chargement"}, status=500)
 

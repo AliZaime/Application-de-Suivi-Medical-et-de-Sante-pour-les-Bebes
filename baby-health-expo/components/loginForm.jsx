@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Button,
-} from "react-native";
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,Image,ScrollView,Button,} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
@@ -27,7 +18,7 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.11.102:8000/api/user/login_parent/', userData)
+      .post('http://192.168.11.104:8000/api/user/login_parent/', userData)
       .then(async (response) => {
         setMessage('Connexion réussie !');
         
@@ -45,7 +36,7 @@ export default function LoginForm() {
         await AsyncStorage.setItem("token", token);  // ✅ stocke le token
 
 
-        const babyResponse = await axios.get(`http://192.168.11.102:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`http://192.168.11.104:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         const babies = babyResponse.data;
 
 
