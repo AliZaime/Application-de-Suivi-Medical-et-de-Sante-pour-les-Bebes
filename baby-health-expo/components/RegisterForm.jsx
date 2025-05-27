@@ -31,7 +31,7 @@ export default function RegisterForm() {
     };
 
     axios
-      .post("https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/register/", userData)
+      .post("http://192.168.11.102:8000/api/user/register/", userData)
       .then((response) => {
         setMessage("Inscription réussie !");
         router.push("/login");
