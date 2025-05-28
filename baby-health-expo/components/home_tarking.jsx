@@ -16,11 +16,11 @@ export default function CroissanceScreen() {
         const parentId = await AsyncStorage.getItem("parent_id");
         const token = await AsyncStorage.getItem("token");
 
-        const babyResponse = await axios.get(`http://192.168.11.104:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`http://192.168.11.109:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         const babyData = babyResponse.data[0];
         setBaby(babyData);
 
-        const trackingResponse = await axios.get(`http://192.168.11.104:8000/api/user/get_last_traking/${babyResponse.data[0].baby_id}/`);
+        const trackingResponse = await axios.get(`http://192.168.11.109:8000/api/user/get_last_traking/${babyResponse.data[0].baby_id}/`);
         const trackingData = trackingResponse.data;
 
         if (trackingData.length > 0) {
@@ -84,7 +84,7 @@ export default function CroissanceScreen() {
         )}
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={() => router.push("/addTracking")}>
+      <TouchableOpacity style={styles.addButton} onPress={() => router.push("/addtracking")}>
         <Text style={styles.addButtonText}>Ajouter une mesure</Text>
       </TouchableOpacity>
     </View>

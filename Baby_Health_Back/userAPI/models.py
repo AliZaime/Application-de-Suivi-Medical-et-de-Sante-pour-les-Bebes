@@ -38,7 +38,7 @@ class BabyTracking(models.Model):
     weight = models.FloatField()
     height = models.FloatField()
     head_circumference = models.FloatField()
-    date_recorded = models.DateField(auto_now_add=True)
+    date_recorded = models.DateField()
     note = models.TextField(blank=True, null=True)
 
     class Meta:

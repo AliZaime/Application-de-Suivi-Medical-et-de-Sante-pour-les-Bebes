@@ -160,3 +160,31 @@ def get_tracking_by_baby_id(request, baby_id):
     except:
         return Response({"error": "Erreur lors du chargement"}, status=500)
 
+
+@api_view(['POST'])
+def add_tracking(request):
+    # Vérification du token JWT
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return Response({'error': 'Token manquant ou invalide'}, status=401)
+
+    token = auth_header.split(" ")[1]
+    try:
+        jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        return Response({'error': 'Token expiré'}, status=401)
+    except jwt.InvalidTokenError:
+        return Response({'error': 'Token invalide'}, status=401)
+
+    # Création du tracking
+    data = request.data
+    serializer = BabyTrackingSerializer(data=data)
+    
+    if serializer.is_valid():
+        tracking = serializer.save()
+        return Response({
+            'message': 'Mesure enregistrée avec succès',
+            'tracking': serializer.data
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
