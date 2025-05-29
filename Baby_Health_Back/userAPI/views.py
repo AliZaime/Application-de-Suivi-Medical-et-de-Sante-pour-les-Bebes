@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -24,7 +24,7 @@ from rest_framework.decorators import permission_classes
 
 
 from django.contrib.auth.hashers import check_password
-from .models import Parent,Baby
+from .models import Parent,Baby, Appointment
 
 
 class TestView(APIView):
@@ -152,3 +152,76 @@ def update_baby(request, baby_id):
 
 
 
+
+@api_view(['GET'])
+def get_appointments_by_parent_id(request, parent_id):
+    try:
+        parent = Parent.objects.get(parent_id=parent_id)
+        appointments = parent.appointments.all()
+        serializer = AppointmentSerializer(appointments, many=True)
+        return Response(serializer.data)
+    except Parent.DoesNotExist:
+        return Response({'error': 'Parent non trouvé'}, status=500)
+
+@api_view(['POST'])
+def add_appointment(request):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith("Bearer "):
+        print("Authorization header missing or invalid")  # Log missing or invalid header
+        return Response({'error': 'Token manquant ou invalide'}, status=401)
+
+    token = auth_header.split(" ")[1]
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        parent_id = payload['parent_id']
+        print(f"Decoded token payload: {payload}")  # Log decoded token payload
+        parent = Parent.objects.get(parent_id=parent_id)
+
+        data = request.data.copy()
+        data['parent'] = parent.parent_id
+        serializer = AppointmentSerializer(data=data)
+        if serializer.is_valid():
+            appointment = serializer.save()
+            return Response({
+                'message': 'Rendez-vous créé avec succès',
+                'appointment': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        print(f"Serializer errors: {serializer.errors}")  # Log serializer errors
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except jwt.ExpiredSignatureError:
+        print("Token expired")  # Log token expiration
+        return Response({'error': 'Token expiré'}, status=401)
+    except jwt.InvalidTokenError:
+        print("Invalid token")  # Log invalid token
+        return Response({'error': 'Token invalide'}, status=401)
+    except Parent.DoesNotExist:
+        print("Parent not found")  # Log missing parent
+        return Response({'error': 'Parent introuvable'}, status=404)
+
+@api_view(['POST'])
+def update_appointment(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(appointment_id=appointment_id)
+        serializer = AppointmentSerializer(appointment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Appointment.DoesNotExist:
+        return Response({'error': 'Rendez-vous non trouvé'}, status=500)
+
+@api_view(['DELETE'])
+def delete_appointment(request, appointment_id):
+    try:
+        # Retrieve the appointment by ID
+        appointment = Appointment.objects.get(appointment_id=appointment_id)
+        appointment.delete()  # Delete the appointment
+        return Response({'message': 'Rendez-vous supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Appointment.DoesNotExist:
+        # Handle case where appointment does not exist
+        return Response({'error': 'Rendez-vous introuvable'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        # Log unexpected errors
+        print(f"Unexpected error: {e}")
+        return Response({'error': 'Erreur interne du serveur'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
