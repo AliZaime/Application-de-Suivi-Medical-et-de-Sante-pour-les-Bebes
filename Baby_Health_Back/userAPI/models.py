@@ -32,3 +32,17 @@ class Baby(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Appointment(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='appointments')
+    time = models.DateTimeField()
+    value = models.CharField(max_length=255)
+    place = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'appointment'
+
+    def __str__(self):
+        return f"Appointment at {self.place} on {self.time}"

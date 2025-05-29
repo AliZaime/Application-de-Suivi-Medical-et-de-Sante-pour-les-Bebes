@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from .views import login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby
+from .views import login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment 
 from .views import TestView
 
 
@@ -16,6 +16,10 @@ urlpatterns = [
     path('user/get_baby_by_id/<int:baby_id>/', get_baby_by_id, name='get_baby_by_id'),
     path('user/get_babies_by_parent_id/<int:parent_id>/', get_babies_by_parent_id, name='get_babies_by_id'),
     path('user/update_baby/', update_baby, name='update_baby'),
+    path('user/get_appointments_by_parent_id/<int:parent_id>/', get_appointments_by_parent_id, name='get_appointments_by_parent_id'),
+    path('user/add_appointment/', add_appointment, name='add_appointment'),
+    path('user/update_appointment/<int:appointment_id>/', update_appointment, name='update_appointment'),
+    path('user/delete_appointment/<int:appointment_id>/', delete_appointment, name='delete_appointment'),
     
     
 ]
