@@ -7,7 +7,7 @@ class ParentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Parent
-        fields = ['parent_id', 'name', 'email', 'phone', 'password', 'notification_preferences']
+        fields = ['parent_id', 'name', 'email', 'phone', 'password', 'notification_preferences','gender']
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
