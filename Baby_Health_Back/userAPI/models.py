@@ -9,6 +9,7 @@ class Parent(models.Model):
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=128)  # ⚠️ stocké en clair ou hashé manuellement
     notification_preferences = models.JSONField(default=dict)
+    gender = models.CharField(max_length=10, default='Not specified')
 
     class Meta:
         db_table = 'parent'
