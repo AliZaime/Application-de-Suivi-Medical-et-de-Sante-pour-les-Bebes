@@ -268,18 +268,26 @@ def add_tetee(request):
         return Response({'message': 'Tétée ajoutée avec succès', 'tetee': serializer.data}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET'])
+def get_tetees_by_baby(request, baby_id):
+    tetees = Tetee.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    if not tetees.exists():
+        return Response({'message': 'Aucune tétée trouvée pour ce bébé.', 'data': []}, status=status.HTTP_200_OK)
+    serializer = TeteeSerializer(tetees, many=True)
+    return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
 def update_tetee(request, tetee_id):
     try:
         tetee = Tetee.objects.get(id=tetee_id)
         serializer = TeteeSerializer(tetee, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Tétée modifiée avec succès', 'tetee': serializer.data})
+            return Response({'message': 'Tétée modifiée avec succès', 'tetee': serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Tetee.DoesNotExist:
         return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
-    
+
 @api_view(['DELETE'])
 def delete_tetee(request, tetee_id):
     try:
@@ -288,14 +296,3 @@ def delete_tetee(request, tetee_id):
         return Response({'message': 'Tétée supprimée avec succès'}, status=status.HTTP_200_OK)
     except Tetee.DoesNotExist:
         return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
-    
-@api_view(['GET'])
-def get_tetees_by_baby(request, baby_id):
-    print(f"baby_id reçu : {baby_id}")  # Log pour vérifier l'ID reçu
-    tetees = Tetee.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
-    if not tetees.exists():
-        print("Aucune tétée trouvée.")  # Log si aucune tétée n'est trouvée
-        return Response({'message': 'Aucune tétée trouvée pour ce bébé.', 'data': []}, status=status.HTTP_200_OK)
-    serializer = TeteeSerializer(tetees, many=True)
-    print(f"Tétées trouvées : {serializer.data}")  # Log les données trouvées
-    return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)

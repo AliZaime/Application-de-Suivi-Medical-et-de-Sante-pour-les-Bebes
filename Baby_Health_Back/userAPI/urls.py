@@ -25,7 +25,7 @@ urlpatterns = [
     path('couches/<int:couche_id>/delete/', delete_couche, name='delete_couche'), 
     path('couches/baby/<int:baby_id>/', get_couches_by_baby, name='get_couches_by_baby'), 
     path('tetees/', add_tetee, name='add_tetee'),
+    path('tetees/baby/<int:baby_id>/', get_tetees_by_baby, name='get_tetees_by_baby'),
     path('tetees/<int:tetee_id>/', update_tetee, name='update_tetee'), 
     path('tetees/<int:tetee_id>/delete/', delete_tetee, name='delete_tetee'),
-    path('tetees/baby/<int:baby_id>/', get_tetees_by_baby, name='get_tetees_by_baby'),
 ]

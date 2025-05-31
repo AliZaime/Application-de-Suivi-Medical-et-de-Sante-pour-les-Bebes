@@ -79,15 +79,15 @@ class Couche(models.Model):
         return f"{self.type} - {self.date} {self.heure} ({self.baby.name})"
 
 class Tetee(models.Model):
-    id = models.AutoField(primary_key=True)
-    date = models.DateField()  # Date de la tétée
-    heure = models.TimeField()  # Heure de la tétée
-    temps_passe = models.PositiveIntegerField()  # Temps passé en minutes
-    remarque = models.CharField(max_length=255, blank=True)  # Remarque optionnelle
-    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='tetees')  # Relation avec le bébé
+    id = models.AutoField(primary_key=True)  # Correspond à la colonne `id` dans la table
+    date = models.DateField()  # Correspond à la colonne `date`
+    heure = models.TimeField()  # Correspond à la colonne `heure`
+    temps_passe = models.IntegerField()  # Correspond à la colonne `temps_passe`
+    remarque = models.CharField(max_length=255, blank=True, null=True)  # Correspond à la colonne `remarque`
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='tetees')  # Correspond à la colonne `baby`
 
     class Meta:
-        db_table = 'tetee'
+        db_table = 'tetee'  # Spécifie explicitement le nom de la table
 
     def __str__(self):
-        return f"Tétée - {self.date} {self.heure} ({self.baby.name})"
+        return f"Tétée du {self.date} à {self.heure} (Baby ID: {self.baby.id})"

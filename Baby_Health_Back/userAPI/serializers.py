@@ -36,4 +36,4 @@ class CoucheSerializer(serializers.ModelSerializer):
 class TeteeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tetee
-        fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']
+        fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']  # Correspond aux colonnes de la table
