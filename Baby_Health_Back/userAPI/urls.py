@@ -19,3 +19,4 @@ urlpatterns = [
     path('user/get_last_traking/<int:baby_id>/',get_tracking_by_baby_id, name='get_last_traking'),
     path('user/add_tracking/', add_tracking, name='add_tracking')
 ]
+

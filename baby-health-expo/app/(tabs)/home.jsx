@@ -18,7 +18,7 @@ export default function Home() {
           return;
         }
 
-        const response = await axios.get(`http://192.168.11.109:8000/api/parent/${parentId}/`);
+        const response = await axios.get(`http://192.168.11.111:8000/api/parent/${parentId}/`);
         setParent(response.data);
       } catch (err) {
         console.error(err);
