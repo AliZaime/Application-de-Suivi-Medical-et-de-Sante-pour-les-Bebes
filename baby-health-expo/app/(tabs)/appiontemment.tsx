@@ -67,7 +67,7 @@ const AppointmentPage = () => { // Renamed component
         setLoading(false);
         return;
       }
-      const response = await axios.get(`http://192.168.1.139:8000/api/user/get_appointments_by_parent_id/${parentId}`);
+      const response = await axios.get(`http://192.168.11.111:8000/api/user/get_appointments_by_parent_id/${parentId}`);
       setAppointments(Array.isArray(response.data) ? response.data : []);
       console.log('User Appointment data:', response.data);
     } catch (error) {
@@ -156,7 +156,7 @@ const AppointmentPage = () => { // Renamed component
       }
 
       await axios.delete(
-        `http://192.168.1.139:8000/api/user/delete_appointment/${appointmentId}/`,
+        `http://192.168.11.111:8000/api/user/delete_appointment/${appointmentId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -210,7 +210,7 @@ const AppointmentPage = () => { // Renamed component
 
       // 👇 **Include the Authorization header**
       await axios.post(
-        'http://192.168.1.139:8000/api/user/add_appointment/',
+        'http://192.168.11.111:8000/api/user/add_appointment/',
         newAppointmentData,
         {
           headers: {
@@ -278,7 +278,7 @@ const AppointmentPage = () => { // Renamed component
       };
 
       await axios.put(
-        `http://192.168.1.139:8000/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
+        `http://192.168.11.111:8000/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
         updatedAppointmentData,
         {
           headers: {
