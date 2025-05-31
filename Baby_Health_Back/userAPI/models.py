@@ -91,3 +91,18 @@ class Tetee(models.Model):
 
     def __str__(self):
         return f"Tétée du {self.date} à {self.heure} (Baby ID: {self.baby.id})"
+    
+class BabyTracking(models.Model):
+    tracking_id = models.AutoField(primary_key=True)
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='tracking')
+    weight = models.FloatField()
+    height = models.FloatField()
+    head_circumference = models.FloatField()
+    date_recorded = models.DateField()
+    note = models.TextField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'baby_tracking'
+
+    def __str__(self):
+        return f"{self.baby.name} - {self.date_recorded}"

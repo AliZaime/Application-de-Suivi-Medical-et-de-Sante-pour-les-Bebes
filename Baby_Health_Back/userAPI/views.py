@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer
-from .models import Parent,Baby, Appointment, Couche, Tetee
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Parent,Baby, Appointment, Couche, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -296,3 +296,12 @@ def delete_tetee(request, tetee_id):
         return Response({'message': 'Tétée supprimée avec succès'}, status=status.HTTP_200_OK)
     except Tetee.DoesNotExist:
         return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_tracking_by_baby_id(request, baby_id):
+    try:
+        trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')
+        serializer = BabyTrackingSerializer(trackings, many=True)
+        return Response(serializer.data)
+    except:
+        return Response({"error": "Erreur lors du chargement"}, status=500)

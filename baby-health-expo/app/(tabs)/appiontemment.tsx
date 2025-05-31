@@ -67,7 +67,7 @@ const AppointmentPage = () => { // Renamed component
         setLoading(false);
         return;
       }
-      const response = await axios.get(`http://192.168.11.111:8000/api/user/get_appointments_by_parent_id/${parentId}`);
+      const response = await axios.get(`http://192.168.11.111:8000/api/user/get_appointments_by_parent_id/${parentId}/`);
       setAppointments(Array.isArray(response.data) ? response.data : []);
       console.log('User Appointment data:', response.data);
     } catch (error) {
