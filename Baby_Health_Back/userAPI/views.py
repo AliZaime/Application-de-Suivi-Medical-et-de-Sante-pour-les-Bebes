@@ -14,17 +14,15 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer
+from .models import Parent,Baby, Appointment, Couche, Tetee
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
-
-
 from django.contrib.auth.hashers import check_password
-from .models import Parent,Baby, Appointment
 
 
 class TestView(APIView):
@@ -225,3 +223,79 @@ def delete_appointment(request, appointment_id):
         # Log unexpected errors
         print(f"Unexpected error: {e}")
         return Response({'error': 'Erreur interne du serveur'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def add_couche(request):
+    serializer = CoucheSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Couche ajoutée avec succès', 'couche': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def update_couche(request, couche_id):
+    try:
+        couche = Couche.objects.get(id=couche_id)
+        serializer = CoucheSerializer(couche, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Couche modifiée avec succès', 'couche': serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Couche.DoesNotExist:
+        return Response({'error': 'Couche non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['DELETE'])
+def delete_couche(request, couche_id):
+    try:
+        couche = Couche.objects.get(id=couche_id)
+        couche.delete()
+        return Response({'message': 'Couche supprimée avec succès'}, status=status.HTTP_200_OK)
+    except Couche.DoesNotExist:
+        return Response({'error': 'Couche non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_couches_by_baby(request, baby_id):
+    couches = Couche.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = CoucheSerializer(couches, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def add_tetee(request):
+    serializer = TeteeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Tétée ajoutée avec succès', 'tetee': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def update_tetee(request, tetee_id):
+    try:
+        tetee = Tetee.objects.get(id=tetee_id)
+        serializer = TeteeSerializer(tetee, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Tétée modifiée avec succès', 'tetee': serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Tetee.DoesNotExist:
+        return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_tetee(request, tetee_id):
+    try:
+        tetee = Tetee.objects.get(id=tetee_id)
+        tetee.delete()
+        return Response({'message': 'Tétée supprimée avec succès'}, status=status.HTTP_200_OK)
+    except Tetee.DoesNotExist:
+        return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_tetees_by_baby(request, baby_id):
+    print(f"baby_id reçu : {baby_id}")  # Log pour vérifier l'ID reçu
+    tetees = Tetee.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    if not tetees.exists():
+        print("Aucune tétée trouvée.")  # Log si aucune tétée n'est trouvée
+        return Response({'message': 'Aucune tétée trouvée pour ce bébé.', 'data': []}, status=status.HTTP_200_OK)
+    serializer = TeteeSerializer(tetees, many=True)
+    print(f"Tétées trouvées : {serializer.data}")  # Log les données trouvées
+    return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)

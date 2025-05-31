@@ -46,3 +46,47 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment at {self.place} on {self.time}"
+
+
+class Couche(models.Model):
+    TYPE_CHOICES = [
+        ('mixte', 'Mixte'),
+        ('urine', 'Urine'),
+        ('souillee', 'Souillée'),
+    ]
+    CAUSE_CHOICES = [
+        ('Normale', 'Normale'),
+        ('Diarrhée', 'Diarrhée'),
+        ('Molle', 'Molle'),
+        ('Liquide', 'Liquide'),
+        ('Constipation', 'Constipation'),
+        ('Autre', 'Autre'),
+    ]
+
+    id = models.AutoField(primary_key=True)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    date = models.DateField()
+    heure = models.TimeField()
+    cause = models.CharField(max_length=30, choices=CAUSE_CHOICES, blank=True)
+    remarque = models.CharField(max_length=255, blank=True)
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='couches')
+
+    class Meta:
+        db_table = 'couche'
+
+    def __str__(self):
+        return f"{self.type} - {self.date} {self.heure} ({self.baby.name})"
+
+class Tetee(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField()  # Date de la tétée
+    heure = models.TimeField()  # Heure de la tétée
+    temps_passe = models.PositiveIntegerField()  # Temps passé en minutes
+    remarque = models.CharField(max_length=255, blank=True)  # Remarque optionnelle
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='tetees')  # Relation avec le bébé
+
+    class Meta:
+        db_table = 'tetee'
+
+    def __str__(self):
+        return f"Tétée - {self.date} {self.heure} ({self.baby.name})"
