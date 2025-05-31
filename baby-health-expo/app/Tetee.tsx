@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
     color: '#a21caf',
     textAlign: 'center',
     marginTop: 80,
-    marginBottom: 20,
   },
   emptyMessage: {
     textAlign: 'center',
