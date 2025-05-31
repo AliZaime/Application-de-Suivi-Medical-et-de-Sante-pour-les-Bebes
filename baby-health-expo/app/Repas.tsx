@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centre les cartes verticalement
     alignItems: 'center',
     padding: 16,
+    paddingBottom: 24, // Ajoute un peu d'espace en bas pour éviter que les cartes soient collées au bord
   },
   card: {
     width: CARD_SIZE,
