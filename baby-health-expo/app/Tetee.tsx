@@ -263,6 +263,7 @@ const TeteePage = () => {
             <TextInput
               style={styles.input}
               placeholder="Temps passé (en minutes)"
+              placeholderTextColor= "#888"
               keyboardType="numeric"
               value={tempsPasse}
               onChangeText={setTempsPasse}
@@ -270,6 +271,7 @@ const TeteePage = () => {
             <TextInput
               style={styles.input}
               placeholder="Remarque (optionnel)"
+              placeholderTextColor= "#888"
               value={remarque}
               onChangeText={setRemarque}
             />

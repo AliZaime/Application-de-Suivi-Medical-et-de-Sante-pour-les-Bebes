@@ -8,7 +8,7 @@ import { LineChart } from "react-native-chart-kit";
 import { useLocalSearchParams } from 'expo-router';
 
 const Biberon = () => {
-  const { babyId } = useLocalSearchParams(); // Récupère l'ID du bébé depuis les paramètres
+  const { babyId } = useLocalSearchParams();
 
   const [biberons, setBiberons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -196,6 +196,21 @@ const Biberon = () => {
               }}
               style={{ marginVertical: 16, borderRadius: 16, alignSelf: "center" }}
               bezier
+              renderDotContent={({ x, y, index, indexData }) => (
+                  <Text
+                      key={index}
+                      style={{
+                        position: 'absolute',
+                        top: y - 24,
+                        left: x - 8,
+                        color: '#a21caf',
+                        fontWeight: 'bold',
+                        fontSize: 13,
+                      }}          
+                  >
+                    {indexData}
+                  </Text>
+              )}
             />
           )}
 
@@ -220,6 +235,7 @@ const Biberon = () => {
             <TextInput
               style={styles.input}
               placeholder="Quantité (en ml)"
+              placeholderTextColor= "#888"
               keyboardType="numeric"
               value={quantite}
               onChangeText={(text) => setQuantite(text.replace(/[^0-9]/g, ''))}
@@ -257,6 +273,7 @@ const Biberon = () => {
               />
             )}
             <View style={styles.row}>
+              <Text style={{ marginLeft: 8, color: '#555', fontSize : 16 }}>Source :</Text>
               {sources.map(s => (
                 <TouchableOpacity
                   key={s.value}
@@ -270,6 +287,7 @@ const Biberon = () => {
             <TextInput
               style={styles.input}
               placeholder="Remarque (optionnel)"
+              placeholderTextColor= "#888"
               value={remarque}
               onChangeText={setRemarque}
             />
@@ -362,6 +380,7 @@ const styles = StyleSheet.create({
   },
 
   modalTitle: {
+    color: '#a21caf',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
@@ -380,6 +399,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginVertical: 8,
+    alignItems: 'center',
+    gap: 20,
   },
 
   sourceBtn: {
