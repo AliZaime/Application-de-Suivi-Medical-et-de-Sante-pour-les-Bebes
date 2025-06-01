@@ -17,11 +17,11 @@ export default function CroissanceScreen() {
     const fetchData = async () => {
       try {
         const parentId = await AsyncStorage.getItem("parent_id");
-        const babyResponse = await axios.get(`http://192.168.11.111:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`http://192.168.1.133:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         const babyData = babyResponse.data[0];
         setBaby(babyData);
 
-        const trackingResponse = await axios.get(`http://192.168.11.111:8000/api/user/get_last_traking/${babyData.baby_id}/`);
+        const trackingResponse = await axios.get(`http://192.168.1.133:8000/api/user/get_last_traking/${babyData.baby_id}/`);
         const trackings = trackingResponse.data;
         setAllTrackings(trackings);
 

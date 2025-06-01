@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Parent, Baby, Appointment, Couche, Tetee,BabyTracking
+from .models import Biberon, Parent, Baby, Appointment, Couche, Tetee,BabyTracking
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class CoucheSerializer(serializers.ModelSerializer):
 class TeteeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tetee
-        fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']  # Correspond aux colonnes de la table
+        fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']
 
 
 class BabyTrackingSerializer(serializers.ModelSerializer):
@@ -46,3 +46,8 @@ class BabyTrackingSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         return super().create(validated_data)
+    
+class BiberonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Biberon
+        fields = ['id', 'quantite', 'date', 'heure', 'source', 'remarque', 'baby']

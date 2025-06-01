@@ -28,10 +28,10 @@ const Suivi = () => {
           setLoading(false);
           return;
         }
-        const parentResponse = await axios.get(`http://192.168.1.139:8000/api/parent/${parentId}/`);
+        const parentResponse = await axios.get(`http://192.168.1.133:8000/api/parent/${parentId}/`);
         setParent(parentResponse.data);
 
-        const babysResponse = await axios.get(`http://192.168.1.139:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babysResponse = await axios.get(`http://192.168.1.133:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         setBabys(Array.isArray(babysResponse.data) ? babysResponse.data : []);
       } catch (err) {
         setError("Erreur lors du chargement des données.");
