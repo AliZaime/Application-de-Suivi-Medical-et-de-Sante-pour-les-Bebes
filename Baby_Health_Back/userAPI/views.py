@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer,BabyTrackingSerializer
-from .models import Parent,Baby, Appointment, Couche, Tetee,BabyTracking
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Biberon, Parent,Baby, Appointment, Couche, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -305,3 +305,38 @@ def get_tracking_by_baby_id(request, baby_id):
         return Response(serializer.data)
     except:
         return Response({"error": "Erreur lors du chargement"}, status=500)
+    
+@api_view(['POST'])
+def add_biberon(request):
+    serializer = BiberonSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Biberon ajouté avec succès', 'biberon': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_biberons_by_baby(request, baby_id):
+    biberons = Biberon.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = BiberonSerializer(biberons, many=True)
+    return Response({'message': 'Biberons récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_biberon(request, biberon_id):
+    try:
+        biberon = Biberon.objects.get(id=biberon_id)
+        serializer = BiberonSerializer(biberon, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Biberon modifié avec succès', 'biberon': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Biberon.DoesNotExist:
+        return Response({'error': 'Biberon non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_biberon(request, biberon_id):
+    try:
+        biberon = Biberon.objects.get(id=biberon_id)
+        biberon.delete()
+        return Response({'message': 'Biberon supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Biberon.DoesNotExist:
+        return Response({'error': 'Biberon non trouvé'}, status=status.HTTP_404_NOT_FOUND)

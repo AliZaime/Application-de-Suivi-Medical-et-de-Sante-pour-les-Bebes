@@ -106,3 +106,18 @@ class BabyTracking(models.Model):
 
     def __str__(self):
         return f"{self.baby.name} - {self.date_recorded}"
+    
+class Biberon(models.Model):
+    id = models.AutoField(primary_key=True)  # Identifiant unique pour chaque biberon
+    quantite = models.IntegerField()  # Quantité de lait en ml
+    date = models.DateField()  # Date de la prise du biberon
+    heure = models.TimeField()  # Heure de la prise du biberon
+    source = models.CharField(max_length=20, choices=[('sein', 'Sein'), ('lait_artificiel', 'Lait artificiel')])  # Source du lait
+    remarque = models.CharField(max_length=255, blank=True, null=True)  # Remarque optionnelle
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='biberons')  # Relation avec le bébé
+
+    class Meta:
+        db_table = 'biberon'  # Nom explicite de la table dans la base de données
+
+    def __str__(self):
+        return f"Biberon de {self.quantite} ml ({self.source}) - {self.date} {self.heure} (Baby ID: {self.baby.id})"

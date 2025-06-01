@@ -48,7 +48,7 @@ const CouchePage = () => {
   const fetchCouches = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://192.168.1.139:8000/api/couches/baby/${babyId}/`);
+      const res = await axios.get(`http://192.168.1.133:8000/api/couches/baby/${babyId}/`);
       setCouches(Array.isArray(res.data) ? res.data : []);
     } catch (e) {
       setCouches([]);
@@ -99,9 +99,9 @@ const CouchePage = () => {
     };
     try {
       if (editing) {
-        await axios.post(`http://192.168.1.139:8000/api/couches/${editing.id}/`, payload);
+        await axios.post(`http://192.168.1.133:8000/api/couches/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://192.168.1.139:8000/api/couches/`, payload);
+        await axios.post(`http://192.168.1.133:8000/api/couches/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -121,7 +121,7 @@ const CouchePage = () => {
       {
         text: 'Supprimer', style: 'destructive', onPress: async () => {
           try {
-            await axios.delete(`http://192.168.1.139:8000/api/couches/${id}/delete/`);
+            await axios.delete(`http://192.168.1.133:8000/api/couches/${id}/delete/`);
             fetchCouches();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 const Solides = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tétée</Text>
+      <Text style={styles.title}>Solides</Text>
       {/* Ajoute ici les fonctionnalités pour ajouter, modifier, supprimer et lister */}
     </View>
   );
