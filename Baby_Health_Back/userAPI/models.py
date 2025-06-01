@@ -121,3 +121,25 @@ class Biberon(models.Model):
 
     def __str__(self):
         return f"Biberon de {self.quantite} ml ({self.source}) - {self.date} {self.heure} (Baby ID: {self.baby.id})"
+    
+class Solides(models.Model):
+    TYPE_CHOICES = [
+        ('fruit', 'Fruit'),
+        ('legumes', 'Légumes'),
+        ('cereales', 'Céréales'),
+        ('viandes', 'Viandes'),
+        ('proteines', 'Protéines'),
+    ]
+
+    id = models.AutoField(primary_key=True) 
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    date = models.DateField() 
+    heure = models.TimeField() 
+    quantite = models.IntegerField()
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='solides')
+
+    class Meta:
+        db_table = 'solides'
+
+    def __str__(self):
+        return f"{self.type} - {self.quantite}g ({self.date} {self.heure}) (Baby ID: {self.baby.id})"

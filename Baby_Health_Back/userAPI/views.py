@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer,BabyTrackingSerializer
-from .models import Biberon, Parent,Baby, Appointment, Couche, Tetee,BabyTracking
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -340,3 +340,39 @@ def delete_biberon(request, biberon_id):
         return Response({'message': 'Biberon supprimé avec succès'}, status=status.HTTP_200_OK)
     except Biberon.DoesNotExist:
         return Response({'error': 'Biberon non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def add_solide(request):
+    serializer = SolidesSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Solide ajouté avec succès', 'solide': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_solides_by_baby(request, baby_id):
+    solides = Solides.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = SolidesSerializer(solides, many=True)
+    return Response({'message': 'Solides récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_solide(request, solide_id):
+    try:
+        solide = Solides.objects.get(id=solide_id)
+        serializer = SolidesSerializer(solide, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Solide modifié avec succès', 'solide': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Solides.DoesNotExist:
+        return Response({'error': 'Solide non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_solide(request, solide_id):
+    try:
+        solide = Solides.objects.get(id=solide_id)
+        solide.delete()
+        return Response({'message': 'Solide supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Solides.DoesNotExist:
+        return Response({'error': 'Solide non trouvé'}, status=status.HTTP_404_NOT_FOUND)
