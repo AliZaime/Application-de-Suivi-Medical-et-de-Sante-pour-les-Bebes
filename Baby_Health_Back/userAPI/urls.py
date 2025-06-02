@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from .views import add_biberon, add_solide, add_tetee, delete_biberon, delete_solide, delete_tetee, get_biberons_by_baby, get_solides_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_biberon, update_solide, update_tetee 
+from .views import add_biberon, add_solide, add_sommeil, add_tetee, delete_biberon, delete_solide, delete_sommeil, delete_tetee, get_biberons_by_baby, get_solides_by_baby, get_sommeils_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_biberon, update_solide, update_sommeil, update_tetee 
 from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby,get_tracking_by_baby_id
 
 
@@ -37,4 +37,8 @@ urlpatterns = [
     path('solides/baby/<int:baby_id>/', get_solides_by_baby, name='get_solides_by_baby'),
     path('solides/<int:solide_id>/', update_solide, name='update_solide'),
     path('solides/<int:solide_id>/delete/', delete_solide, name='delete_solide'),
+    path('sommeils/', add_sommeil, name='add_sommeil'),
+    path('sommeils/baby/<int:baby_id>/', get_sommeils_by_baby, name='get_sommeils_by_baby'),
+    path('sommeils/<int:sommeil_id>/', update_sommeil, name='update_sommeil'),
+    path('sommeils/<int:sommeil_id>/delete/', delete_sommeil, name='delete_sommeil'),
 ]

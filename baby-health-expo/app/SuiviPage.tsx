@@ -21,6 +21,13 @@ const cards = [
     color: "#e3f0ff",
     route: '/Repas',
   },
+  {
+    key: 'sommeil',
+    label: 'Suivi de sommeil',
+    icon: <FontAwesome5 name="bed" size={40} color="#FFD700" />,
+    color: "#e3f0ff",
+    route: '/Sommeil',
+  },
 ];
 
 const SuiviPage = () => {
@@ -28,7 +35,7 @@ const SuiviPage = () => {
   const router = useRouter();
 
   const handleCardPress = (route: string) => {
-  router.push(`${route}?babyId=${babyId}`); // Passe l'ID du bébé à la page suivante
+  router.push(`${route}?babyId=${babyId}`);
 };
 
   return (
