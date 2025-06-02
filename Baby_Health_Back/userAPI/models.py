@@ -143,3 +143,17 @@ class Solides(models.Model):
 
     def __str__(self):
         return f"{self.type} - {self.quantite}g ({self.date} {self.heure}) (Baby ID: {self.baby.id})"
+    
+class Sommeil(models.Model):
+    id = models.AutoField(primary_key=True)
+    dateDebut = models.DateTimeField()
+    dateFin = models.DateTimeField()
+    duration = models.IntegerField()
+    remarque = models.CharField(max_length=255, blank=True, null=True)
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='sommeils')
+
+    class Meta:
+        db_table = 'sommeils'
+    
+    def __str__(self):
+        return f"Sommeil de {self.baby.name} du {self.dateDebut} au {self.dateFin} ({self.duration} minutes)"

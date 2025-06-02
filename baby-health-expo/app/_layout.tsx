@@ -14,6 +14,7 @@ export default function RootLayout() {
         <Stack.Screen name="Tetee" options={{ headerShown : false }} />
         <Stack.Screen name="Solides" options={{ headerShown : false }} />
         <Stack.Screen name="SuiviPage" options={{ headerShown: false }} />
+        <Stack.Screen name="Sommeil" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );
