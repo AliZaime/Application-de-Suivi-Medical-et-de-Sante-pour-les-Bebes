@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from .views import add_biberon, add_solide, add_sommeil, add_tetee, delete_biberon, delete_solide, delete_sommeil, delete_tetee, get_biberons_by_baby, get_solides_by_baby, get_sommeils_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_biberon, update_solide, update_sommeil, update_tetee 
-from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby,get_tracking_by_baby_id
+from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby,get_tracking_by_baby_id,add_tracking
 
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('user/get_baby_by_id/<int:baby_id>/', get_baby_by_id, name='get_baby_by_id'),
     path('user/get_babies_by_parent_id/<int:parent_id>/', get_babies_by_parent_id, name='get_babies_by_id'),
     path('user/update_baby/', update_baby, name='update_baby'),
+    path('user/add_tracking/', add_tracking, name='add_tracking'),
     path('user/get_appointments_by_parent_id/<int:parent_id>/', get_appointments_by_parent_id, name='get_appointments_by_parent_id'),
     path('user/add_appointment/', add_appointment, name='add_appointment'),
     path('user/update_appointment/<int:appointment_id>/', update_appointment, name='update_appointment'),

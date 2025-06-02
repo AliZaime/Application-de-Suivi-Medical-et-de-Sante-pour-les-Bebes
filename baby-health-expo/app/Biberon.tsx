@@ -37,7 +37,7 @@ const Biberon = () => {
   const fetchBiberons = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://192.168.1.133:8000/api/biberons/baby/${babyId}/`);
+      const res = await axios.get(`http://192.168.0.125:8000/api/biberons/baby/${babyId}/`);
       setBiberons(res.data.data || []);
     } catch (e) {
       Alert.alert('Erreur', 'Impossible de charger les biberons');
@@ -101,9 +101,9 @@ const Biberon = () => {
 
     try {
       if (editing) {
-        await axios.put(`http://192.168.1.133:8000/api/biberons/${editing.id}/`, payload);
+        await axios.put(`http://192.168.0.125:8000/api/biberons/${editing.id}/`, payload);
       } else {
-        await axios.post('http://192.168.1.133:8000/api/biberons/', payload);
+        await axios.post('http://192.168.0.125:8000/api/biberons/', payload);
       }
       setModalVisible(false);
       fetchBiberons();
@@ -120,7 +120,7 @@ const Biberon = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`http://192.168.1.133:8000/api/biberons/${id}/delete/`);
+            await axios.delete(`http://192.168.0.125:8000/api/biberons/${id}/delete/`);
             fetchBiberons();
           } catch (e) {
             Alert.alert('Erreur', 'Impossible de supprimer le biberon');

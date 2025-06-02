@@ -31,7 +31,7 @@ export default function RegisterForm() {
     };
 
     axios
-      .post("http://192.168.1.133:8000/api/user/register/", userData)
+      .post("http://192.168.0.125:8000/api/user/register/", userData)
       .then((response) => {
         setMessage("Inscription réussie !");
         router.push("/login");

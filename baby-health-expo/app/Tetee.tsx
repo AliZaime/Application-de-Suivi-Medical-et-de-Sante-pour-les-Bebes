@@ -31,7 +31,7 @@ const TeteePage = () => {
   const fetchTetees = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://192.168.1.133:8000/api/tetees/baby/${babyId}/`);
+      const res = await axios.get(`http://192.168.0.125:8000/api/tetees/baby/${babyId}/`);
       console.log(babyId);
       setTetees(Array.isArray(res.data.data) ? res.data.data : []);
     } catch (e) {
@@ -80,9 +80,9 @@ const TeteePage = () => {
     };
     try {
       if (editing) {
-        await axios.put(`http://192.168.1.133:8000/api/tetees/${editing.id}/`, payload);
+        await axios.put(`http://192.168.0.125:8000/api/tetees/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://192.168.1.133:8000/api/tetees/`, payload);
+        await axios.post(`http://192.168.0.125:8000/api/tetees/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -102,7 +102,7 @@ const TeteePage = () => {
       {
         text: 'Supprimer', style: 'destructive', onPress: async () => {
           try {
-            await axios.delete(`http://192.168.1.133:8000/api/tetees/${id}/delete/`);
+            await axios.delete(`http://192.168.0.125:8000/api/tetees/${id}/delete/`);
             fetchTetees();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');

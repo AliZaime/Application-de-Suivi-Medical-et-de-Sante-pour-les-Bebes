@@ -34,7 +34,7 @@ export default function AddTrackingForm() {
 
     try {
       const babyRes = await axios.get(
-        `http://192.168.1.133:8000/api/user/get_babies_by_parent_id/${parentId}/`
+        `http://192.168.0.125:8000/api/user/get_babies_by_parent_id/${parentId}/`
       );
       const babyId = babyRes.data[0].baby_id;
 
@@ -48,7 +48,7 @@ export default function AddTrackingForm() {
       };
 
       const response = await axios.post(
-        "http://192.168.1.133:8000/api/user/add_tracking/",
+        "http://192.168.0.125:8000/api/user/add_tracking/",
         trackingData,
         {
           headers: {
