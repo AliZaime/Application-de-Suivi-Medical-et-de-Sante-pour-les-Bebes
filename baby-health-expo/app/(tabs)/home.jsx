@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useRouter } from "expo-router";
 
 export default function Home() {
   const [parent, setParent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchParentData = async () => {
@@ -18,7 +26,9 @@ export default function Home() {
           return;
         }
 
-        const response = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/parent/${parentId}/`);
+        const response = await axios.get(
+          `http://192.168.0.125:8000/api/parent/${parentId}/`
+        );
         setParent(response.data);
       } catch (err) {
         console.error(err);
@@ -28,7 +38,69 @@ export default function Home() {
       }
     };
 
+    const checkTrackingAndAlert = async () => {
+      try {
+        const parentId = await AsyncStorage.getItem("parent_id");
+
+        // ➤ Récupère le premier bébé
+        const babyRes = await axios.get(
+          `http://192.168.0.125:8000/api/user/get_babies_by_parent_id/${parentId}/`
+        );
+        const baby = babyRes.data[0];
+        if (!baby) return;
+
+        // ➤ Récupère le dernier tracking de ce bébé
+        const trackingRes = await axios.get(
+          `http://192.168.0.125:8000/api/user/get_last_traking/${baby.baby_id}/`
+        );
+        const lastTracking = trackingRes.data[0]; // tableau
+
+        if (!lastTracking) {
+          Alert.alert(
+            "Rappel",
+            "Aucune mesure enregistrée pour votre bébé.",
+            [
+              {
+                text: "Ajouter maintenant",
+                onPress: () => router.push("/addtracking"),
+              },
+              {
+                text: "Plus tard",
+                style: "cancel",
+              },
+            ]
+          );
+          return;
+        }
+
+        const lastDate = new Date(lastTracking.date_recorded);
+        const today = new Date();
+        const monday = new Date();
+        monday.setDate(today.getDate() - today.getDay() + 1); // lundi de cette semaine
+
+        if (lastDate < monday) {
+          Alert.alert(
+            "Rappel",
+            "Vous n'avez pas encore enregistré les mesures de cette semaine !",
+            [
+              {
+                text: "Ajouter maintenant",
+                onPress: () => router.push("/addtracking"),
+              },
+              {
+                text: "Plus tard",
+                style: "cancel",
+              },
+            ]
+          );
+        }
+      } catch (err) {
+        console.error("Erreur tracking :", err.message);
+      }
+    };
+
     fetchParentData();
+    checkTrackingAndAlert();
   }, []);
 
   if (loading) {
@@ -66,7 +138,9 @@ export default function Home() {
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Notifications :</Text>
-          <Text style={styles.value}>{parent.notification_preferences}</Text>
+          <Text style={styles.value}>
+            {JSON.stringify(parent.notification_preferences)}
+          </Text>
         </View>
       </View>
     </View>
