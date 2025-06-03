@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 // Helper function to get today's date in 'YYYY-MM-DD' format
@@ -67,7 +68,7 @@ const AppointmentPage = () => { // Renamed component
         setLoading(false);
         return;
       }
-      const response = await axios.get(`http://192.168.1.139:8000/api/user/get_appointments_by_parent_id/${parentId}`);
+      const response = await axios.get(`http://192.168.11.104:8000/api/user/get_appointments_by_parent_id/${parentId}`);
       setAppointments(Array.isArray(response.data) ? response.data : []);
       console.log('User Appointment data:', response.data);
     } catch (error) {
@@ -156,7 +157,7 @@ const AppointmentPage = () => { // Renamed component
       }
 
       await axios.delete(
-        `http://192.168.1.139:8000/api/user/delete_appointment/${appointmentId}/`,
+        `http://192.168.11.104:8000/api/user/delete_appointment/${appointmentId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -210,7 +211,7 @@ const AppointmentPage = () => { // Renamed component
 
       // 👇 **Include the Authorization header**
       await axios.post(
-        'http://192.168.1.139:8000/api/user/add_appointment/',
+        'http://192.168.11.104:8000/api/user/add_appointment/',
         newAppointmentData,
         {
           headers: {
@@ -278,7 +279,7 @@ const AppointmentPage = () => { // Renamed component
       };
 
       await axios.put(
-        `http://192.168.1.139:8000/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
+        `http://192.168.11.104:8000/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
         updatedAppointmentData,
         {
           headers: {
@@ -303,7 +304,15 @@ const AppointmentPage = () => { // Renamed component
   };
 
   return (
+    <LinearGradient
+          colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} // Rose → blanc → bleu clair
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradient}
+        >
+    
     <View style={styles.container}>
+      
       <ScrollView>
       <Calendar
         onDayPress={handleDayPress}
@@ -323,7 +332,13 @@ const AppointmentPage = () => { // Renamed component
               appointmentsForSelectedDate.map((appointment) => (
                 <View key={appointment.appointment_id} style ={styles.appointmentCard}>
                   <Text style={styles.appointmentText}>
-                    Rendez-vous: {appointment.value} (Lieu: {appointment.place}) Time: {appointment.time.split('T')[1].substring(0,5)}
+                    Rendez-vous: {appointment.value}
+                  </Text>
+                  <Text style={styles.appointmentText}>
+                    Lieu: {appointment.place}
+                  </Text>
+                  <Text style={styles.appointmentText}>
+                    Time: {appointment.time.split('T')[1].substring(0,5)}
                   </Text>
                   <View style={styles.buttonAppointment}>
                       <Button color={"red"}  title='suprimer' onPress={ () => daletAppiontemment(appointment.appointment_id) } />
@@ -388,6 +403,7 @@ const AppointmentPage = () => { // Renamed component
 
       </ScrollView>
     </View>
+      </LinearGradient>
   );
 };
 
@@ -395,7 +411,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#FDEDEC', // Light background for better readability
+    height: '100%',
+    marginBottom: 80,
   },
   title: {
     fontSize: 24,
@@ -416,7 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 5,
     padding: 12,
-     
+
     borderRadius: 8,
     marginBottom: 8,
     color: 'black', // Teal text color
@@ -463,30 +480,35 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
     paddingVertical: 12,
-    backgroundColor: '#00796b', // Teal button color
-    borderRadius: 6,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  buttonAppointment : {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 10,
-  },
-  appointmentCard : {
-    backgroundColor: 'white', // Light teal background for appointments
+     // Teal button color
+      borderRadius: 6,
+      alignItems: 'center',
+      },
+      buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '600',
+      },
+      buttonAppointment : {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginTop: 10,
+      },
+      appointmentCard : {
+      backgroundColor: 'transparent', // Light teal background for appointments
     padding: 10,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#ccc',
     marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3, // For Android shadow
+  },
+  gradient: {
+    flex: 1,
   },
 });
 

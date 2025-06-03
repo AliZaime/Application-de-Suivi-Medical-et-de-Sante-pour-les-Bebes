@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer
-from .models import Parent,Baby, Appointment, Couche, Tetee
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer, AdviceSerializer
+from .models import Parent,Baby, Appointment, Couche, Tetee, advice
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -197,7 +197,7 @@ def add_appointment(request):
         print("Parent not found")  # Log missing parent
         return Response({'error': 'Parent introuvable'}, status=404)
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 def update_appointment(request, appointment_id):
     try:
         appointment = Appointment.objects.get(appointment_id=appointment_id)
@@ -299,3 +299,47 @@ def get_tetees_by_baby(request, baby_id):
     serializer = TeteeSerializer(tetees, many=True)
     print(f"Tétées trouvées : {serializer.data}")  # Log les données trouvées
     return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_advice(request):
+    advice_list = advice.objects.all()
+    serializer = AdviceSerializer(advice_list, many=True)
+    return Response(serializer.data)
+@api_view(['GET'])
+def get_advice_by_category(request, category_name):
+    try:
+        advice_list = advice.objects.filter(cattegory=category_name)
+        if not advice_list.exists():
+            return Response({'message': 'Aucun avis trouvé pour cette catégorie.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = AdviceSerializer(advice_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_children_schedules(request, parent_id):
+    try:
+        babies = Baby.objects.filter(parent_id=parent_id)  # Filter babies by parent_id
+        schedules = []
+        for baby in babies:
+            couches = Couche.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+            tetees = Tetee.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+
+            schedule = {
+                'name': baby.name,
+                'gender': baby.gender,
+                'schedules': [
+                    {
+                        'text': f"Last feed - {tetees[0].temps_passe} mins" if tetees else "No feed data",
+                        'subText': 'Enter feed'
+                    },
+                    {
+                        'text': f"Last diaper - {couches[0].type}" if couches else "No diaper data",
+                        'subText': 'Enter diaper'
+                    },
+                ]
+            }
+            schedules.append(schedule)
+        return Response({'childrenSchedules': schedules}, status=200)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)

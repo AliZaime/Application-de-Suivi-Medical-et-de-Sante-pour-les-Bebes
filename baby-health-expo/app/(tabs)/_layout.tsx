@@ -66,6 +66,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+      name="today"
+      options={{
+        title: "Aujourd'hui",
+        tabBarIcon: ({ color, size }) => (
+          <FontAwesome5 name="calendar-day" color={color} size={size} />
+        ),
+      }}
+    />
     </Tabs>
   );
 }

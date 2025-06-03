@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Parent, Baby, Appointment, Couche, Tetee
+from .models import Parent, Baby, Appointment, Couche, Tetee, advice
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -37,3 +37,11 @@ class TeteeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tetee
         fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']
+
+class AdviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = advice
+        fields = ['id', 'title', 'content', 'date', 'category', 'image']
+
+    def create(self, validated_data):
+        return super().create(validated_data)

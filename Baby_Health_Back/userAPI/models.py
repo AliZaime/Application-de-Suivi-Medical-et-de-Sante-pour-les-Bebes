@@ -91,3 +91,27 @@ class Tetee(models.Model):
 
     def __str__(self):
         return f"Tétée - {self.date} {self.heure} ({self.baby.name})"
+
+class category(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)  # Nom de la catégorie
+    description = models.TextField(blank=True)  # Description de la catégorie
+
+    class Meta:
+        db_table = 'category'
+
+    def __str__(self):
+        return self.name
+
+class advice(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)  # Titre de l'avis
+    content = models.TextField()  # Contenu de l'avis
+    date = models.DateField(auto_now_add=True)  # Date de création de l'avis
+    category = models.ForeignKey(category, on_delete=models.CASCADE, related_name='advice')  # Relation avec la catégorie
+    image = models.CharField(max_length=255, blank=True)  # Chemin de l'image associée à l'avis
+    class Meta:
+        db_table = 'advice'
+
+    def __str__(self):
+        return self.title

@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, Button, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Profile = () => {
   const [parent, setParent] = useState<{ name: string; email: string; phone: string; notification_preferences: string; gender: string } | null>(null);
@@ -55,6 +56,12 @@ const Profile = () => {
   }
 
   return (
+    <LinearGradient
+              colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} // Rose → blanc → bleu clair
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradient}
+            >
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Profil du Parent</Text>
@@ -98,14 +105,14 @@ const Profile = () => {
               key={baby.id || index}
               style={[
                 styles.babyCard,
-                baby.gender === "girl"
+                baby.gender === "Girl"
                   ? { backgroundColor: "pink" }
                   : baby.gender === "Boy"
                   ? { backgroundColor: "#37acef" }
                   : { backgroundColor: "transparent" }
               ]}
             >
-              {baby.gender === "girl" ? (
+              {baby.gender === "Girl" ? (
                 <Image
                   source={require('@/assets/images/Baby-Girl.png')}
                   style={styles.avatar}
@@ -135,14 +142,16 @@ const Profile = () => {
 
       </View>
     </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
+    
     padding: 16,
+    marginBottom: 200,
   },
   center: {
     flex: 1,
@@ -181,7 +190,7 @@ const styles = StyleSheet.create({
   tableBabys: {
     width: '100%',
     marginTop: 20,
-    backgroundColor: '#fff',
+
     gap: 10,
     
   },
@@ -244,6 +253,9 @@ const styles = StyleSheet.create({
     width: 350,
     alignItems: 'center',
     padding: 25,
+  },
+  gradient: {
+    flex: 1,
   },
   
 });

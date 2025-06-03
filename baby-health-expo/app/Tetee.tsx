@@ -18,7 +18,7 @@ const Tetee = () => {
   useEffect(() => {
   const fetchTetees = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.139:8000/tetees/baby/${babyId}/`);
+      const response = await axios.get(`http://192.168.11.104:8000/tetees/baby/${babyId}/`);
       if (response.data.data.length === 0) {
         setError(response.data.message); // Affiche le message "Aucune tétée trouvée pour ce bébé."
       } else {
@@ -38,13 +38,13 @@ const Tetee = () => {
     try {
         if (editingTetee) {
         // Modifier une tétée existante
-        const response = await axios.put(`http://192.168.1.139:8000/tetees/${editingTetee.id}/`, tetee);
+        const response = await axios.put(`http://192.168.11.104:8000/tetees/${editingTetee.id}/`, tetee);
         setTeteeList((prev) =>
             prev.map((item) => (item.id === editingTetee.id ? response.data : item))
         );
         } else {
         // Ajouter une nouvelle tétée
-        const response = await axios.post(`http://192.168.1.139:8000/tetees/`, tetee);
+        const response = await axios.post(`http://192.168.11.104:8000/tetees/`, tetee);
         setTeteeList((prev) => [...prev, response.data]);
         }
         setModalVisible(false);
@@ -56,7 +56,7 @@ const Tetee = () => {
 
   const handleDeleteTetee = async (id) => {
     try {
-      await axios.delete(`http://192.168.1.139:8000/tetees/${id}/delete/`);
+      await axios.delete(`http://192.168.11.104:8000/tetees/${id}/delete/`);
       setTeteeList((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       setError("Erreur lors de la suppression.");
