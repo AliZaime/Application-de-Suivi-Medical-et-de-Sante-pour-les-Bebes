@@ -16,6 +16,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer, AdviceSerializer
 from .models import Parent,Baby, Appointment, Couche, Tetee, advice
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
@@ -268,18 +270,26 @@ def add_tetee(request):
         return Response({'message': 'Tétée ajoutée avec succès', 'tetee': serializer.data}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET'])
+def get_tetees_by_baby(request, baby_id):
+    tetees = Tetee.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    if not tetees.exists():
+        return Response({'message': 'Aucune tétée trouvée pour ce bébé.', 'data': []}, status=status.HTTP_200_OK)
+    serializer = TeteeSerializer(tetees, many=True)
+    return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
 def update_tetee(request, tetee_id):
     try:
         tetee = Tetee.objects.get(id=tetee_id)
         serializer = TeteeSerializer(tetee, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Tétée modifiée avec succès', 'tetee': serializer.data})
+            return Response({'message': 'Tétée modifiée avec succès', 'tetee': serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Tetee.DoesNotExist:
         return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
-    
+
 @api_view(['DELETE'])
 def delete_tetee(request, tetee_id):
     try:
@@ -343,3 +353,162 @@ def get_children_schedules(request, parent_id):
         return Response({'childrenSchedules': schedules}, status=200)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+def get_tracking_by_baby_id(request, baby_id):
+    try:
+        trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')
+        serializer = BabyTrackingSerializer(trackings, many=True)
+        return Response(serializer.data)
+    except:
+        return Response({"error": "Erreur lors du chargement"}, status=500)
+    
+@api_view(['POST'])
+def add_biberon(request):
+    serializer = BiberonSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Biberon ajouté avec succès', 'biberon': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_biberons_by_baby(request, baby_id):
+    biberons = Biberon.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = BiberonSerializer(biberons, many=True)
+    return Response({'message': 'Biberons récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_biberon(request, biberon_id):
+    try:
+        biberon = Biberon.objects.get(id=biberon_id)
+        serializer = BiberonSerializer(biberon, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Biberon modifié avec succès', 'biberon': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Biberon.DoesNotExist:
+        return Response({'error': 'Biberon non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_biberon(request, biberon_id):
+    try:
+        biberon = Biberon.objects.get(id=biberon_id)
+        biberon.delete()
+        return Response({'message': 'Biberon supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Biberon.DoesNotExist:
+        return Response({'error': 'Biberon non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def add_solide(request):
+    serializer = SolidesSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Solide ajouté avec succès', 'solide': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_solides_by_baby(request, baby_id):
+    solides = Solides.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = SolidesSerializer(solides, many=True)
+    return Response({'message': 'Solides récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_solide(request, solide_id):
+    try:
+        solide = Solides.objects.get(id=solide_id)
+        serializer = SolidesSerializer(solide, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Solide modifié avec succès', 'solide': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Solides.DoesNotExist:
+        return Response({'error': 'Solide non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_solide(request, solide_id):
+    try:
+        solide = Solides.objects.get(id=solide_id)
+        solide.delete()
+        return Response({'message': 'Solide supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Solides.DoesNotExist:
+        return Response({'error': 'Solide non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['POST'])
+def add_sommeil(request):
+    serializer = SommeilSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Sommeil ajouté avec succès', 'sommeils': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_sommeil(request, sommeil_id):
+    try:
+        sommeil = Sommeil.objects.get(id=sommeil_id)
+        serializer = SommeilSerializer(sommeil, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Sommeil modifié avec succès', 'sommeils': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Sommeil.DoesNotExist:
+        return Response({'error': 'Sommeil non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_sommeil(request, sommeil_id):
+    try:
+        sommeil = Sommeil.objects.get(id=sommeil_id)
+        sommeil.delete()
+        return Response({'message': 'Sommeil supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Sommeil.DoesNotExist:
+        return Response({'error': 'Sommeil non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_sommeils_by_baby(request, baby_id):
+    sommeils = Sommeil.objects.filter(baby_id=baby_id).order_by('-dateDebut')
+    serializer = SommeilSerializer(sommeils, many=True)
+    return Response({'message': 'Sommeils récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_tracking(request):
+    # Vérification du token JWT
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return Response({'error': 'Token manquant ou invalide'}, status=401)
+
+    token = auth_header.split(" ")[1]
+    try:
+        jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        return Response({'error': 'Token expiré'}, status=401)
+    except jwt.InvalidTokenError:
+        return Response({'error': 'Token invalide'}, status=401)
+
+    # Création du tracking
+    data = request.data
+    serializer = BabyTrackingSerializer(data=data)
+    
+    if serializer.is_valid():
+        tracking = serializer.save()
+        return Response({
+            'message': 'Mesure enregistrée avec succès',
+            'tracking': serializer.data
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def save_expo_token(request):
+    token = request.data.get('token')
+    parent_id = request.data.get('parent_id')
+
+    if not token or not parent_id:
+        return Response({'error': 'Token ou ID manquant'}, status=400)
+
+    try:
+        parent = Parent.objects.get(parent_id=parent_id)
+        parent.expo_token = token
+        parent.save()
+        return Response({'message': 'Token enregistré avec succès'})
+    except Parent.DoesNotExist:
+        return Response({'error': 'Parent non trouvé'}, status=404)

@@ -32,10 +32,10 @@ const repasTypes = [
 
 const Repas = () => {
   const router = useRouter();
-  const { babyId } = useLocalSearchParams(); // Récupère l'ID du bébé depuis l'URL
+  const { babyId } = useLocalSearchParams();
 
   const handleCardPress = (route: string) => {
-    router.push(`${route}?babyId=${babyId}`); // Passe l'ID du bébé à la page suivante
+    router.push(`${route}?babyId=${babyId}`);
   };
 
   return (
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    justifyContent: 'center', // Centre les cartes verticalement
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    paddingBottom: 24, // Ajoute un peu d'espace en bas pour éviter que les cartes soient collées au bord
+    paddingBottom: 24,
   },
   card: {
     width: CARD_SIZE,

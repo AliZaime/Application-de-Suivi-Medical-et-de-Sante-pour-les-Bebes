@@ -11,6 +11,7 @@ class Parent(models.Model):
     notification_preferences = models.JSONField(default=dict)
     gender = models.CharField(max_length=10, default='Not specified')
 
+    expo_token = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
         db_table = 'parent'
 
@@ -79,15 +80,15 @@ class Couche(models.Model):
         return f"{self.type} - {self.date} {self.heure} ({self.baby.name})"
 
 class Tetee(models.Model):
-    id = models.AutoField(primary_key=True)
-    date = models.DateField()  # Date de la tétée
-    heure = models.TimeField()  # Heure de la tétée
-    temps_passe = models.PositiveIntegerField()  # Temps passé en minutes
-    remarque = models.CharField(max_length=255, blank=True)  # Remarque optionnelle
-    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='tetees')  # Relation avec le bébé
+    id = models.AutoField(primary_key=True)  # Correspond à la colonne `id` dans la table
+    date = models.DateField()  # Correspond à la colonne `date`
+    heure = models.TimeField()  # Correspond à la colonne `heure`
+    temps_passe = models.IntegerField()  # Correspond à la colonne `temps_passe`
+    remarque = models.CharField(max_length=255, blank=True, null=True)  # Correspond à la colonne `remarque`
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='tetees')  # Correspond à la colonne `baby`
 
     class Meta:
-        db_table = 'tetee'
+        db_table = 'tetee'  # Spécifie explicitement le nom de la table
 
     def __str__(self):
         return f"Tétée - {self.date} {self.heure} ({self.baby.name})"
@@ -115,3 +116,70 @@ class advice(models.Model):
 
     def __str__(self):
         return self.title
+        return f"Tétée du {self.date} à {self.heure} (Baby ID: {self.baby.id})"
+    
+class BabyTracking(models.Model):
+    tracking_id = models.AutoField(primary_key=True)
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='tracking')
+    weight = models.FloatField()
+    height = models.FloatField()
+    head_circumference = models.FloatField()
+    date_recorded = models.DateField()
+    note = models.TextField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'baby_tracking'
+
+    def __str__(self):
+        return f"{self.baby.name} - {self.date_recorded}"
+    
+class Biberon(models.Model):
+    id = models.AutoField(primary_key=True)  # Identifiant unique pour chaque biberon
+    quantite = models.IntegerField()  # Quantité de lait en ml
+    date = models.DateField()  # Date de la prise du biberon
+    heure = models.TimeField()  # Heure de la prise du biberon
+    source = models.CharField(max_length=20, choices=[('sein', 'Sein'), ('lait_artificiel', 'Lait artificiel')])  # Source du lait
+    remarque = models.CharField(max_length=255, blank=True, null=True)  # Remarque optionnelle
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='biberons')  # Relation avec le bébé
+
+    class Meta:
+        db_table = 'biberon'  # Nom explicite de la table dans la base de données
+
+    def __str__(self):
+        return f"Biberon de {self.quantite} ml ({self.source}) - {self.date} {self.heure} (Baby ID: {self.baby.id})"
+    
+class Solides(models.Model):
+    TYPE_CHOICES = [
+        ('fruit', 'Fruit'),
+        ('legumes', 'Légumes'),
+        ('cereales', 'Céréales'),
+        ('viandes', 'Viandes'),
+        ('proteines', 'Protéines'),
+    ]
+
+    id = models.AutoField(primary_key=True) 
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    date = models.DateField() 
+    heure = models.TimeField() 
+    quantite = models.IntegerField()
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='solides')
+
+    class Meta:
+        db_table = 'solides'
+
+    def __str__(self):
+        return f"{self.type} - {self.quantite}g ({self.date} {self.heure}) (Baby ID: {self.baby.id})"
+    
+class Sommeil(models.Model):
+    id = models.AutoField(primary_key=True)
+    dateDebut = models.DateTimeField()
+    dateFin = models.DateTimeField()
+    duration = models.IntegerField()
+    remarque = models.CharField(max_length=255, blank=True, null=True)
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='sommeils')
+
+    class Meta:
+        db_table = 'sommeils'
+    
+    def __str__(self):
+        return f"Sommeil de {self.baby.name} du {self.dateDebut} au {self.dateFin} ({self.duration} minutes)"

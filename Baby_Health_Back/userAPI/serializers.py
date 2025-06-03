@@ -1,5 +1,9 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import Parent, Baby, Appointment, Couche, Tetee, advice
+=======
+from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
+>>>>>>> 64370a8d610c1096810390dfc19e1a37f46c347d
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -45,3 +49,26 @@ class AdviceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data)
+
+class BabyTrackingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BabyTracking
+        fields = ['tracking_id', 'baby', 'weight', 'height', 'head_circumference', 'date_recorded','note']
+    
+    def create(self, validated_data):
+        return super().create(validated_data)
+    
+class BiberonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Biberon
+        fields = ['id', 'quantite', 'date', 'heure', 'source', 'remarque', 'baby']
+
+class SolidesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Solides
+        fields = ['id', 'type', 'date', 'heure', 'quantite', 'baby']
+
+class SommeilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sommeil
+        fields = ['id', 'dateDebut', 'dateFin', 'duration', 'remarque', 'baby']

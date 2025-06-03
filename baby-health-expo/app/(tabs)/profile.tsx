@@ -22,10 +22,10 @@ const Profile = () => {
           return;
         }
 
-        const parent = await axios.get(`http://192.168.11.104:8000/api/parent/${parentId}/`);
+        const parent = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/parent/${parentId}/`);
         setParent(parent.data);
 
-        const babysResponse = await axios.get(`http://192.168.11.104:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babysResponse = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/get_babies_by_parent_id/${parentId}/`);
         console.log(babysResponse.data);
         setBabys(babysResponse.data);
       } catch (err) {

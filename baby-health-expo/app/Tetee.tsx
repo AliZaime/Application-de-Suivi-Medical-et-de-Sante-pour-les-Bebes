@@ -1,82 +1,146 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { LinearGradient } from 'expo-linear-gradient';
+import { LineChart } from "react-native-chart-kit";
 
-const Tetee = () => {
-  const { babyId } = useLocalSearchParams(); // Récupère l'ID du bébé depuis l'URL
-  const [teteeList, setTeteeList] = useState([]);
+const TeteePage = () => {
+  const { babyId } = useLocalSearchParams();
+  const [tetees, setTetees] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingTetee, setEditingTetee] = useState(null);
+  const [editing, setEditing] = useState<any>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [showGraph, setShowGraph] = useState(false);
 
+  // Form state
+  const [date, setDate] = useState('');
+  const [heure, setHeure] = useState('');
+  const [tempsPasse, setTempsPasse] = useState('');
+  const [remarque, setRemarque] = useState('');
+
+  // Fetch tetees
   useEffect(() => {
+    fetchTetees();
+  }, []);
+
   const fetchTetees = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(`http://192.168.11.104:8000/tetees/baby/${babyId}/`);
-      if (response.data.data.length === 0) {
-        setError(response.data.message); // Affiche le message "Aucune tétée trouvée pour ce bébé."
-      } else {
-        setTeteeList(response.data.data);
-      }
-    } catch (err) {
-      setError("Erreur lors du chargement des données.");
+      const res = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/tetees/baby/${babyId}/`);
+      console.log(babyId);
+      setTetees(Array.isArray(res.data.data) ? res.data.data : []);
+    } catch (e) {
+      setTetees([]);
     } finally {
       setLoading(false);
     }
   };
 
-  fetchTetees();
-}, [babyId]);
+  const resetForm = (defaultDate = '', defaultHeure = '') => {
+    setDate(defaultDate);
+    setHeure(defaultHeure);
+    setTempsPasse('');
+    setRemarque('');
+    setEditing(null);
+  };
 
-    const handleSaveTetee = async (tetee) => {
-    try {
-        if (editingTetee) {
-        // Modifier une tétée existante
-        const response = await axios.put(`http://192.168.11.104:8000/tetees/${editingTetee.id}/`, tetee);
-        setTeteeList((prev) =>
-            prev.map((item) => (item.id === editingTetee.id ? response.data : item))
-        );
-        } else {
-        // Ajouter une nouvelle tétée
-        const response = await axios.post(`http://192.168.11.104:8000/tetees/`, tetee);
-        setTeteeList((prev) => [...prev, response.data]);
-        }
-        setModalVisible(false);
-        setEditingTetee(null);
-    } catch (err) {
-        setError("Erreur lors de la sauvegarde.");
-    }
-    };
-
-  const handleDeleteTetee = async (id) => {
-    try {
-      await axios.delete(`http://192.168.11.104:8000/tetees/${id}/delete/`);
-      setTeteeList((prev) => prev.filter((item) => item.id !== id));
-    } catch (err) {
-      setError("Erreur lors de la suppression.");
-    }
+  const openEdit = (item: any) => {
+    setEditing(item);
+    setDate(item.date);
+    setHeure(item.heure);
+    setTempsPasse(item.temps_passe.toString());
+    setRemarque(item.remarque);
+    setModalVisible(true);
   };
 
   const openModal = () => {
     const now = new Date();
     const today = now.toISOString().slice(0, 10); // YYYY-MM-DD
-    const currentTime = now.toTimeString().slice(0, 5); // HH:mm
-    setEditingTetee({ date: today, heure: currentTime, temps_passe: '', remarque: '', baby: babyId });
+    const currentHeure = now.toTimeString().slice(0, 5); // HH:mm
+    resetForm(today, currentHeure);
     setModalVisible(true);
   };
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#F4C7C3" />
+  const handleSave = async () => {
+    if (!date || !heure || !tempsPasse) {
+      Alert.alert('Erreur', 'Date, heure et temps passé sont obligatoires');
+      return;
+    }
+    const payload = {
+      date,
+      heure,
+      temps_passe: parseInt(tempsPasse, 10),
+      remarque,
+      baby: parseInt(babyId as string, 10),
+    };
+    try {
+      if (editing) {
+        await axios.put(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/tetees/${editing.id}/`, payload);
+      } else {
+        await axios.post(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/tetees/`, payload);
+      }
+      setModalVisible(false);
+      resetForm();
+      fetchTetees();
+    } catch (e) {
+      if (e.response && e.response.data) {
+        Alert.alert('Erreur', JSON.stringify(e.response.data));
+      } else {
+        Alert.alert('Erreur', 'Impossible de sauvegarder');
+      }
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    Alert.alert('Confirmation', 'Supprimer cette tétée ?', [
+      { text: 'Annuler', style: 'cancel' },
+      {
+        text: 'Supprimer', style: 'destructive', onPress: async () => {
+          try {
+            await axios.delete(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/tetees/${id}/delete/`);
+            fetchTetees();
+          } catch (e) {
+            Alert.alert('Erreur', 'Suppression impossible');
+          }
+        }
+      }
+    ]);
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.dateText}>{item.date} à {item.heure}</Text>
+        <Text style={styles.tempsText}>Temps passé : {item.temps_passe} min</Text>
+        {item.remarque ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text> : null}
       </View>
-    );
+      <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
+        <FontAwesome5 name="edit" size={20} color="#6366f1" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleDelete(item.id)}>
+        <FontAwesome5 name="trash" size={20} color="#ef4444" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  const jours = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+  function getGraphData() {
+    const counts = [0, 0, 0, 0, 0, 0, 0];
+    tetees.forEach(tetee => {
+      const d = new Date(tetee.date);
+      const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
+      counts[day]++;
+    });
+    return {
+      labels: jours,
+      datasets: [{ data: counts }],
+    };
   }
 
   return (
@@ -86,74 +150,104 @@ const Tetee = () => {
       end={{ x: 1, y: 1 }}
       style={styles.gradient}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Tétée</Text>
-        {teteeList.length === 0 && (
-          <Text style={styles.emptyMessage}>Aucune tétée enregistrée pour ce bébé.</Text>
-        )}
-        <FlatList
-          data={teteeList}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.cardText}>Date : {item.date}</Text>
-              <Text style={styles.cardText}>Heure : {item.heure}</Text>
-              <Text style={styles.cardText}>Temps passé : {item.temps_passe} min</Text>
-              <Text style={styles.cardText}>Remarque : {item.remarque}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setEditingTetee(item);
-                  setModalVisible(true);
-                }}
-              >
-                <Text style={styles.editButton}>Modifier</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleDeleteTetee(item.id)}>
-                <Text style={styles.deleteButton}>Supprimer</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-        {/* Bouton flottant pour ajouter une tétée */}
-        <TouchableOpacity style={styles.addButton} onPress={openModal}>
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-        {modalVisible && (
-          <View style={styles.modal}>
-            <Text style={styles.modalTitle}>
-              {editingTetee ? 'Ajouter une Tétée' : 'Modifier une Tétée'}
+      <Text style={styles.title}>Tétées du bébé</Text>
+      {loading ? (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#a21caf" />
+        </View>
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.graphBtn}
+            onPress={() => setShowGraph(!showGraph)}
+          >
+            <Text style={{ color: "#fff", fontWeight: "bold" }}>
+              {showGraph ? "Masquer le graphique" : "Afficher le graphique"}
             </Text>
-            <Text>Date :</Text>
+          </TouchableOpacity>
+
+          {showGraph && (
+            <LineChart
+              data={getGraphData()}
+              width={Dimensions.get("window").width - 32}
+              height={220}
+              chartConfig={{
+                backgroundColor: "#f8f6fa",
+                backgroundGradientFrom: "#f8f6fa",
+                backgroundGradientTo: "#a3cef1",
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(162, 28, 175, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                style: { borderRadius: 16 },
+              }}
+              style={{ marginVertical: 16, borderRadius: 16, alignSelf: "center" }}
+              bezier
+              withVerticalLabels={true}
+              withHorizontalLabels={false}
+              renderDotContent={({ x, y, index, indexData }) => (
+                <Text
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    top: y - 24,
+                    left: x - 8,
+                    color: '#a21caf',
+                    fontWeight: 'bold',
+                    fontSize: 13,
+                  }}
+                >
+                  {indexData}
+                </Text>
+              )}
+            />
+          )}
+          <FlatList
+            data={tetees}
+            keyExtractor={item => item.id?.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={styles.list}
+            ListEmptyComponent={<Text style={styles.emptyText}>Aucune tétée enregistrée.</Text>}
+          />
+        </>
+      )}
+      <TouchableOpacity style={styles.addBtn} onPress={openModal} disabled={loading}>
+        <FontAwesome5 name="plus" size={22} color="#fff" />
+      </TouchableOpacity>
+
+      {/* Modal ajout/modif */}
+      <Modal visible={modalVisible} animationType="slide" transparent>
+        <View style={styles.modalBg}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{editing ? "Modifier" : "Ajouter"} une tétée</Text>
             <TouchableOpacity
               style={styles.input}
               onPress={() => setShowDatePicker(true)}
             >
-              <Text>{editingTetee?.date || 'Choisir une date'}</Text>
+              <Text>{date ? date : "Choisir la date"}</Text>
             </TouchableOpacity>
             {showDatePicker && (
               <DateTimePicker
-                value={new Date(editingTetee?.date || Date.now())}
+                value={date ? new Date(date + 'T' + (heure || '00:00')) : new Date()}
                 mode="date"
                 display="default"
                 onChange={(event, selectedDate) => {
                   setShowDatePicker(false);
                   if (selectedDate) {
-                    const formattedDate = selectedDate.toISOString().slice(0, 10);
-                    setEditingTetee((prev) => ({ ...prev, date: formattedDate }));
+                    setDate(selectedDate.toISOString().slice(0, 10));
                   }
                 }}
               />
             )}
-            <Text>Heure :</Text>
+
             <TouchableOpacity
               style={styles.input}
               onPress={() => setShowTimePicker(true)}
             >
-              <Text>{editingTetee?.heure || 'Choisir une heure'}</Text>
+              <Text>{heure ? heure : "Choisir l'heure"}</Text>
             </TouchableOpacity>
             {showTimePicker && (
               <DateTimePicker
-                value={new Date()}
+                value={date && heure ? new Date(date + 'T' + heure) : new Date()}
                 mode="time"
                 display="default"
                 onChange={(event, selectedTime) => {
@@ -161,41 +255,37 @@ const Tetee = () => {
                   if (selectedTime) {
                     const hours = selectedTime.getHours().toString().padStart(2, '0');
                     const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
-                    setEditingTetee((prev) => ({ ...prev, heure: `${hours}:${minutes}` }));
+                    setHeure(`${hours}:${minutes}`);
                   }
                 }}
               />
             )}
-            <Text>Temps passé (en minutes) :</Text>
             <TextInput
               style={styles.input}
-              placeholder="Temps passé"
+              placeholder="Temps passé (en minutes)"
+              placeholderTextColor= "#888"
               keyboardType="numeric"
-              value={editingTetee?.temps_passe?.toString() || ''}
-              onChangeText={(text) =>
-                setEditingTetee((prev) => ({ ...prev, temps_passe: parseInt(text, 10) }))
-              }
+              value={tempsPasse}
+              onChangeText={setTempsPasse}
             />
-            <Text>Remarque :</Text>
             <TextInput
               style={styles.input}
-              placeholder="Remarque"
-              value={editingTetee?.remarque || ''}
-              onChangeText={(text) => setEditingTetee((prev) => ({ ...prev, remarque: text }))}
+              placeholder="Remarque (optionnel)"
+              placeholderTextColor= "#888"
+              value={remarque}
+              onChangeText={setRemarque}
             />
-            <TouchableOpacity
-              onPress={() => {
-                handleSaveTetee(editingTetee);
-              }}
-            >
-              <Text style={styles.saveButton}>Sauvegarder</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={styles.cancelButton}>Annuler</Text>
-            </TouchableOpacity>
+            <View style={styles.modalActions}>
+              <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>{editing ? "Modifier" : "Ajouter"}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.cancelBtn} onPress={() => { setModalVisible(false); resetForm(); }}>
+                <Text style={{ color: '#6366f1' }}>Annuler</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        )}
-      </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 };
@@ -203,48 +293,51 @@ const Tetee = () => {
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-  },
-  container: {
-    flex: 1,
-    padding: 16,
+    backgroundColor: '#f8f6fa',
+    paddingTop: 30,
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     color: '#a21caf',
     textAlign: 'center',
-    marginTop: 80,
+    marginBottom: 10,
+    marginTop: 50,
   },
-  emptyMessage: {
-    textAlign: 'center',
-    color: '#aaa',
-    fontSize: 16,
-    marginTop: 40,
+  list: {
+    padding: 16,
+    paddingBottom: 80,
   },
   card: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
+    borderRadius: 18,
     padding: 16,
-    borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
+    marginBottom: 14,
+    shadowColor: "#a3cef1",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.13,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 3,
   },
-  cardText: {
-    fontSize: 16,
-    marginBottom: 5,
+  dateText: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 2,
   },
-  editButton: {
-    color: '#6366f1',
-    marginTop: 5,
+  tempsText: {
+    color: '#a21caf',
+    fontSize: 14,
+    marginTop: 2,
   },
-  deleteButton: {
-    color: '#ef4444',
-    marginTop: 5,
+  remarqueText: {
+    color: '#555',
+    fontSize: 13,
+    marginTop: 2,
+    fontStyle: 'italic',
   },
-  addButton: {
+  addBtn: {
     position: 'absolute',
     right: 24,
     bottom: 32,
@@ -256,51 +349,72 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 6,
   },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
+  modalBg: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.18)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  modal: {
-    position: 'absolute',
-    top: '30%',
-    left: '14%',
-    width: '80%',
+  modalContent: {
     backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    elevation: 5,
+    borderRadius: 18,
+    padding: 22,
+    width: '90%',
+    borderColor: '#fff',
+    borderWidth: 2,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#a21caf',
+    marginBottom: 12,
     textAlign: 'center',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: '#e5e7eb',
+    borderRadius: 10,
     padding: 10,
-    marginVertical: 5,
-    width: '100%',
+    marginTop: 8,
+    marginBottom: 4,
+    fontSize: 15,
+    backgroundColor: '#f9fafb',
   },
-  saveButton: {
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 18,
+  },
+  saveBtn: {
     backgroundColor: '#a21caf',
-    padding: 10,
     borderRadius: 10,
-    marginTop: 10,
-    textAlign: 'center',
-    color: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 22,
   },
-  cancelButton: {
+  cancelBtn: {
     backgroundColor: '#f3f4f6',
-    padding: 10,
     borderRadius: 10,
-    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderWidth: 1,
+    borderColor: '#a21caf',
+  },
+  emptyText: {
     textAlign: 'center',
-    color: '#333',
+    color: '#aaa',
+    fontSize: 16,
+    marginTop: 40,
+  },
+  graphBtn: {
+    backgroundColor: "#a21caf",
+    borderRadius: 10,
+    padding: 12,
+    alignSelf: "center",
+    marginTop: 18,
+    marginBottom: 10,
+    minWidth: 180,
+    alignItems: "center",
   },
 });
 
-export default Tetee;
+export default TeteePage;
