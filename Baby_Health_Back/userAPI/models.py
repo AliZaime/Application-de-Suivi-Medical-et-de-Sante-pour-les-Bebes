@@ -11,6 +11,7 @@ class Parent(models.Model):
     notification_preferences = models.JSONField(default=dict)
     gender = models.CharField(max_length=10, default='Not specified')
 
+    expo_token = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
         db_table = 'parent'
 

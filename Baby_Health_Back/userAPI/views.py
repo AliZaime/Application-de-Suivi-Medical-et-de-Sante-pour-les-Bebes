@@ -440,3 +440,20 @@ def add_tracking(request):
         }, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def save_expo_token(request):
+    token = request.data.get('token')
+    parent_id = request.data.get('parent_id')
+
+    if not token or not parent_id:
+        return Response({'error': 'Token ou ID manquant'}, status=400)
+
+    try:
+        parent = Parent.objects.get(parent_id=parent_id)
+        parent.expo_token = token
+        parent.save()
+        return Response({'message': 'Token enregistré avec succès'})
+    except Parent.DoesNotExist:
+        return Response({'error': 'Parent non trouvé'}, status=404)
