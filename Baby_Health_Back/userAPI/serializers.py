@@ -1,9 +1,6 @@
 from rest_framework import serializers
-<<<<<<< HEAD
 from .models import Parent, Baby, Appointment, Couche, Tetee, advice
-=======
 from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
->>>>>>> 64370a8d610c1096810390dfc19e1a37f46c347d
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
