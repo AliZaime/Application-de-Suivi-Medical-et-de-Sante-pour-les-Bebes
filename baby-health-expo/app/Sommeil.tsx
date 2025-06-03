@@ -30,7 +30,7 @@ const Sommeil = () => {
   const fetchSommeils = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://192.168.0.125:8000/api/sommeils/baby/${babyId}/`);
+      const response = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/sommeils/baby/${babyId}/`);
       setSommeils(response.data.data || []);
     } catch (error) {
       Alert.alert("Erreur", "Impossible de charger les données de sommeil.");
@@ -71,9 +71,9 @@ const Sommeil = () => {
 
     try {
       if (editing) {
-        await axios.put(`http://192.168.0.125:8000/api/sommeils/${editing.id}/`, payload);
+        await axios.put(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/sommeils/${editing.id}/`, payload);
       } else {
-        await axios.post('http://192.168.0.125:8000/api/sommeils/', payload);
+        await axios.post('https://application-de-suivi-medical-et-de-sante.onrender.com/api/sommeils/', payload);
       }
       setModalVisible(false);
       setEditing(null);
@@ -105,7 +105,7 @@ const Sommeil = () => {
       {
         text: 'Supprimer', style: 'destructive', onPress: async () => {
           try {
-            await axios.delete(`http://192.168.0.125:8000/api/sommeils/${id}/delete/`);
+            await axios.delete(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/sommeils/${id}/delete/`);
             fetchSommeils();
           } catch (e) {
             Alert.alert('Erreur', 'Impossible de supprimer cet enregistrement.');
