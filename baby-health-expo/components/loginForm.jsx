@@ -27,7 +27,7 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.0.125:8000/api/user/login_parent/', userData)
+      .post('https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/login_parent/', userData)
       .then(async (response) => {
         setMessage('Connexion réussie !');
         
@@ -45,7 +45,7 @@ export default function LoginForm() {
         await AsyncStorage.setItem("token", token);  // ✅ stocke le token
 
 
-        const babyResponse = await axios.get(`http://192.168.0.125:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/get_babies_by_parent_id/${parentId}/`);
         const babies = babyResponse.data;
 
 
