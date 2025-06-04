@@ -27,7 +27,7 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.11.104:8000/api/user/login_parent/', userData)
+      .post('http://192.168.1.166:8000/api/user/login_parent/', userData)
       .then(async (response) => {
         setMessage('Connexion réussie !');
         
@@ -45,7 +45,7 @@ export default function LoginForm() {
         await AsyncStorage.setItem("token", token);  // ✅ stocke le token
 
 
-        const babyResponse = await axios.get(`http://192.168.11.104:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`http://192.168.1.166:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         const babies = babyResponse.data;
 
 

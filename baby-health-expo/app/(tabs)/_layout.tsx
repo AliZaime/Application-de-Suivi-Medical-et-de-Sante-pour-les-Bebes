@@ -30,15 +30,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explorer",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="compass" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           title: "Profil",

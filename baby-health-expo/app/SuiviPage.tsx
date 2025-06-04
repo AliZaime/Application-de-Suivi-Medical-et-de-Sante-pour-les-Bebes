@@ -16,17 +16,24 @@ const cards = [
   },
   {
     key: 'repas',
-    label: 'Suivi de repas',
+    label: 'Repas',
     icon: <FontAwesome5 name="utensils" size={40} color="#4682B4" />,
     color: "#e3f0ff",
     route: '/Repas',
   },
   {
     key: 'sommeil',
-    label: 'Suivi de sommeil',
-    icon: <FontAwesome5 name="bed" size={40} color="#FFD700" />,
+    label: 'Sommeil',
+    icon: <FontAwesome5 name="bed" size={40} color="rgb(31, 161, 153)" />,
     color: "#e3f0ff",
     route: '/Sommeil',
+  },
+  {
+    key: 'sante',
+    label: 'Santé',
+    icon: <FontAwesome5 name="heartbeat" size={40} color="rgb(197, 71, 128)" />,
+    color: "#ffe4ec",
+    route: '/Sante',
   },
 ];
 

@@ -1,111 +1,101 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, Dimensions } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
-import { LineChart } from "react-native-chart-kit";
+import { LineChart } from 'react-native-chart-kit';
 
-const coucheTypes = [
-  { label: 'Mixte', value: 'mixte', icon: <MaterialCommunityIcons name="baby-face-outline" size={24} color="#a78bfa" /> },
-  { label: 'Urine', value: 'urine', icon: <FontAwesome5 name="tint" size={24} color="#38bdf8" /> },
-  { label: 'Souillée', value: 'souillee', icon: <MaterialCommunityIcons name="emoticon-poop" size={24} color="#fbbf24" /> },
-];
-
-const causes = [
-  'Normale',
-  'Diarrhée',
-  'Molle',
-  'Liquide',
-  'Constipation',
-  'Autre',
-];
-
-const CouchePage = () => {
+const Temperature = () => {
   const { babyId } = useLocalSearchParams();
-  const router = useRouter();
-  const [couches, setCouches] = useState<any[]>([]);
+  const [temperatures, setTemperatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  const [editing, setEditing] = useState<any>(null);
+  const [editing, setEditing] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
 
   // Form state
-  const [type, setType] = useState('mixte');
   const [date, setDate] = useState('');
   const [heure, setHeure] = useState('');
-  const [cause, setCause] = useState('Normale');
+  const [temperature, setTemperature] = useState('');
   const [remarque, setRemarque] = useState('');
 
-  // Fetch couches
   useEffect(() => {
-    fetchCouches();
+    fetchTemperatures();
   }, []);
 
-  const fetchCouches = async () => {
+  const fetchTemperatures = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://192.168.1.166:8000/api/couches/baby/${babyId}/`);
-      setCouches(Array.isArray(res.data) ? res.data : []);
+      const res = await axios.get(`http://192.168.1.166:8000/api/temperatures/baby/${babyId}/`);
+      setTemperatures(Array.isArray(res.data.data) ? res.data.data : []);
     } catch (e) {
-      setCouches([]);
+      setTemperatures([]);
     } finally {
       setLoading(false);
     }
   };
 
   const resetForm = (defaultDate = '', defaultHeure = '') => {
-    setType('mixte');
     setDate(defaultDate);
     setHeure(defaultHeure);
-    setCause('Normale');
+    setTemperature('');
     setRemarque('');
     setEditing(null);
   };
 
-  const openEdit = (item: any) => {
+  const openEdit = (item) => {
     setEditing(item);
-    setType(item.type);
     setDate(item.date);
     setHeure(item.heure);
-    setCause(item.cause);
+    setTemperature(item.temperature.toString());
     setRemarque(item.remarque);
     setModalVisible(true);
   };
 
   const openModal = () => {
     const now = new Date();
-    const today = now.toISOString().slice(0, 10); // YYYY-MM-DD
-    const currentHeure = now.toTimeString().slice(0, 5); // HH:mm
+    const today = now.toISOString().slice(0, 10);
+    const currentHeure = now.toTimeString().slice(0, 5);
     resetForm(today, currentHeure);
     setModalVisible(true);
   };
 
   const handleSave = async () => {
-    if (!date || !heure) {
-      Alert.alert('Erreur', 'Date et heure obligatoires');
+    if (!date || !heure || !temperature) {
+      Alert.alert('Erreur', 'Date, heure et température sont obligatoires');
       return;
     }
     const payload = {
-      type,
       date,
       heure,
-      cause,
+      temperature: parseFloat(temperature),
       remarque,
-      baby: parseInt(babyId as string, 10), // ou baby_id selon ton backend
+      baby: parseInt(babyId, 10),
     };
     try {
       if (editing) {
-        await axios.post(`http://192.168.1.166:8000/api/couches/${editing.id}/`, payload);
+        await axios.put(`http://192.168.1.166:8000/api/temperatures/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://192.168.1.166:8000/api/couches/`, payload);
+        await axios.post(`http://192.168.1.166:8000/api/temperatures/`, payload);
       }
       setModalVisible(false);
       resetForm();
-      fetchCouches();
+      fetchTemperatures();
     } catch (e) {
       if (e.response && e.response.data) {
         Alert.alert('Erreur', JSON.stringify(e.response.data));
@@ -115,76 +105,68 @@ const CouchePage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    Alert.alert('Confirmation', 'Supprimer cette couche ?', [
+  const handleDelete = async (id) => {
+    Alert.alert('Confirmation', 'Supprimer cette température ?', [
       { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Supprimer', style: 'destructive', onPress: async () => {
+        text: 'Supprimer',
+        style: 'destructive',
+        onPress: async () => {
           try {
-            await axios.delete(`http://192.168.1.166:8000/api/couches/${id}/delete/`);
-            fetchCouches();
+            await axios.delete(`http://192.168.1.166:8000/api/temperatures/${id}/delete/`);
+            fetchTemperatures();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');
           }
-        }
-      }
+        },
+      },
     ]);
   };
 
-  const renderItem = ({ item }) => {
-    const typeObj = coucheTypes.find(t => t.value === item.type);
-    return (
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: item.gender === "fille" ? "#ffe4ec" : "#e3f0ff" }
-        ]}
-      >
-        <View style={styles.iconType}>{typeObj?.icon}</View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.typeText}>{typeObj?.label ?? item.type}</Text>
-          <Text style={styles.dateText}>{item.date} à {item.heure}</Text>
-          <Text style={styles.causeText}>Cause : {item.cause}</Text>
-          {item.remarque ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text> : null}
-        </View>
-        <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
-          <FontAwesome5 name="edit" size={20} color="#6366f1" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleDelete(item.id)}>
-          <FontAwesome5 name="trash" size={20} color="#ef4444" />
-        </TouchableOpacity>
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.dateText}>
+          {item.date} à {item.heure}
+        </Text>
+        <Text style={styles.tempText}>Température : {item.temperature} °C</Text>
+        {item.remarque ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text> : null}
       </View>
-    );
-  };
+      <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
+        <FontAwesome5 name="edit" size={20} color="#6366f1" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleDelete(item.id)}>
+        <FontAwesome5 name="trash" size={20} color="#ef4444" />
+      </TouchableOpacity>
+    </View>
+  );
 
-  // Exemple de données (à générer à partir de tes données réelles)
-  const data = {
-    labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
-    datasets: [
-      {
-        data: [3, 2, 4, 1, 5, 2, 3], // nombre de couches par jour
-      },
-    ],
-  };
 
-  // Fonction utilitaire pour obtenir le jour de la semaine en français (lundi en premier)
-  const jours = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+  const getGraphData = () => {
+    if (temperatures.length === 0) {
+        return {
+        labels: [],
+        datasets: [{ data: [] }],
+        };
+    }
+    // On trie les températures par date croissante
+    const sortedTemps = [...temperatures].sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  function getGraphData() {
-    // On compte le nombre de couches par jour de la semaine (lundi=0, ..., dimanche=6)
-    const counts = [0, 0, 0, 0, 0, 0, 0];
-    couches.forEach(couche => {
-      const d = new Date(couche.date);
-      // getDay() : 0=Dim, 1=Lun, ..., 6=Sam
-      // Pour avoir lundi=0, ..., dimanche=6 :
-      const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
-      counts[day]++;
+    // Extraire les labels (dates uniques)
+    const labels = [...new Set(sortedTemps.map(t => t.date))];
+
+    // Pour chaque date, calculer la moyenne des températures
+    const data = labels.map(label => {
+        const tempsForDate = temperatures.filter(t => t.date === label);
+        const sum = tempsForDate.reduce((acc, cur) => acc + cur.temperature, 0);
+        return sum / tempsForDate.length;
     });
+
     return {
-      labels: jours,
-      datasets: [{ data: counts }],
+        labels,
+        datasets: [{ data }],
     };
-  }
+    };
 
   return (
     <LinearGradient
@@ -193,63 +175,64 @@ const CouchePage = () => {
       end={{ x: 1, y: 1 }}
       style={styles.gradient}
     >
-      <Text style={styles.title}>Couches du bébé</Text>
+      <Text style={styles.title}>Températures du bébé</Text>
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#a21caf" />
         </View>
       ) : (
         <>
-          <TouchableOpacity
-            style={styles.graphBtn}
-            onPress={() => setShowGraph(!showGraph)}
-          >
-            <Text style={{ color: "#fff", fontWeight: "bold" }}>
-              {showGraph ? "Masquer le graphique" : "Afficher le graphique"}
+          <TouchableOpacity style={styles.graphBtn} onPress={() => setShowGraph(!showGraph)}>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+              {showGraph ? 'Masquer le graphique' : 'Afficher le graphique'}
             </Text>
           </TouchableOpacity>
 
-          {showGraph && (
+          {showGraph && temperatures.length > 0 ? (
             <LineChart
-              data={getGraphData()}
-              width={Dimensions.get("window").width - 32}
-              height={220}
-              chartConfig={{
-                backgroundColor: "#f8f6fa",
-                backgroundGradientFrom: "#f8f6fa",
-                backgroundGradientTo: "#a3cef1",
-                decimalPlaces: 0,
+                data={getGraphData()}
+                width={Dimensions.get('window').width - 32}
+                height={220}
+                chartConfig={{
+                backgroundColor: '#f8f6fa',
+                backgroundGradientFrom: '#f8f6fa',
+                backgroundGradientTo: '#a3cef1',
+                decimalPlaces: 1,
                 color: (opacity = 1) => `rgba(162, 28, 175, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 style: { borderRadius: 16 },
-              }}
-              style={{ marginVertical: 16, borderRadius: 16, alignSelf: "center" }}
-              bezier
-              withVerticalLabels={true}
+                }}
+                style={{ marginVertical: 16, borderRadius: 16, alignSelf: 'center' }}
+                bezier
+                withVerticalLabels={true}
                 withHorizontalLabels={false}
-              renderDotContent={({ x, y, index, indexData }) => (
+                renderDotContent={({ x, y, index, indexData }) => (
                 <Text
-                  key={index}
-                  style={{
+                    key={index}
+                    style={{
                     position: 'absolute',
                     top: y - 24,
                     left: x - 8,
                     color: '#a21caf',
                     fontWeight: 'bold',
                     fontSize: 13,
-                  }}
+                    }}
                 >
-                  {indexData}
+                    {indexData.toFixed(1)}
                 </Text>
-              )}
+                )}
             />
-          )}
+            ) : showGraph ? (
+            <Text style={{ textAlign: 'center', color: 'red', marginTop: 20 }}>
+                Aucune température enregistrée pour afficher le graphique.
+            </Text>
+            ) : null}
           <FlatList
-            data={couches}
-            keyExtractor={item => item.id?.toString()}
+            data={temperatures}
+            keyExtractor={(item) => item.id?.toString()}
             renderItem={renderItem}
             contentContainerStyle={styles.list}
-            ListEmptyComponent={<Text style={styles.emptyText}>Aucune couche enregistrée.</Text>}
+            ListEmptyComponent={<Text style={styles.emptyText}>Aucune température enregistrée.</Text>}
           />
         </>
       )}
@@ -261,23 +244,9 @@ const CouchePage = () => {
       <Modal visible={modalVisible} animationType="slide" transparent>
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{editing ? "Modifier" : "Ajouter"} une couche</Text>
-            <View style={styles.row}>
-              {coucheTypes.map(t => (
-                <TouchableOpacity key={t.value} style={[
-                  styles.typeBtn,
-                  type === t.value && styles.typeBtnActive
-                ]} onPress={() => setType(t.value)}>
-                  {t.icon}
-                  <Text style={{ marginLeft: 6 }}>{t.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Text>{date ? date : "Choisir la date"}</Text>
+            <Text style={styles.modalTitle}>{editing ? 'Modifier' : 'Ajouter'} une température</Text>
+            <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+              <Text>{date ? date : 'Choisir la date'}</Text>
             </TouchableOpacity>
             {showDatePicker && (
               <DateTimePicker
@@ -293,10 +262,7 @@ const CouchePage = () => {
               />
             )}
 
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => setShowTimePicker(true)}
-            >
+            <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
               <Text>{heure ? heure : "Choisir l'heure"}</Text>
             </TouchableOpacity>
             {showTimePicker && (
@@ -314,30 +280,31 @@ const CouchePage = () => {
                 }}
               />
             )}
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Cause</Text>
-            <View style={styles.row}>
-              {causes.map(c => (
-                <TouchableOpacity key={c} style={[
-                  styles.causeBtn,
-                  cause === c && styles.causeBtnActive
-                ]} onPress={() => setCause(c)}>
-                  <Text>{c}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+
             <TextInput
               style={styles.input}
+              placeholder="Température (°C)"
+              placeholderTextColor= '#888'
+              keyboardType="decimal-pad"
+              value={temperature}
+              onChangeText={setTemperature}
+            />
+            <TextInput
+              style={[styles.input, { height: 60 }]}
               placeholder="Remarque (optionnel)"
+              placeholderTextColor= '#888'
+              multiline
+              numberOfLines={2}
               value={remarque}
               onChangeText={setRemarque}
             />
             <View style={styles.modalActions}>
-              <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>{editing ? "Modifier" : "Ajouter"}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelBtn} onPress={() => { setModalVisible(false); resetForm(); }}>
-                <Text style={{ color: '#6366f1' }}>Annuler</Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>{editing ? "Modifier" : "Ajouter"}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelBtn} onPress={() => { setModalVisible(false); resetForm(); }}>
+                    <Text style={{ color: '#6366f1' }}>Annuler</Text>
+                </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -345,6 +312,7 @@ const CouchePage = () => {
     </LinearGradient>
   );
 };
+
 
 const styles = StyleSheet.create({
   gradient: {
@@ -515,4 +483,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CouchePage;
+export default Temperature;
