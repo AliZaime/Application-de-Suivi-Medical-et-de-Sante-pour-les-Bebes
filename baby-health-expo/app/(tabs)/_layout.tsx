@@ -6,7 +6,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "transparent",
           position: "absolute",
           borderTopWidth: 1,
           borderTopColor: "gray", 
@@ -35,15 +34,6 @@ export default function TabLayout() {
           title: "Profil",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="growth"
-        options={{
-          title: "Croissance",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chart-line" color={color} size={size} />
           ),
         }}
       />
