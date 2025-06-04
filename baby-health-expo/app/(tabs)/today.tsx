@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from '../../config';
 
 const Today = () => {
   const [todayDate, setTodayDate] = useState(
@@ -36,7 +37,7 @@ const Today = () => {
     const fetchAdvices = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://172.20.10.4:8000/api/advice/');
+        const response = await axios.get(`${config.API_BASE_URL}/api/advice/`);
         setAdvices(response.data);
       } catch (error) {
         console.error('Error fetching advices:', error);
@@ -68,7 +69,7 @@ const Today = () => {
       try {
         const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
         const parentId = await AsyncStorage.getItem('parent_id'); // Retrieve parent_id from AsyncStorage
-        const response = await axios.get(`http://172.20.10.4:8000/api/user/get_children_schedules/${parentId}/`, {
+        const response = await axios.get(`${config.API_BASE_URL}/api/user/get_children_schedules/${parentId}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

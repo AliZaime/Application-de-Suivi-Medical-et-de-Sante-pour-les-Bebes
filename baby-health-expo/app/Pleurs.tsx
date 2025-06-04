@@ -11,7 +11,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Audio } from 'expo-av';
 import axios from 'axios';
 import { FFmpegKit } from 'ffmpeg-kit-react-native';
-
+import config from '../config'; 
 export default function CryDetection() {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -123,7 +123,7 @@ export default function CryDetection() {
       });
 
       const response = await axios.post(
-        'http://192.168.57.8:8000/api/cry_detection/',
+        `${config.API_BASE_URL}/api/cry_detection/`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },

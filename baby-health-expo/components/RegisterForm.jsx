@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import { Picker } from "@react-native-picker/picker";
 import { LinearGradient } from "expo-linear-gradient";
-
+import config from '../config'; 
 export default function RegisterForm() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -34,7 +34,7 @@ export default function RegisterForm() {
     };
 
     axios
-      .post("http://192.168.0.125:8000/api/user/register/", userData)
+      .post(`${config.API_BASE_URL}/api/user/register/`, userData)
       .then(() => {
 
         setMessage("Inscription réussie !");

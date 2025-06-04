@@ -9,6 +9,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRouter } from "expo-router";
+import config from '../../config';
 
 export default function Home() {
   const [parent, setParent] = useState(null);
@@ -26,7 +27,7 @@ export default function Home() {
           return;
         }
 
-        const response = await axios.get(`http://172.20.10.4:8000/api/parent/${parentId}/`);
+        const response = await axios.get(`${config.API_BASE_URL}/api/parent/${parentId}/`);
         setParent(response.data);
       } catch (err) {
         console.error(err);
@@ -42,14 +43,14 @@ export default function Home() {
 
         // ➤ Récupère le premier bébé
         const babyRes = await axios.get(
-          `http://172.20.10.4:8000/api/user/get_babies_by_parent_id/${parentId}/`
+          `${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`
         );
         const baby = babyRes.data[0];
         if (!baby) return;
 
         // ➤ Récupère le dernier tracking de ce bébé
         const trackingRes = await axios.get(
-          `http://172.20.10.4:8000/api/user/get_last_traking/${baby.baby_id}/`
+          `${config.API_BASE_URL}/api/user/get_last_traking/${baby.baby_id}/`
         );
         const lastTracking = trackingRes.data[0]; // tableau
 

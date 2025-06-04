@@ -6,7 +6,7 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LineChart } from "react-native-chart-kit";
-
+import config from '../config'; 
 const coucheTypes = [
   { label: 'Mixte', value: 'mixte', icon: <MaterialCommunityIcons name="baby-face-outline" size={24} color="#a78bfa" /> },
   { label: 'Urine', value: 'urine', icon: <FontAwesome5 name="tint" size={24} color="#38bdf8" /> },
@@ -48,7 +48,7 @@ const CouchePage = () => {
   const fetchCouches = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://172.20.10.4:8000/api/couches/baby/${babyId}/`);
+      const res = await axios.get(`${config.API_BASE_URL}/api/couches/baby/${babyId}/`);
       setCouches(Array.isArray(res.data) ? res.data : []);
     } catch (e) {
       setCouches([]);
@@ -99,9 +99,9 @@ const CouchePage = () => {
     };
     try {
       if (editing) {
-        await axios.post(`http://172.20.10.4:8000/api/couches/${editing.id}/`, payload);
+        await axios.post(`${config.API_BASE_URL}/api/couches/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://172.20.10.4:8000/api/couches/`, payload);
+        await axios.post(`${config.API_BASE_URL}/api/couches/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -121,7 +121,7 @@ const CouchePage = () => {
       {
         text: 'Supprimer', style: 'destructive', onPress: async () => {
           try {
-            await axios.delete(`http://172.20.10.4:8000/api/couches/${id}/delete/`);
+            await axios.delete(`${config.API_BASE_URL}/api/couches/${id}/delete/`);
             fetchCouches();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');

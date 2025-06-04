@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-
+import config from '../config'; 
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -26,7 +26,7 @@ export default function LoginForm() {
     };
 
     axios
-      .post('http://192.168.0.125:8000/api/user/login_parent/', userData)
+      .post(`${config.API_BASE_URL}/api/user/login_parent/`, userData)
 
       .then(async (response) => {
         setMessage('Connexion réussie !');
@@ -42,7 +42,7 @@ export default function LoginForm() {
         await AsyncStorage.setItem("parent_id", parentId.toString());
         await AsyncStorage.setItem("token", token);
 
-        const babyResponse = await axios.get(`http://192.168.0.125:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babyResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`);
 
         const babies = babyResponse.data;
 

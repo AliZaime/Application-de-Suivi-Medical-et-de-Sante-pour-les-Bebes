@@ -14,7 +14,7 @@ import axios from "axios";
 import { LineChart } from "react-native-chart-kit";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
-
+import config from '../config'; 
 
 export default function CroissanceScreen() {
   const router = useRouter();
@@ -29,11 +29,11 @@ export default function CroissanceScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const babyResponse = await axios.get(`http://192.168.0.125:8000/api/user/get_baby_by_id/${babyId}/`);
+        const babyResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_baby_by_id/${babyId}/`);
         const babyData = babyResponse.data;
         setBaby(babyData);
 
-        const trackingResponse = await axios.get(`http://192.168.0.125:8000/api/user/get_last_traking/${babyId}/`);
+        const trackingResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_last_traking/${babyId}/`);
 
         const trackings = trackingResponse.data;
         setAllTrackings(trackings);

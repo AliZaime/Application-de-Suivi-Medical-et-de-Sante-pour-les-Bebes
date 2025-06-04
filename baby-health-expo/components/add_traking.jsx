@@ -13,7 +13,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { LinearGradient } from 'expo-linear-gradient';
-
+import config from '../config'; 
 export default function AddTrackingForm() {
   const router = useRouter();
   const [date, setDate] = useState("");
@@ -45,7 +45,7 @@ export default function AddTrackingForm() {
     try {
       const babyRes = await axios.get(
 
-        `http://192.168.0.125:8000/api/user/get_babies_by_parent_id/${parentId}/`
+        `${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`
 
       );
       const babyId = babyRes.data[0].baby_id;
@@ -60,7 +60,7 @@ export default function AddTrackingForm() {
       };
 
       await axios.post(
-        "http://192.168.0.125:8000/api/user/add_tracking/",
+        "${config.API_BASE_URL}/api/user/add_tracking/",
         trackingData,
         {
           headers: {
