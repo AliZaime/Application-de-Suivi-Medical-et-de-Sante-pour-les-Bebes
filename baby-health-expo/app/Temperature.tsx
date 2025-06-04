@@ -41,7 +41,7 @@ const Temperature = () => {
   const fetchTemperatures = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://192.168.1.166:8000/api/temperatures/baby/${babyId}/`);
+      const res = await axios.get(`http://172.20.10.4:8000/api/temperatures/baby/${babyId}/`);
       setTemperatures(Array.isArray(res.data.data) ? res.data.data : []);
     } catch (e) {
       setTemperatures([]);
@@ -89,9 +89,9 @@ const Temperature = () => {
     };
     try {
       if (editing) {
-        await axios.put(`http://192.168.1.166:8000/api/temperatures/${editing.id}/`, payload);
+        await axios.put(`http://172.20.10.4:8000/api/temperatures/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://192.168.1.166:8000/api/temperatures/`, payload);
+        await axios.post(`http://172.20.10.4:8000/api/temperatures/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -113,7 +113,7 @@ const Temperature = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`http://192.168.1.166:8000/api/temperatures/${id}/delete/`);
+            await axios.delete(`http://172.20.10.4:8000/api/temperatures/${id}/delete/`);
             fetchTemperatures();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');

@@ -22,10 +22,10 @@ const Profile = () => {
           return;
         }
 
-        const parent = await axios.get(`http://192.168.1.166:8000/api/parent/${parentId}/`);
+        const parent = await axios.get(`http://172.20.10.4:8000/api/parent/${parentId}/`);
         setParent(parent.data);
 
-        const babysResponse = await axios.get(`http://192.168.1.166:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babysResponse = await axios.get(`http://172.20.10.4:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         console.log(babysResponse.data);
         setBabys(babysResponse.data);
       } catch (err) {

@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
-from .models import Parent,Baby, Appointment, Couche, Temperature, Tetee, advice
+from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
+from .models import Medicament, Parent,Baby, Appointment, Couche, Temperature, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
@@ -353,6 +353,8 @@ def get_children_schedules(request, parent_id):
         return Response({'childrenSchedules': schedules}, status=200)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+    
+@api_view(['GET'])
 def get_tracking_by_baby_id(request, baby_id):
     try:
         trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')
@@ -547,3 +549,39 @@ def delete_temperature(request, temperature_id):
         return Response({'message': 'Température supprimée avec succès'}, status=status.HTTP_200_OK)
     except Temperature.DoesNotExist:
         return Response({'error': 'Température non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def add_medicament(request):
+    serializer = MedicamentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Médicament ajouté avec succès', 'medicament': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_medicaments_by_baby(request, baby_id):
+    medicaments = Medicament.objects.filter(baby_id=baby_id).order_by('-heure')
+    serializer = MedicamentSerializer(medicaments, many=True)
+    return Response({'message': 'Médicaments récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_medicament(request, medicament_id):
+    try:
+        medicament = Medicament.objects.get(id=medicament_id)
+        serializer = MedicamentSerializer(medicament, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Médicament modifié avec succès', 'medicament': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Medicament.DoesNotExist:
+        return Response({'error': 'Médicament non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_medicament(request, medicament_id):
+    try:
+        medicament = Medicament.objects.get(id=medicament_id)
+        medicament.delete()
+        return Response({'message': 'Médicament supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Medicament.DoesNotExist:
+        return Response({'error': 'Médicament non trouvé'}, status=status.HTTP_404_NOT_FOUND)

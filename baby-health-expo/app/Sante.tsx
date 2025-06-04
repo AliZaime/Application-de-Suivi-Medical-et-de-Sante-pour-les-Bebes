@@ -19,14 +19,21 @@ const repasTypes = [
     label: 'Médicaments',
     icon: <FontAwesome5 name="pills" size={40} color="#4682B4" />,
     color: "#e3f0ff",
-    route: '/Biberon',
+    route: '/Medicaments',
   },
   {
     key: 'vaccins',
     label: 'Vaccins',
     icon: <FontAwesome5 name="syringe" size={40} color="#FFA500" />,
     color: "#fff5e6",
-    route: '/Solides',
+    route: '/Vaccins',
+  },
+  {
+    key: 'symptomes',
+    label: 'Symptômes',
+    icon: <FontAwesome5 name="head-side-cough" size={40} color="rgb(14, 93, 14)" />,
+    color: '#rgb(207, 231, 185)',
+    route: '/Symptomes',
   },
 ];
 
