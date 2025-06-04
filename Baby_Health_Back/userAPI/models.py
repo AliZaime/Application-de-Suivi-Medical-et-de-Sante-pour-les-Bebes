@@ -197,3 +197,18 @@ class Temperature(models.Model):
 
     def __str__(self):
         return f"Température de {self.baby.name} le {self.date} à {self.heure} : {self.temperature}°C"
+    
+class Medicament(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=50)
+    heure = models.TimeField()
+    dosage = models.FloatField()
+    remarque = models.CharField(max_length=255, blank=True, null=True) 
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='medicaments') 
+
+    class Meta:
+        db_table = 'medicament'
+
+    def __str__(self):
+        return f"Médicament {self.name} - ({self.type}) ({self.dosage}) - {self.heure} (Baby ID: {self.baby.id})"

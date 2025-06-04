@@ -36,7 +36,7 @@ const Today = () => {
     const fetchAdvices = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://192.168.1.166:8000/api/advice/');
+        const response = await axios.get('http://172.20.10.4:8000/api/advice/');
         setAdvices(response.data);
       } catch (error) {
         console.error('Error fetching advices:', error);
@@ -68,7 +68,7 @@ const Today = () => {
       try {
         const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
         const parentId = await AsyncStorage.getItem('parent_id'); // Retrieve parent_id from AsyncStorage
-        const response = await axios.get(`http://192.168.1.166:8000/api/user/get_children_schedules/${parentId}/`, {
+        const response = await axios.get(`http://172.20.10.4:8000/api/user/get_children_schedules/${parentId}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
