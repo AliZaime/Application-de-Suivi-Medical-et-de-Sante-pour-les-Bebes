@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Parent, Baby, Appointment, Couche, Tetee, advice
+from .models import Parent, Baby, Appointment, Couche, Temperature, Tetee, advice
 from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth.hashers import make_password
 
@@ -69,3 +69,8 @@ class SommeilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sommeil
         fields = ['id', 'dateDebut', 'dateFin', 'duration', 'remarque', 'baby']
+
+class TemperatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Temperature
+        fields = ['id', 'date', 'heure', 'temperature', 'remarque', 'baby']

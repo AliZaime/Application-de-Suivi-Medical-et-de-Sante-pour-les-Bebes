@@ -183,3 +183,17 @@ class Sommeil(models.Model):
     
     def __str__(self):
         return f"Sommeil de {self.baby.name} du {self.dateDebut} au {self.dateFin} ({self.duration} minutes)"
+    
+class Temperature(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField()
+    heure = models.TimeField()
+    temperature = models.FloatField()
+    remarque = models.CharField(max_length=255, blank=True, null=True)
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='temperatures')
+
+    class Meta:
+        db_table = 'temperature'
+
+    def __str__(self):
+        return f"Température de {self.baby.name} le {self.date} à {self.heure} : {self.temperature}°C"
