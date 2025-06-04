@@ -41,7 +41,7 @@ export default function AddBabyForm() {
     }
 
     const response = await axios.post(
-      "http://192.168.1.166:8000/api/user/add_baby/",
+      "http://192.168.57.8:8000/api/user/add_baby/",
       babyData,
       {
         headers: {
