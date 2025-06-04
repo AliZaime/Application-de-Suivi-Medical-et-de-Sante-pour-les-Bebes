@@ -5,20 +5,22 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import config from '../../config';
+
 
 const Today = () => {
   const [todayDate, setTodayDate] = useState(
     new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
   );
   const router = useRouter();
-  const [isCardExpanded, setIsCardExpanded] = useState(false);
+  const [parent, setParent] = useState<{ name: string} | null>(null);
+
   const [currentChildIndex, setCurrentChildIndex] = useState(0);
   const [advices, setAdvices] = useState<{ image: string; title: string; content: string }[]>([]);
   const [expandedAdvices, setExpandedAdvices] = useState<boolean[]>([]);
   const [selectedAdvice, setSelectedAdvice] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [childrenSchedules, setChildrenSchedules] = useState<{ name: string; gender: string; schedules: { text: string; subText: string; color: string }[] }[]>([]);
+
 
   
 
@@ -28,24 +30,67 @@ const Today = () => {
   const redirectToTracking = () => router.push('/(tabs)/Suivi');
 
   useEffect(() => {
+    // Update today's date
     setTodayDate(
       new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
     );
-  }, []);
 
-  useEffect(() => {
-    const fetchAdvices = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${config.API_BASE_URL}/api/advice/`);
-        setAdvices(response.data);
-      } catch (error) {
-        console.error('Error fetching advices:', error);
-      } finally {
-        setIsLoading(false);
-      }
+    const fetchData = async () => {
+      setIsLoading(true); // Start loading
+
+      const fetchParentData = async () => {
+        try {
+          const parentId = await AsyncStorage.getItem("parent_id");
+          const parent = await axios.get(`http://192.168.1.108:8000/api/parent/${parentId}/`);
+          setParent(parent.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      const fetchAdvices = async () => {
+        try {
+          const response = await axios.get('http://192.168.1.108:8000/api/advice/');
+          setAdvices(response.data);
+        } catch (error) {
+          console.error('Error fetching advices:', error);
+        }
+      };
+
+      const fetchChildrenSchedules = async () => {
+        try {
+          const token = await AsyncStorage.getItem('token');
+          const parentId = await AsyncStorage.getItem('parent_id');
+
+          if (!token || !parentId) {
+            console.error('Token or Parent ID is missing');
+            return;
+          }
+
+          const response = await axios.get(`http://192.168.1.108:8000/api/user/get_children_schedules/${parentId}/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log('API Response:', response.data);
+
+          const schedules = response.data.childrenSchedules.map((child: { name: string; gender: string; schedules: any[] }) => ({
+            ...child,
+            color: child.gender.toLowerCase() === 'girl' ? '#ffb6c1' : '#a3cef1',
+          }));
+          setChildrenSchedules(schedules as { name: string; gender: string; schedules: { text: string; subText: string; color: string }[] }[]);
+        } catch (error) {
+          console.error('Error fetching children schedules:', error.response?.data || error.message);
+        }
+      };
+
+      // Execute all fetch functions concurrently
+      await Promise.all([fetchParentData(), fetchAdvices(), fetchChildrenSchedules()]);
+
+      setIsLoading(false); // End loading after all fetches are done
     };
-    fetchAdvices();
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -64,28 +109,6 @@ const Today = () => {
 
   const closeAdviceModal = () => setSelectedAdvice(null);
 
-  useEffect(() => {
-    const fetchChildrenSchedules = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
-        const parentId = await AsyncStorage.getItem('parent_id'); // Retrieve parent_id from AsyncStorage
-        const response = await axios.get(`${config.API_BASE_URL}/api/user/get_children_schedules/${parentId}/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const schedules = response.data.childrenSchedules.map((child: { name: string; gender: string; schedules: any[] }) => ({
-          ...child,
-          color: child.gender.toLowerCase() === 'girl' ? '#ffb6c1' : '#a3cef1',
-        }));
-        setChildrenSchedules(schedules as { name: string; gender: string; schedules: { text: string; subText: string; color: string }[] }[]);
-      } catch (error) {
-        console.error('Error fetching children schedules:', error);
-      }
-    };
-    fetchChildrenSchedules();
-  }, []);
-
   return (
     <LinearGradient
       colors={['#ffb6c1', '#f8f6fa', '#a3cef1']}
@@ -93,65 +116,76 @@ const Today = () => {
       end={{ x: 1, y: 1 }}
       style={styles.gradient}
     >
+      <View style={{ flex: 1,height: '100%', marginBottom: 83 }}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.headerSection}>
-          <Text style={styles.dateText}>{todayDate}</Text>
-          <Text style={styles.title}>Today</Text>
-          <Text style={styles.greeting}>Good evening, Faris & Fares</Text>
-        </View>
-
-        <View style={styles.scheduleSection}>
-          <View style={styles.scheduleHeader}>
-            <Text style={styles.sectionTitle}>
-              {childrenSchedules.length > 0
-              ? childrenSchedules[currentChildIndex]?.name || 'Baby'
-              : 'Baby'}
-            </Text>
-            <View style={styles.scheduleIcons}>
-              <TouchableOpacity onPress={switchChildCards}>
-                <FontAwesome name="exchange" size={24} color="black" style={styles.icon} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={redirectToTracking}>
-                <FontAwesome name="arrow-right" size={24} color="black" style={styles.icon} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          {(childrenSchedules[currentChildIndex]?.schedules || []).map(
-            (schedule: { text: string; subText: string; color: string }, index: number) => (
-              <View
-                key={index}
-                style={[styles.scheduleCard, { backgroundColor: schedule.color }]}
-              >
-                <Text style={styles.scheduleText}>{schedule.text}</Text>
-                <Text style={styles.scheduleSubText}>{schedule.subText}</Text>
-              </View>
-            )
-          )}
-        </View>
-
         {isLoading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#a3cef1" />
+            <ActivityIndicator size="large" color="#0000ff"  />
           </View>
         ) : (
-          advices.map((advice, index) => (
-            <View key={index} style={styles.adviceSection}>
-              <Image
-                source={require('@/assets/images/Guide/Feeding2.png')}
-                style={styles.adviceImage}
-              />
-              <Text style={styles.adviceTitle}>{advice.title}</Text>
-              <Text style={styles.adviceText} numberOfLines={2} ellipsizeMode="tail">
-                {advice.content}
-              </Text>
-              <TouchableOpacity
-                onPress={() => openAdviceModal(index)}
-                style={styles.expandIcon}
-              >
-                <FontAwesome name="expand" size={24} color="black" />
-              </TouchableOpacity>
+          <>
+            <View style={styles.headerSection}>
+              <Text style={styles.dateText}>{todayDate}</Text>
+              <Text style={styles.title}>Today</Text>
+              <Text style={styles.greeting}>Hello, {parent?.name} </Text>
             </View>
-          ))
+
+            <View style={styles.scheduleSection}>
+              <View style={styles.scheduleHeader}>
+                <Text style={styles.sectionTitle}>
+                  {childrenSchedules.length > 0
+                    ? childrenSchedules[currentChildIndex]?.name || 'Baby'
+                    : 'Baby'}
+                </Text>
+                <View style={styles.scheduleIcons}>
+                  <TouchableOpacity onPress={switchChildCards}>
+                    <FontAwesome name="exchange" size={24} color="black" style={styles.icon} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={redirectToTracking}>
+                    <FontAwesome name="arrow-right" size={24} color="black" style={styles.icon} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {(childrenSchedules[currentChildIndex]?.schedules || []).map(
+                (schedule: { text: string; subText: string; color: string }, index: number) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.scheduleCard,
+                      {
+                        backgroundColor:
+                          childrenSchedules[currentChildIndex]?.gender.toLowerCase() === 'boy'
+                            ? '#a3cef1' // Blue for boys
+                            : '#ffb6c1', // Pink for girls
+                      },
+                    ]}
+                  >
+                    <Text style={styles.scheduleText}>{schedule.text}</Text>
+                    <Text style={styles.scheduleSubText}>{schedule.subText}</Text>
+                  </View>
+                )
+              )}
+            </View>
+
+            {advices.map((advice, index) => (
+              <View key={index} style={styles.adviceSection}>
+                <Image
+                  source={require('@/assets/images/Guide/Feeding2.png')}
+                  style={styles.adviceImage}
+                />
+                <Text style={styles.adviceTitle}>{advice.title}</Text>
+                <Text style={styles.adviceText} numberOfLines={2} ellipsizeMode="tail">
+                  {advice.content}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => openAdviceModal(index)}
+                  style={styles.expandIcon}
+                >
+                  <FontAwesome name="expand" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </>
         )}
 
         {selectedAdvice !== null && (
@@ -180,6 +214,7 @@ const Today = () => {
           </Modal>
         )}
       </ScrollView>
+      </View>
     </LinearGradient>
   );
 };
@@ -190,6 +225,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
+  marginBottom: 80,
   },
   headerSection: {
     marginBottom: 20,
@@ -212,9 +248,10 @@ const styles = StyleSheet.create({
   },
   scheduleSection: {
     marginBottom: 20,
-    backgroundColor: '#f8f6fa',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     padding: 16,
     borderRadius: 8,
+    
   },
   scheduleHeader: {
     flexDirection: 'row',
@@ -309,6 +346,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: 1000,
   },
 });
 

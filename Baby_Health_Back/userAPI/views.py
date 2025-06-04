@@ -342,27 +342,64 @@ def get_advice_by_category(request, category_name):
 def get_children_schedules(request, parent_id):
     try:
         babies = Baby.objects.filter(parent_id=parent_id)  # Filter babies by parent_id
+        if not babies.exists():
+            return Response({'message': 'Aucun bébé trouvé pour ce parent.'}, status=status.HTTP_404_NOT_FOUND)
+
         schedules = []
         for baby in babies:
             couches = Couche.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
             tetees = Tetee.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+            biberons = Biberon.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+            solides = Solides.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+            sommeils = Sommeil.objects.filter(baby=baby).order_by('-dateDebut')[:1]
+
+            # Trouver la dernière alimentation parmi les trois tables
+            last_feed_time = None
+            last_feed_type = None
+
+            if tetees:
+                last_feed_time = datetime.combine(tetees[0].date, tetees[0].heure).replace(tzinfo=None)
+                last_feed_type = f"Tétée - {tetees[0].temps_passe} mins"
+
+            if biberons and (not last_feed_time or datetime.combine(biberons[0].date, biberons[0].heure).replace(tzinfo=None) > last_feed_time):
+                last_feed_time = datetime.combine(biberons[0].date, biberons[0].heure).replace(tzinfo=None)
+                last_feed_type = f"Biberon - {biberons[0].quantite} ml"
+
+            if solides and (not last_feed_time or datetime.combine(solides[0].date, solides[0].heure).replace(tzinfo=None) > last_feed_time):
+                last_feed_time = datetime.combine(solides[0].date, solides[0].heure).replace(tzinfo=None)
+                last_feed_type = f"Solides - {solides[0].type}"
+
+            last_couche_time = (
+                datetime.combine(couches[0].date, couches[0].heure).replace(tzinfo=None) if couches else None
+            )
+
+            last_sleep_time = (
+                sommeils[0].dateDebut.replace(tzinfo=None) if sommeils else None
+            )
+            last_sleep_duration = (
+                sommeils[0].duration if sommeils else None
+            )
 
             schedule = {
                 'name': baby.name,
                 'gender': baby.gender,
                 'schedules': [
                     {
-                        'text': f"Last feed - {tetees[0].temps_passe} mins" if tetees else "No feed data",
-                        'subText': 'Enter feed'
+                        'text': f"Last feed - {last_feed_type}" if last_feed_time else "No feed data",
+                        'subText': f"Since {int((datetime.now().replace(tzinfo=None) - last_feed_time).total_seconds() // 60)} mins ago" if last_feed_time else "Enter feed"
                     },
                     {
                         'text': f"Last diaper - {couches[0].type}" if couches else "No diaper data",
-                        'subText': 'Enter diaper'
+                        'subText': f"Since {int((datetime.now().replace(tzinfo=None) - last_couche_time).total_seconds() // 60)} mins ago" if last_couche_time else "Enter diaper"
+                    },
+                    {
+                        'text': f"Last sleep - {last_sleep_duration} mins" if last_sleep_duration else "No sleep data",
+                        'subText': f"Since {int((datetime.now().replace(tzinfo=None) - last_sleep_time).total_seconds() // 60)} mins ago" if last_sleep_time else "Enter sleep"
                     },
                 ]
             }
             schedules.append(schedule)
-        return Response({'childrenSchedules': schedules}, status=200)
+        return Response({'childrenSchedules': schedules}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
     

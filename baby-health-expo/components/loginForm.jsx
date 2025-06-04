@@ -50,6 +50,7 @@ export default function LoginForm() {
           router.replace("/addBaby");
         } else {
           router.replace("/home");
+          router.replace("/today"); // ✅ au moins un bébé → aller à l’accueil
         }
       })
       .catch((error) => {

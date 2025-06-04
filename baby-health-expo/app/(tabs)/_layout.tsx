@@ -19,21 +19,24 @@ export default function TabLayout() {
         },
       }}
     >
+
+     <Tabs.Screen
+      name="today"
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <FontAwesome5 name="calendar-day" color={color} size={size} />
+        ),
+      }}
+    />
+
+      
       <Tabs.Screen
-        name="home"
+        name="growth"
         options={{
-          title: "Home",
+          title: "Croissance",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profil",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
+            <MaterialCommunityIcons name="chart-line" color={color} size={size} />
           ),
         }}
       />
@@ -47,15 +50,28 @@ export default function TabLayout() {
           ),
         }}
       />
+      
+
       <Tabs.Screen
-      name="today"
-      options={{
-        title: "Aujourd'hui",
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome5 name="calendar-day" color={color} size={size} />
-        ),
-      }}
-    />
+        name="profile"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
+          ),
+        }}
+      />
+
+
+    <Tabs.Screen
+        name="more"
+        options={{
+          title: "More",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="dots-horizontal" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -211,7 +211,7 @@ const AppointmentPage = () => { // Renamed component
 
       // 👇 **Include the Authorization header**
       await axios.post(
-        '${config.API_BASE_URL}/api/user/add_appointment/',
+        'http://192.168.1.108:8000/api/user/add_appointment/',
         newAppointmentData,
         {
           headers: {
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     height: '100%',
-    marginBottom: 80,
+    
   },
   title: {
     fontSize: 24,
