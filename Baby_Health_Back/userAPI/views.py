@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer, AdviceSerializer
-from .models import Parent,Baby, Appointment, Couche, Tetee, advice
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
+from .models import Parent,Baby, Appointment, Couche, Temperature, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
@@ -512,3 +512,38 @@ def save_expo_token(request):
         return Response({'message': 'Token enregistré avec succès'})
     except Parent.DoesNotExist:
         return Response({'error': 'Parent non trouvé'}, status=404)
+    
+@api_view(['POST'])
+def add_temperature(request):
+    serializer = TemperatureSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Température ajoutée avec succès', 'temperature': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_temperatures_by_baby(request, baby_id):
+    temperatures = Temperature.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = TemperatureSerializer(temperatures, many=True)
+    return Response({'message': 'Températures récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_temperature(request, temperature_id):
+    try:
+        temperature = Temperature.objects.get(id=temperature_id)
+        serializer = TemperatureSerializer(temperature, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Température modifiée avec succès', 'temperature': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Temperature.DoesNotExist:
+        return Response({'error': 'Température non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_temperature(request, temperature_id):
+    try:
+        temperature = Temperature.objects.get(id=temperature_id)
+        temperature.delete()
+        return Response({'message': 'Température supprimée avec succès'}, status=status.HTTP_200_OK)
+    except Temperature.DoesNotExist:
+        return Response({'error': 'Température non trouvée'}, status=status.HTTP_404_NOT_FOUND)
