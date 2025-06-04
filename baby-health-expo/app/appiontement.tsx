@@ -211,7 +211,7 @@ const AppointmentPage = () => { // Renamed component
 
       // 👇 **Include the Authorization header**
       await axios.post(
-        'http://192.168.1.108:8000/api/user/add_appointment/',
+        `${config.API_BASE_URL}/api/user/add_appointment/`,
         newAppointmentData,
         {
           headers: {
