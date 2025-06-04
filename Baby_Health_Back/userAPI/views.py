@@ -14,6 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
+from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer, AdviceSerializer
+from .models import Parent,Baby, Appointment, Couche, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
@@ -197,7 +199,7 @@ def add_appointment(request):
         print("Parent not found")  # Log missing parent
         return Response({'error': 'Parent introuvable'}, status=404)
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 def update_appointment(request, appointment_id):
     try:
         appointment = Appointment.objects.get(appointment_id=appointment_id)
@@ -298,6 +300,59 @@ def delete_tetee(request, tetee_id):
         return Response({'error': 'Tétée non trouvée'}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
+def get_tetees_by_baby(request, baby_id):
+    print(f"baby_id reçu : {baby_id}")  # Log pour vérifier l'ID reçu
+    tetees = Tetee.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    if not tetees.exists():
+        print("Aucune tétée trouvée.")  # Log si aucune tétée n'est trouvée
+        return Response({'message': 'Aucune tétée trouvée pour ce bébé.', 'data': []}, status=status.HTTP_200_OK)
+    serializer = TeteeSerializer(tetees, many=True)
+    print(f"Tétées trouvées : {serializer.data}")  # Log les données trouvées
+    return Response({'message': 'Tétées récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_advice(request):
+    advice_list = advice.objects.all()
+    serializer = AdviceSerializer(advice_list, many=True)
+    return Response(serializer.data)
+@api_view(['GET'])
+def get_advice_by_category(request, category_name):
+    try:
+        advice_list = advice.objects.filter(cattegory=category_name)
+        if not advice_list.exists():
+            return Response({'message': 'Aucun avis trouvé pour cette catégorie.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = AdviceSerializer(advice_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_children_schedules(request, parent_id):
+    try:
+        babies = Baby.objects.filter(parent_id=parent_id)  # Filter babies by parent_id
+        schedules = []
+        for baby in babies:
+            couches = Couche.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+            tetees = Tetee.objects.filter(baby=baby).order_by('-date', '-heure')[:1]
+
+            schedule = {
+                'name': baby.name,
+                'gender': baby.gender,
+                'schedules': [
+                    {
+                        'text': f"Last feed - {tetees[0].temps_passe} mins" if tetees else "No feed data",
+                        'subText': 'Enter feed'
+                    },
+                    {
+                        'text': f"Last diaper - {couches[0].type}" if couches else "No diaper data",
+                        'subText': 'Enter diaper'
+                    },
+                ]
+            }
+            schedules.append(schedule)
+        return Response({'childrenSchedules': schedules}, status=200)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
 def get_tracking_by_baby_id(request, baby_id):
     try:
         trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')

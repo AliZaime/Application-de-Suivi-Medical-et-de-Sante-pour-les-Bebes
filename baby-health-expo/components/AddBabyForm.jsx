@@ -41,7 +41,7 @@ export default function AddBabyForm() {
     }
 
     const response = await axios.post(
-      "https://application-de-suivi-medical-et-de-sante.onrender.com/api/user/add_baby/",
+      "http://192.168.11.104:8000/api/user/add_baby/",
       babyData,
       {
         headers: {

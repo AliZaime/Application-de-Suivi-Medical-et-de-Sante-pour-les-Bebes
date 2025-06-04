@@ -1,5 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from .views import add_tetee, delete_tetee, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_tetee 
+from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby, get_advice,get_advice_by_category, get_children_schedules
 from .views import add_biberon, add_solide, add_sommeil, add_tetee, delete_biberon, delete_solide, delete_sommeil, delete_tetee, get_biberons_by_baby, get_solides_by_baby, get_sommeils_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_biberon, update_solide, update_sommeil, update_tetee 
 from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby,get_tracking_by_baby_id,add_tracking,save_expo_token
 
@@ -29,6 +31,11 @@ urlpatterns = [
     path('tetees/baby/<int:baby_id>/', get_tetees_by_baby, name='get_tetees_by_baby'),
     path('tetees/<int:tetee_id>/', update_tetee, name='update_tetee'), 
     path('tetees/<int:tetee_id>/delete/', delete_tetee, name='delete_tetee'),
+    path('tetees/baby/<int:baby_id>/', get_tetees_by_baby, name='get_tetees_by_baby'),
+    path('advice/', get_advice, name='get_advice'),
+    path('advice/category/<str:category>/', get_advice_by_category, name='get_advice_by_category'),
+    path('user/get_children_schedules/<int:parent_id>/', get_children_schedules, name='get_children_schedules'),
+    
     path('user/get_last_traking/<int:baby_id>/',get_tracking_by_baby_id, name='get_last_traking'),
     path('biberons/', add_biberon, name='add_biberon'),
     path('biberons/baby/<int:baby_id>/', get_biberons_by_baby, name='get_biberons_by_baby'),

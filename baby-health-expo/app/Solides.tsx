@@ -31,7 +31,7 @@ const Solides = () => {
   const fetchSolides = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/solides/baby/${babyId}/`);
+      const res = await axios.get(`http://192.168.11.104:8000/api/solides/baby/${babyId}/`);
       setSolides(res.data.data || []);
     } catch (error) {
       Alert.alert("Erreur", "Impossible de charger les données des solides.");
@@ -56,9 +56,9 @@ const Solides = () => {
 
     try {
       if (editing) {
-        await axios.put(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/solides/${editing.id}/`, payload);
+        await axios.put(`http://192.168.11.104:8000/api/solides/${editing.id}/`, payload);
       } else {
-        await axios.post('https://application-de-suivi-medical-et-de-sante.onrender.com/api/solides/', payload);
+        await axios.post('http://192.168.11.104:8000/api/solides/', payload);
       }
       setModalVisible(false);
       setEditing(null);
@@ -125,7 +125,7 @@ const Solides = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`https://application-de-suivi-medical-et-de-sante.onrender.com/api/solides/${id}/delete/`);
+            await axios.delete(`http://192.168.11.104:8000/api/solides/${id}/delete/`);
             fetchSolides();
           } catch (e) {
             Alert.alert('Erreur', 'Impossible de supprimer le solide');

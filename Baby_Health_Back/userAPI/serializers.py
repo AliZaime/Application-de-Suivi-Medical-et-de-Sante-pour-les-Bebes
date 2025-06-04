@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import Parent, Baby, Appointment, Couche, Tetee, advice
 from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth.hashers import make_password
 
@@ -38,6 +39,13 @@ class TeteeSerializer(serializers.ModelSerializer):
         model = Tetee
         fields = ['id', 'date', 'heure', 'temps_passe', 'remarque', 'baby']
 
+class AdviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = advice
+        fields = ['id', 'title', 'content', 'date', 'category', 'image']
+
+    def create(self, validated_data):
+        return super().create(validated_data)
 
 class BabyTrackingSerializer(serializers.ModelSerializer):
     class Meta:
