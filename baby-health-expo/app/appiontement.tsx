@@ -6,7 +6,7 @@ import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { LinearGradient } from 'expo-linear-gradient';
-import config from '../../config';
+import config from '../config';
 
 // Helper function to get today's date in 'YYYY-MM-DD' format
 function getTodayDate() {

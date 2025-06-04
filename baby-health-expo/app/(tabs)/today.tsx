@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from '../../config';
 
 
 const Today = () => {
@@ -41,7 +42,7 @@ const Today = () => {
       const fetchParentData = async () => {
         try {
           const parentId = await AsyncStorage.getItem("parent_id");
-          const parent = await axios.get(`http://192.168.1.108:8000/api/parent/${parentId}/`);
+          const parent = await axios.get(`${config.API_BASE_URL}/api/parent/${parentId}/`);
           setParent(parent.data);
         } catch (err) {
           console.error(err);
@@ -50,7 +51,7 @@ const Today = () => {
 
       const fetchAdvices = async () => {
         try {
-          const response = await axios.get('http://192.168.1.108:8000/api/advice/');
+          const response = await axios.get(`${config.API_BASE_URL}/api/advice/`);
           setAdvices(response.data);
         } catch (error) {
           console.error('Error fetching advices:', error);
@@ -67,7 +68,7 @@ const Today = () => {
             return;
           }
 
-          const response = await axios.get(`http://192.168.1.108:8000/api/user/get_children_schedules/${parentId}/`, {
+          const response = await axios.get(`${config.API_BASE_URL}/api/user/get_children_schedules/${parentId}/`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
