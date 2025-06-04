@@ -13,7 +13,7 @@ import {
 import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
-
+import config from '../config'; 
 export default function AddBabyForm() {
     const router = useRouter();
     const [name, setName] = useState("");
@@ -41,7 +41,7 @@ export default function AddBabyForm() {
     }
 
     const response = await axios.post(
-      "http://192.168.1.108:8000/api/user/add_baby/",
+      `${config.API_BASE_URL}/api/user/add_baby/`,
       babyData,
       {
         headers: {

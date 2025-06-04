@@ -6,7 +6,7 @@ import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { LinearGradient } from 'expo-linear-gradient';
-
+import config from '../../config';
 
 // Helper function to get today's date in 'YYYY-MM-DD' format
 function getTodayDate() {
@@ -68,7 +68,7 @@ const AppointmentPage = () => { // Renamed component
         setLoading(false);
         return;
       }
-      const response = await axios.get(`http://192.168.1.108:8000/api/user/get_appointments_by_parent_id/${parentId}`);
+      const response = await axios.get(`${config.API_BASE_URL}/api/user/get_appointments_by_parent_id/${parentId}`);
       setAppointments(Array.isArray(response.data) ? response.data : []);
       console.log('User Appointment data:', response.data);
     } catch (error) {
@@ -157,7 +157,7 @@ const AppointmentPage = () => { // Renamed component
       }
 
       await axios.delete(
-        `http://192.168.1.108:8000/api/user/delete_appointment/${appointmentId}/`,
+        `${config.API_BASE_URL}/api/user/delete_appointment/${appointmentId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -279,7 +279,7 @@ const AppointmentPage = () => { // Renamed component
       };
 
       await axios.put(
-        `http://192.168.1.108:8000/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
+        `${config.API_BASE_URL}/api/user/update_appointment/${editingAppointment?.appointment_id}/`,
         updatedAppointmentData,
         {
           headers: {

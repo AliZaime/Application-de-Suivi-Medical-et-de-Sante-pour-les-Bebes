@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
+import config from '../../config';
 
 const Suivi = () => {
   const router = useRouter();
@@ -28,10 +29,10 @@ const Suivi = () => {
           setLoading(false);
           return;
         }
-        const parentResponse = await axios.get(`http://192.168.1.108:8000/api/parent/${parentId}/`);
+        const parentResponse = await axios.get(`${config.API_BASE_URL}/api/parent/${parentId}/`);
         setParent(parentResponse.data);
 
-        const babysResponse = await axios.get(`http://192.168.1.108:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babysResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`);
         setBabys(Array.isArray(babysResponse.data) ? babysResponse.data : []);
       } catch (err) {
         setError("Erreur lors du chargement des données.");

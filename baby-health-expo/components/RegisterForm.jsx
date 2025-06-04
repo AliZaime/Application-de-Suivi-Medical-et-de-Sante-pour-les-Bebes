@@ -8,17 +8,19 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
-
+import { Picker } from "@react-native-picker/picker";
+import { LinearGradient } from "expo-linear-gradient";
+import config from '../config'; 
 export default function RegisterForm() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [notification_preferences, setnotification_preferences] = useState("");
+  const [gender, setGender] = useState("");
+  const [notification_preferences, setNotificationPreferences] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = () => {
@@ -26,13 +28,15 @@ export default function RegisterForm() {
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
-      password: password,
-      notification_preferences: notification_preferences.trim(),
+      password,
+      gender,
+      notification_preferences,
     };
 
     axios
-      .post("http://192.168.1.108:8000/api/user/register/", userData)
-      .then((response) => {
+      .post(`${config.API_BASE_URL}/api/user/register/`, userData)
+      .then(() => {
+
         setMessage("Inscription réussie !");
         router.push("/login");
       })
@@ -43,114 +47,126 @@ export default function RegisterForm() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Header avec vague et logo */}
-      <View style={styles.header}>
-        <Svg
-          viewBox="0 0 500 150"
-          preserveAspectRatio="none"
-          style={styles.wave}
-        >
-          <Path
-            d="M-0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L-0.00,150.00 Z"
-            fill="#fff"
+    <LinearGradient
+      colors={["#f8b5c8", "#dbeeff"]}
+      style={styles.gradientContainer}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* En-tête sans vague */}
+        <View style={styles.header}>
+          <Image
+            source={require("../assets/images/baby-icon.png")}
+            style={styles.logo}
           />
-        </Svg>
-        <Image
-          source={require("../assets/images/baby-icon.png")}
-          style={styles.logo}
-        />
-        <Text style={styles.title}>Baby health</Text>
-      </View>
+          <Text style={styles.title}>Baby health</Text>
+        </View>
 
-      {/* Formulaire */}
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nom complet"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Téléphone"
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Mot de passe"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Préférence de notification"
-          value={notification_preferences}
-          onChangeText={setnotification_preferences}
-        />
+        {/* Formulaire */}
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Nom complet"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Téléphone"
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>S'inscrire</Text>
-        </TouchableOpacity>
+          {/* Genre */}
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={gender}
+              onValueChange={(itemValue) => setGender(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Sélectionner le genre" value="" />
+              <Picker.Item label="Homme" value="homme" />
+              <Picker.Item label="Femme" value="femme" />
+            </Picker>
+          </View>
 
-        {message ? <Text style={{ marginTop: 10 }}>{message}</Text> : null}
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
 
-        <Text style={styles.link} onPress={() => router.push("/login")}>
-          Déjà un compte ? Connectez-vous
-        </Text>
-      </View>
-    </ScrollView>
+          {/* Préférence de notification */}
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={notification_preferences}
+              onValueChange={(itemValue) =>
+                setNotificationPreferences(itemValue)
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Préférence de notification" value="" />
+              <Picker.Item label="Email" value="email" />
+              <Picker.Item label="SMS" value="sms" />
+              <Picker.Item label="Aucun" value="aucun" />
+            </Picker>
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>S'inscrire</Text>
+          </TouchableOpacity>
+
+          {message ? (
+            <Text style={{ marginTop: 10, color: "#333" }}>{message}</Text>
+          ) : null}
+
+          <Text style={styles.link} onPress={() => router.push("/login")}>
+            Déjà un compte ? Connectez-vous
+          </Text>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-    backgroundColor: "white",
+  gradientContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
   },
   header: {
-    position: "relative",
-    backgroundColor: "#F4C7C3",
     alignItems: "center",
-    paddingBottom: 60,
     paddingTop: 50,
-  },
-  wave: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 250,
+    paddingBottom: 30,
   },
   logo: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
-    zIndex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
-    zIndex: 1,
-    marginTop: 20,
+    color: "#333",
   },
   formContainer: {
     paddingHorizontal: 20,
-    paddingTop: 30,
+    paddingTop: 10,
     alignItems: "center",
-    backgroundColor: "white",
   },
   input: {
     width: "100%",
@@ -168,8 +184,22 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
+  pickerContainer: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#F2D7D5",
+    borderRadius: 12,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  picker: {
+    width: "100%",
+    height: 50,
+    color: "#333",
+  },
   button: {
-    backgroundColor: "#F4C7C3",
+    backgroundColor: "#F4A4A0",
     borderRadius: 25,
     paddingVertical: 14,
     width: "100%",
@@ -182,7 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: "#F4A4A0",
+    color: "#a21caf",
     marginTop: 20,
     fontSize: 14,
     textDecorationLine: "underline",

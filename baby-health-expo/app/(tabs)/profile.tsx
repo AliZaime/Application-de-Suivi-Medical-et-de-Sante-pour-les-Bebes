@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, Button, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
+import config from '../../config';
 
 const Profile = () => {
   const [parent, setParent] = useState<{ name: string; email: string; phone: string; notification_preferences: string; gender: string } | null>(null);
@@ -22,10 +23,10 @@ const Profile = () => {
           return;
         }
 
-        const parent = await axios.get(`http://192.168.1.108:8000/api/parent/${parentId}/`);
+        const parent = await axios.get(`${config.API_BASE_URL}/api/parent/${parentId}/`);
         setParent(parent.data);
 
-        const babysResponse = await axios.get(`http://192.168.1.108:8000/api/user/get_babies_by_parent_id/${parentId}/`);
+        const babysResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`);
         console.log(babysResponse.data);
         setBabys(babysResponse.data);
       } catch (err) {

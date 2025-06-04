@@ -7,13 +7,12 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  Button,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { LinearGradient } from "expo-linear-gradient";
+import config from '../config'; 
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -23,39 +22,34 @@ export default function LoginForm() {
   const handleLogin = () => {
     const userData = {
       email: email.trim().toLowerCase(),
-      password
+      password,
     };
 
     axios
-      .post('http://192.168.1.108:8000/api/user/login_parent/', userData)
+      .post(`${config.API_BASE_URL}/api/user/login_parent/`, userData)
+
       .then(async (response) => {
         setMessage('Connexion réussie !');
-        
-        console.log("Réponse reçue :", response.data);
-        
+
         const parentId = response.data?.parent_id;
-        const token = response.data?.token;  // ✅ récupère le token JWT
-        
+        const token = response.data?.token;
+
         if (!token || !parentId) {
           setMessage("Données manquantes dans la réponse !");
           return;
         }
 
         await AsyncStorage.setItem("parent_id", parentId.toString());
-        await AsyncStorage.setItem("token", token);  // ✅ stocke le token
+        await AsyncStorage.setItem("token", token);
 
+        const babyResponse = await axios.get(`${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`);
 
-        const babyResponse = await axios.get(`http://192.168.1.108:8000/api/user/get_babies_by_parent_id/${parentId}/`);
         const babies = babyResponse.data;
 
-
-
-        console.log("Utilisateur connecté :", response.data);
-        
-
         if (babies.length === 0) {
-          router.replace("/addBaby"); // 👶 aucun bébé → aller à l’ajout
+          router.replace("/addBaby");
         } else {
+          router.replace("/home");
           router.replace("/today"); // ✅ au moins un bébé → aller à l’accueil
         }
       })
@@ -65,31 +59,18 @@ export default function LoginForm() {
       });
   };
 
-
   return (
+    <LinearGradient colors={["#f8b5c8", "#dbeeff"]} style={styles.gradientContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.header}>
+          <Image
+            source={require("../assets/images/baby-icon.png")}
+            style={styles.logo}
+          />
+          <Text style={styles.title}>Baby health</Text>
+        </View>
 
-    <View style={styles.container}>
-          {/* Header avec vague et logo */}
-          <View style={styles.header}>
-            <Svg
-              viewBox="0 0 500 150"
-              preserveAspectRatio="none"
-              style={styles.wave}
-            >
-              <Path
-                d="M-0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L-0.00,150.00 Z"
-                fill="#fff"
-              />
-            </Svg>
-            <Image
-              source={require("../assets/images/baby-icon.png")}
-              style={styles.logo}
-            />
-            <Text style={styles.title}>Baby health</Text>
-          </View>
-    
-          {/* Formulaire */}
-      <View style={styles.formContainer}>
+        <View style={styles.formContainer}>
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -110,55 +91,46 @@ export default function LoginForm() {
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Se connecter</Text>
           </TouchableOpacity>
-          
+
           {message && <Text style={styles.message}>{message}</Text>}
 
           <Text style={styles.link} onPress={() => router.push("/Register")}>
             Pas encore de compte ? Inscrivez-vous
           </Text>
-      </View>
-    </View>
-    
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    height: "100%",
+  gradientContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
   },
   header: {
-    position: "relative",
-    backgroundColor: "#F4C7C3",
     alignItems: "center",
-    paddingBottom: 60,
     paddingTop: 50,
-  },
-  wave: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 250,
+    paddingBottom: 30,
   },
   logo: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
-    zIndex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
-    zIndex: 1,
-    marginTop: 20,
+    color: "#333",
   },
   formContainer: {
     paddingHorizontal: 20,
-    paddingTop: 30,
+    paddingTop: 10,
     alignItems: "center",
-    backgroundColor: "white",
   },
   input: {
     width: "100%",
@@ -177,7 +149,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   button: {
-    backgroundColor: "#F4C7C3",
+    backgroundColor: "#F4A4A0",
     borderRadius: 25,
     paddingVertical: 14,
     width: "100%",
@@ -189,8 +161,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  message: {
+    marginTop: 10,
+    color: "#333",
+    textAlign: "center",
+  },
   link: {
-    color: "#F4A4A0",
+    color: "#a21caf",
     marginTop: 20,
     fontSize: 14,
     textDecorationLine: "underline",

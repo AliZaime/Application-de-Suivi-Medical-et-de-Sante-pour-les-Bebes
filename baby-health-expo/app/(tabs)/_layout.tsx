@@ -6,7 +6,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "transparent",
           position: "absolute",
           borderTopWidth: 1,
           borderTopColor: "gray", 

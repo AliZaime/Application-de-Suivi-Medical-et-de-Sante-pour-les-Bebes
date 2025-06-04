@@ -14,8 +14,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TeteeSerializer, AdviceSerializer
-from .models import Parent,Baby, Appointment, Couche, Tetee, advice
+from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
+from .models import Medicament, Parent,Baby, Appointment, Couche, Temperature, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
@@ -25,6 +25,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
 from django.contrib.auth.hashers import check_password
+
+##############
+import os
+import numpy as np
+import librosa
+import tensorflow as tf
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser
+from django.conf import settings
+from tensorflow.keras.layers import InputLayer
+from keras.layers import TFSMLayer
 
 
 class TestView(APIView):
@@ -389,7 +401,9 @@ def get_children_schedules(request, parent_id):
             schedules.append(schedule)
         return Response({'childrenSchedules': schedules}, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': f"Erreur lors de la récupération des horaires : {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'error': str(e)}, status=500)
+    
+@api_view(['GET'])
 def get_tracking_by_baby_id(request, baby_id):
     try:
         trackings = BabyTracking.objects.filter(baby__baby_id=baby_id).order_by('-date_recorded')
@@ -549,3 +563,138 @@ def save_expo_token(request):
         return Response({'message': 'Token enregistré avec succès'})
     except Parent.DoesNotExist:
         return Response({'error': 'Parent non trouvé'}, status=404)
+    
+@api_view(['POST'])
+def add_temperature(request):
+    serializer = TemperatureSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Température ajoutée avec succès', 'temperature': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_temperatures_by_baby(request, baby_id):
+    temperatures = Temperature.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = TemperatureSerializer(temperatures, many=True)
+    return Response({'message': 'Températures récupérées avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_temperature(request, temperature_id):
+    try:
+        temperature = Temperature.objects.get(id=temperature_id)
+        serializer = TemperatureSerializer(temperature, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Température modifiée avec succès', 'temperature': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Temperature.DoesNotExist:
+        return Response({'error': 'Température non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_temperature(request, temperature_id):
+    try:
+        temperature = Temperature.objects.get(id=temperature_id)
+        temperature.delete()
+        return Response({'message': 'Température supprimée avec succès'}, status=status.HTTP_200_OK)
+    except Temperature.DoesNotExist:
+        return Response({'error': 'Température non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def add_medicament(request):
+    serializer = MedicamentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Médicament ajouté avec succès', 'medicament': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_medicaments_by_baby(request, baby_id):
+    medicaments = Medicament.objects.filter(baby_id=baby_id).order_by('-heure')
+    serializer = MedicamentSerializer(medicaments, many=True)
+    return Response({'message': 'Médicaments récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_medicament(request, medicament_id):
+    try:
+        medicament = Medicament.objects.get(id=medicament_id)
+        serializer = MedicamentSerializer(medicament, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Médicament modifié avec succès', 'medicament': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Medicament.DoesNotExist:
+        return Response({'error': 'Médicament non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['DELETE'])
+def delete_medicament(request, medicament_id):
+    try:
+        medicament = Medicament.objects.get(id=medicament_id)
+        medicament.delete()
+        return Response({'message': 'Médicament supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Medicament.DoesNotExist:
+        return Response({'error': 'Médicament non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    
+    
+@api_view(['POST'])
+def detect_cry(request):
+    file = request.FILES.get("audio")
+    if not file:
+        return Response({"error": "Aucun fichier audio reçu"}, status=400)
+
+    try:
+        # Prétraitement audio
+        y, sr = librosa.load(file, sr=22050)
+        S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
+        S_dB = librosa.power_to_db(S, ref=np.max)
+
+        if S_dB.shape[1] < 44:
+            S_dB = np.pad(S_dB, ((0, 0), (0, 44 - S_dB.shape[1])), mode='constant')
+        else:
+            S_dB = S_dB[:, :44]
+
+        input_tensor = np.expand_dims(S_dB, axis=(0, -1))  # (1, 128, 44, 1)
+        print(f"input_tensor shape: {input_tensor.shape}")
+
+        # Charger le modèle Keras
+        
+        model_path = os.path.join(settings.BASE_DIR, "mstc_baby_cry_model")
+        model = tf.keras.Sequential([
+            TFSMLayer(model_path, call_endpoint='serve')
+        ])
+
+        print("Modèle chargé avec succès")
+
+        # Labels avec suffixe _augmented
+        labels = [
+            'belly_pain_augmented',
+            'burping_augmented',
+            'discomfort_augmented',
+            'hungry_augmented',
+            'tired_augmented'
+        ]
+
+        label_map = {
+            'belly_pain_augmented': "Douleur au ventre",
+            'burping_augmented': "Besoin de roter",
+            'discomfort_augmented': "Inconfort",
+            'hungry_augmented': "Faim",
+            'tired_augmented': "Fatigue"
+        }
+
+        prediction = model.predict(input_tensor)
+        print(f"prediction raw: {prediction}")
+
+        pred_index = int(np.argmax(prediction))
+        pred_label = labels[pred_index]
+        confidence = float(np.max(prediction))
+
+        return Response({
+            "prediction": pred_label,
+            "label": label_map.get(pred_label, pred_label),
+            "confidence": confidence
+        })
+
+    except Exception as e:
+        print(f"Erreur dans detect_cry: {e}")
+        return Response({"error": "Erreur interne du serveur"}, status=500)

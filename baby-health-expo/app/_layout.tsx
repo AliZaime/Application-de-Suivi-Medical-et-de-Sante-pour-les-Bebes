@@ -15,6 +15,11 @@ export default function RootLayout() {
         <Stack.Screen name="Solides" options={{ headerShown: false }} />
         <Stack.Screen name="SuiviPage" options={{ headerShown: false }} />
         <Stack.Screen name="Sommeil" options={{ headerShown: false }} />
+        <Stack.Screen name="Sante" options={{ headerShown: false }} />
+        <Stack.Screen name="Temperature" options={{ headerShown: false }} />
+        <Stack.Screen name="Medicaments" options={{ headerShown: false }} />
+        <Stack.Screen name="Vaccins" options={{ headerShown: false }} />
+        <Stack.Screen name="Symptomes" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

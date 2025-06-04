@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from .views import add_tetee, delete_tetee, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_tetee 
+from .views import add_medicament, add_temperature, add_tetee, delete_medicament, delete_temperature, delete_tetee, get_medicaments_by_baby, get_temperatures_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_medicament, update_temperature, update_tetee, detect_cry
 from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby, get_advice,get_advice_by_category, get_children_schedules
 from .views import add_biberon, add_solide, add_sommeil, add_tetee, delete_biberon, delete_solide, delete_sommeil, delete_tetee, get_biberons_by_baby, get_solides_by_baby, get_sommeils_by_baby, get_tetees_by_baby, login_parent,register_parent, get_parent_by_id, add_baby, get_baby_by_id, get_babies_by_parent_id, update_baby, get_appointments_by_parent_id, add_appointment, update_appointment, delete_appointment, update_biberon, update_solide, update_sommeil, update_tetee 
 from .views import TestView, add_couche, update_couche, delete_couche, get_couches_by_baby,get_tracking_by_baby_id,add_tracking,save_expo_token
@@ -50,4 +50,13 @@ urlpatterns = [
     path('sommeils/<int:sommeil_id>/', update_sommeil, name='update_sommeil'),
     path('sommeils/<int:sommeil_id>/delete/', delete_sommeil, name='delete_sommeil'),
     path('user/save_token/', save_expo_token, name='save_expo_token'),
+    path('temperatures/', add_temperature, name='add_temperature'),
+    path('temperatures/baby/<int:baby_id>/', get_temperatures_by_baby, name='get_temperatures_by_baby'),
+    path('temperatures/<int:temperature_id>/', update_temperature, name='update_temperature'),
+    path('temperatures/<int:temperature_id>/delete/', delete_temperature, name='delete_temperature'),
+    path('medicaments/', add_medicament, name='add_medicament'),
+    path('medicaments/baby/<int:baby_id>/', get_medicaments_by_baby, name='get_medicaments_by_baby'),
+    path('medicaments/<int:medicament_id>/', update_medicament, name='update_medicament'),
+    path('medicaments/<int:medicament_id>/delete/', delete_medicament, name='delete_medicament'),
+    path('cry_detection/', detect_cry, name='detect_cry'),
 ]
