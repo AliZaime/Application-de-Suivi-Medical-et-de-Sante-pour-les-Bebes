@@ -328,13 +328,21 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 16,
-    marginBottom: 14,
-    borderRadius: 12,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: '#fff',
+  borderRadius: 18,
+  padding: 16,
+  marginBottom: 14,
+  borderLeftWidth: 6,
+  borderLeftColor: '#a21caf', // couleur personnalisée
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 6,
+  elevation: 4,
+},
 
   dateText: {
     color: '#888',
