@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  TextInput,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -24,6 +26,9 @@ export default function CroissanceScreen() {
   const [selectedTab, setSelectedTab] = useState("overview");
   const [barWidth, setBarWidth] = useState(0);
   const { babyId } = useLocalSearchParams();
+  const [gender, setGender] = useState("");
+  const [heightCm, setHeightCm] = useState("");
+ 
 
 
   useEffect(() => {
@@ -50,6 +55,27 @@ export default function CroissanceScreen() {
     const birthDate = new Date(dob);
     const now = new Date();
     return (now.getFullYear() - birthDate.getFullYear()) * 12 + (now.getMonth() - birthDate.getMonth());
+  };
+
+  const predictHeight = async () => {
+    if (!ageMonths || !gender || !heightCm) {
+      Alert.alert("Erreur", "Veuillez remplir tous les champs.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${config.API_BASE_URL}/api/predict-height/`, {
+        age_months: parseInt(ageMonths),
+        gender,
+        height_cm: parseFloat(heightCm),
+        
+      });
+      setPrediction(response.data.prediction);
+      
+    } catch (error) {
+      console.error("Erreur lors de la prédiction :", error);
+      Alert.alert("Erreur", "Impossible de prédire la taille. Veuillez réessayer.");
+    }
   };
 
   const ageMonths = baby ? calculateAgeInMonths(baby.date_of_birth) : 0;
@@ -107,6 +133,9 @@ export default function CroissanceScreen() {
   };
 
   const recentTrackings = [...allTrackings].sort((a, b) => new Date(b.date_recorded) - new Date(a.date_recorded)).slice(0, 3);
+
+  const [showPredictCard, setShowPredictCard] = useState(false);
+  const [prediction, setPrediction] = useState(null);
 
   if (!baby || tracking === undefined) {
     return <Text style={{ marginTop: 50, textAlign: "center" }}>Chargement...</Text>;
@@ -217,6 +246,110 @@ export default function CroissanceScreen() {
         <TouchableOpacity style={styles.addButton} onPress={() => router.push("/addtracking")}>
           <Text style={styles.addButtonText}>Ajouter une mesure</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.addButton} onPress={() => setShowPredictCard(true)}>
+          <Text style={styles.addButtonText}>Verifier</Text>
+        </TouchableOpacity>
+
+        {/* Predict Card Modal */}
+        {showPredictCard && (
+          <View style={{
+            position: "absolute",
+            top: 100,
+            left: 20,
+            right: 20,
+            backgroundColor: "#fff",
+            borderRadius: 16,
+            padding: 20,
+            elevation: 10,
+            zIndex: 100,
+            alignItems: "center"
+          }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>Vérifier la taille prédite</Text>
+            <Text style={{ marginBottom: 10 }}>Remplissez les informations :</Text>
+            <View style={{ width: "100%", marginBottom: 10 }}>
+              <Text>Âge (mois)</Text>
+              <View style={{
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 8,
+                marginBottom: 10,
+                paddingHorizontal: 8
+              }}>
+                <Text
+                  style={{ paddingVertical: 8 }}
+                  selectable={false}
+                >{ageMonths}</Text>
+              </View>
+              <Text>Genre</Text>
+              <View style={{
+                flexDirection: "row",
+                marginBottom: 10,
+                gap: 10
+              }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: gender === "Male" ? "#F4A4A0" : "#eee",
+                    borderRadius: 8,
+                    padding: 8,
+                    flex: 1,
+                    alignItems: "center"
+                  }}
+                  onPress={() => setGender("Male")}
+                >
+                  <Text>Garçon</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: gender === "Female" ? "#F4A4A0" : "#eee",
+                    borderRadius: 8,
+                    padding: 8,
+                    flex: 1,
+                    alignItems: "center"
+                  }}
+                  onPress={() => setGender("Female")}
+                >
+                  <Text>Fille</Text>
+                </TouchableOpacity>
+              </View>
+              <Text>Taille actuelle (cm)</Text>
+              <View style={{
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 8,
+                marginBottom: 10,
+                paddingHorizontal: 8
+              }}>
+                <TextInput
+                  keyboardType="numeric"
+                  value={heightCm}
+                  onChangeText={setHeightCm}
+                  placeholder="Entrer la taille en cm"
+                  style={{ paddingVertical: 8 }}
+                />
+              </View>
+              
+            </View>
+            <TouchableOpacity
+              style={[styles.addButton, { width: "100%", marginBottom: 10 }]}
+              onPress={async () => {
+                await predictHeight();
+              }}
+            >
+              <Text style={styles.addButtonText}>Vérifier</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.addButton, { width: "100%", backgroundColor: "#ccc" }]}
+              onPress={() => setShowPredictCard(false)}
+            >
+              <Text style={[styles.addButtonText, { color: "#333" }]}>Fermer</Text>
+            </TouchableOpacity>
+            {prediction && (
+              <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                Taille prédite : {prediction} 
+              </Text>
+            )}
+          </View>
+        )}
       </ScrollView>
     </LinearGradient>
   );
