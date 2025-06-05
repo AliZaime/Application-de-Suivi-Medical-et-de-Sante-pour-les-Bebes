@@ -106,7 +106,7 @@ class MedicalDiagnosisTester:
 # Exemple d'utilisation
 if __name__ == "__main__":
     # Initialiser le tester avec le modèle sauvegardé
-    tester = MedicalDiagnosisTester("C:/Study/PFAv2/medical_diagnosis_model.joblib")
+    tester = MedicalDiagnosisTester("Application-de-Suivi-Medical-et-de-Sante-pour-les-Bebes\Baby_Health_Back\AI_models\Symptoms_model\medical_diagnosis_model.joblib")
     
     # Faire une prédiction avec des symptômes
     #symptoms = ["itching", "skin_rash", "nodal_skin_eruptions"]

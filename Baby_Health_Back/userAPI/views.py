@@ -1,5 +1,4 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.views import APIView
 from AI_models.Symptoms_model.ts3 import MedicalDiagnosisTester
@@ -12,8 +11,6 @@ from datetime import datetime, timedelta
 from django.conf import settings  
 
 from rest_framework.response import Response
-=======
->>>>>>> main
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
@@ -23,7 +20,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
 
 from rest_framework import status
-<<<<<<< HEAD
 from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SymptomeSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
 from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
@@ -31,11 +27,9 @@ from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil,
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
-=======
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
->>>>>>> main
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 
@@ -47,14 +41,12 @@ import os
 import numpy as np
 import librosa
 import tensorflow as tf
-<<<<<<< HEAD
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.conf import settings
 """ from tensorflow.keras.layers import InputLayer """
 from keras.layers import TFSMLayer
-=======
 from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
 import tempfile
 
@@ -72,7 +64,6 @@ from .serializers import (
     BabyTrackingSerializer, CryDetectionSerializer, AdviceSerializer
 )
 
->>>>>>> main
 
 
 class TestView(APIView):

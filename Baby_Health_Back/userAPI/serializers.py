@@ -1,9 +1,5 @@
 from rest_framework import serializers
-<<<<<<< HEAD
-from .models import Medicament, Parent, Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
-=======
-from .models import Medicament, Parent, Baby, Appointment, Couche, Temperature, Tetee, advice, CryDetection
->>>>>>> main
+from .models import Medicament, Parent, Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, CryDetection
 from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth.hashers import make_password
 
