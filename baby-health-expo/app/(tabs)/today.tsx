@@ -227,12 +227,13 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   marginBottom: 80,
+    marginTop: 80,
   },
   headerSection: {
     marginBottom: 20,
   },
   dateText: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#999',
     textAlign: 'center',
   },

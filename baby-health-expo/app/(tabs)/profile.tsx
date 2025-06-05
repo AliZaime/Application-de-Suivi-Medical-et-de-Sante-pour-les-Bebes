@@ -313,6 +313,7 @@ const styles = StyleSheet.create({
     margin: 20,
     textAlign: 'center',
     color: '#333',
+    marginTop: 80,
   },
   table: {
     width: '100%',
