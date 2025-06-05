@@ -809,7 +809,7 @@ def medical_diagnosis_view(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    tester = MedicalDiagnosisTester("C:/Study/PFAv2/medical_diagnosis_model.joblib")
+    tester = MedicalDiagnosisTester()
     result = tester.full_diagnosis(symptoms)
 
     if "error" in result:

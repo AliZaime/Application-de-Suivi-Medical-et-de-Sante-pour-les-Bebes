@@ -1,8 +1,16 @@
 import joblib
 import pandas as pd
+import os
 
 class MedicalDiagnosisTester:
-    def __init__(self, model_path="medical_diagnosis_model.joblib"):
+    def __init__(self, model_filename="medical_diagnosis_model.joblib"):
+        
+        # Obtenir le chemin absolu de ce fichier (ts3.py)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Construire le chemin complet vers le modèle
+        model_path = os.path.join(current_dir, model_filename)
+        
         """Charge le modèle sauvegardé"""
         saved_data = joblib.load(model_path)
         self.model = saved_data['model']
@@ -102,37 +110,3 @@ class MedicalDiagnosisTester:
             "probabilities": probabilities,
             "details": details
         }
-
-# Exemple d'utilisation
-if __name__ == "__main__":
-    # Initialiser le tester avec le modèle sauvegardé
-    tester = MedicalDiagnosisTester("Application-de-Suivi-Medical-et-de-Sante-pour-les-Bebes\Baby_Health_Back\AI_models\Symptoms_model\medical_diagnosis_model.joblib")
-    
-    # Faire une prédiction avec des symptômes
-    #symptoms = ["itching", "skin_rash", "nodal_skin_eruptions"]
-    #symptoms = ["high_fever", "chills", "fatigue", "cough", "headache"]
-    #symptoms = ["excessive_hunger", "weight_loss", "fatigue", "polyuria"]
-    #symptoms = ["headache", "dizziness", "blurred_vision", "chest_pain"]
-    symptoms = ["cough", "high_fever", "weight_loss", "fatigue", "breathlessness"]
-    #symptoms = ["high_fever", "headache", "joint_pain", "skin_rash", "vomiting"]
-    #symptoms = ["back_pain", "weakness_in_limbs", "joint_pain", "neck_pain"]
-    result = tester.full_diagnosis(symptoms)
-    
-    if "error" in result:
-        print(result["error"])
-        print(result["suggestions"])
-    else:
-        # Afficher les résultats
-        print("\nRésultats du diagnostic:")
-        print(f"Maladie prédite: {result['prediction']}")
-        print(f"\nDescription: {result['details']['description']}")
-        print("\nPrécautions recommandées:")
-        for i, prec in enumerate(result['details']['precautions'], 1):
-            print(f"{i}. {prec}")
-        
-        # Afficher les probabilités pour les 5 premières maladies
-        diseases = tester.model.classes_
-        top_indices = result['probabilities'].argsort()[::-1][:5]
-        print("\nTop 5 des maladies probables:")
-        for idx in top_indices:
-            print(f"- {diseases[idx]}: {result['probabilities'][idx]:.2%}")
