@@ -10,7 +10,7 @@ const cards = [
   {
     key: 'couche',
     label: 'Couche',
-    icon: <FontAwesome5 name="baby" size={40} color="#E75480" />,
+    icon: <FontAwesome5 name="baby" size={40} color="rgb(197, 71, 128)" />,
     color: "#ffe4ec",
     route: '/couchePage',
   },
@@ -24,7 +24,7 @@ const cards = [
   {
     key: 'sommeil',
     label: 'Sommeil',
-    icon: <FontAwesome5 name="bed" size={40} color="rgb(31, 161, 153)" />,
+    icon: <FontAwesome5 name="bed" size={40} color="#4682B4" />,
     color: "#e3f0ff",
     route: '/Sommeil',
   },
@@ -45,8 +45,8 @@ const cards = [
   {
     key: 'croissance',
     label: 'Croissance',
-    icon: <FontAwesome5 name="chart-line" size={40} color="#ff8c00" />,
-    color: "#fff5e6",
+    icon: <FontAwesome5 name="chart-line" size={40} color="#4682B4" />,
+    color: "#e3f0ff",
     route: '/growth', // ou autre route si renommée
   },
 ];

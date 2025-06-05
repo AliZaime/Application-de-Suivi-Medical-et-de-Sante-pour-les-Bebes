@@ -261,24 +261,26 @@ const Symptomes = () => {
 
   const renderItem = ({ item }) => (
   <View style={styles.card}>
-    <View style={{ flex: 1 }}>
-      <Text style={styles.tempText}>
-        Date : {item.date || 'N/A'} à {item.heure || 'N/A'}
-      </Text>
-      <Text style={styles.tempText}>
-        Symptômes : {Array.isArray(item.symptomes) ? item.symptomes.join(', ') : 'N/A'}
-      </Text>
-      {item.remarque
-        ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text>
-        : null}
-    </View>
-    <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
-      <FontAwesome5 name="edit" size={20} color="#6366f1" />
+  <View style={{ flex: 1 }}>
+    <Text style={styles.tempText}>
+      📅     {item.date || 'N/A'} à {item.heure || 'N/A'}
+    </Text>
+    <Text style={styles.causeText}>
+      🩺     Symptômes : {Array.isArray(item.symptomes) ? item.symptomes.join(', ') : 'N/A'}
+    </Text>
+    {item.remarque
+      ? <Text style={styles.remarqueText}>📝      {item.remarque}</Text>
+      : null}
+  </View>
+  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <TouchableOpacity onPress={() => openEdit(item)} style={styles.cardActionBtn}>
+      <FontAwesome5 name="edit" size={18} style={styles.cardIcon} />
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => handleDelete(item.id)}>
-      <FontAwesome5 name="trash" size={20} color="#ef4444" />
+    <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.cardActionBtn}>
+      <FontAwesome5 name="trash" size={18} color="#ef4444" />
     </TouchableOpacity>
   </View>
+</View>
 );
 
   return (
@@ -421,10 +423,31 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: 'bold', color: '#a21caf', textAlign: 'center', marginVertical: 10, marginTop: 80 },
   list: { padding: 16, paddingBottom: 80, minHeight: 100 },
   card: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 18,
-    padding: 16, marginBottom: 14, shadowColor: '#a3cef1', shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.13, shadowRadius: 8, elevation: 3,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: '#fff',
+  borderRadius: 18,
+  padding: 16,
+  marginBottom: 14,
+  borderLeftWidth: 6,
+  borderLeftColor: '#a21caf', // couleur personnalisée
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 6,
+  elevation: 4,
+},
+cardActionBtn: {
+  marginLeft: 12,
+  padding: 8,
+  borderRadius: 8,
+  backgroundColor: '#f3f4f6',
+},
+cardIcon: {
+  color: '#4b5563',
+},
+
   input: {
     borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 10, padding: 10,
     marginVertical: 6, backgroundColor: '#f9fafb',
@@ -451,11 +474,21 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20, fontWeight: 'bold', color: '#a21caf', textAlign: 'center', marginBottom: 10,
   },
-  remarqueText: {
-    color: '#555', fontSize: 13, marginTop: 2, fontStyle: 'italic',
-  },
   tempText: {
-    fontSize: 15, fontWeight: '500', color: '#333',
+    color: '#888',
+    fontSize: 14,
+    marginTop: 2,
+  },
+  causeText: {
+    color: 'rgba(11, 121, 22, 0.8)',
+    fontSize: 14,
+    marginTop: 2,
+  },
+  remarqueText: {
+    color: '#555',
+    fontSize: 13,
+    marginTop: 2,
+    fontStyle: 'italic',
   },
   addBtn: {
     position: 'absolute', right: 24, bottom: 32, backgroundColor: '#a21caf', borderRadius: 30,
