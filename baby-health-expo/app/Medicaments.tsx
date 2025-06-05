@@ -9,7 +9,6 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PieChart } from 'react-native-chart-kit';
-import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
 
 const medicamentTypes = [
   {
