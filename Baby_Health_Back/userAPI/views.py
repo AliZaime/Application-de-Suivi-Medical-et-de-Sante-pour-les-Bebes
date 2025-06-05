@@ -150,8 +150,10 @@ def get_babies_by_parent_id(request, parent_id):
     except Parent.DoesNotExist:
         return Response({'error': 'Parent non trouvé'}, status=500)
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 def update_baby(request, baby_id):
+    print(f"Request received for baby_id: {baby_id}")
+    print(f"Request data: {request.data}")
     try:
         baby = Baby.objects.get(baby_id=baby_id)
         serializer = BabySerializer(baby, data=request.data, partial=True)
@@ -162,7 +164,19 @@ def update_baby(request, baby_id):
     except Baby.DoesNotExist:
         return Response({'error': 'Bébé non trouvé'}, status=500)
 
-
+@api_view(['DELETE'])
+def delete_baby(request, baby_id):
+    try:
+        # Use baby_id instead of id
+        baby = Baby.objects.get(baby_id=baby_id)
+        baby.delete()
+        return Response({"message": "Bébé supprimé avec succès."}, status=status.HTTP_200_OK)
+    except Baby.DoesNotExist:
+        return Response({"error": "Bébé introuvable."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Unexpected error in delete_baby: {e}")
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])

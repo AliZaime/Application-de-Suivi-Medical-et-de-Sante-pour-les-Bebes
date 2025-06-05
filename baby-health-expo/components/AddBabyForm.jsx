@@ -53,7 +53,7 @@ export default function AddBabyForm() {
       });
 
       setMessage("Ajout du bébé réussi !");
-      router.push("/home");
+      router.push("/today");
 
     } catch (error) {
       let errorMsg = "Erreur lors de l'ajout.";
