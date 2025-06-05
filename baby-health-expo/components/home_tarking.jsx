@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   scrollContent: { flexGrow: 1 },
   header: {
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 80,
     paddingBottom: 80,
   },
   profileImage: {

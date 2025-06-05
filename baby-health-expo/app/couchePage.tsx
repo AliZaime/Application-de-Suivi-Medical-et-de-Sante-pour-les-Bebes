@@ -137,7 +137,7 @@ const CouchePage = () => {
       <View
         style={[
           styles.card,
-          { backgroundColor: item.gender === "fille" ? "#ffe4ec" : "#e3f0ff" }
+          { backgroundColor: item.gender === "Fille" ? "#ffe4ec" : "#e3f0ff" }
         ]}
       >
         <View style={styles.iconType}>{typeObj?.icon}</View>

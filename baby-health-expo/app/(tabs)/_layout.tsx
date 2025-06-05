@@ -25,21 +25,11 @@ export default function TabLayout() {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <FontAwesome5 name="calendar-day" color={color} size={size} />
+          <FontAwesome5 name="home" color={color} size={size} />
         ),
       }}
     />
 
-      
-      <Tabs.Screen
-        name="growth"
-        options={{
-          title: "Croissance",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chart-line" color={color} size={size} />
-          ),
-        }}
-      />
       <Tabs.Screen
         name="Suivi"
         options={{
@@ -67,6 +57,7 @@ export default function TabLayout() {
         name="more"
         options={{
           title: "More",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="dots-horizontal" color={color} size={size} />
           ),

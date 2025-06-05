@@ -62,6 +62,8 @@ const Medicament = () => {
   const [dose, setDose] = useState('');
   const [remarque, setRemarque] = useState('');
 
+  
+
   useEffect(() => {
     fetchMedicaments();
   }, []);

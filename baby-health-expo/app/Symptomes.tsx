@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
   TextInput, Modal, FlatList, Alert, ActivityIndicator,
@@ -97,7 +97,7 @@ const symptomesList = [
   { label: "Urine fréquente", value: "polyuria" },
   { label: "Veines proéminentes sur le mollet", value: "prominent_veins_on_calf" },
   { label: "Visage et yeux gonflés", value: "puffy_face_and_eyes" },
-  { label: "Boutons remplis de pus", value: "pus_filled_pimples" },
+  { label: "Boutons remplis de pus", value: "pus_Filled_pimples" },
   { label: "Transfusions sanguines reçues", value: "receiving_blood_transfusion" },
   { label: "Injections non stériles reçues", value: "receiving_unsterile_injections" },
   { label: "Plaies autour du nez", value: "red_sore_around_nose" },
@@ -159,6 +159,7 @@ const Symptomes = () => {
   const [predicting, setPredicting] = useState(false);
   const [results, setResults] = useState(null);
   const [search, setSearch] = useState('');
+  const [lastPayload, setLastPayload] = useState(null);
 
   useEffect(() => {
     fetchSymptomes();
@@ -167,8 +168,9 @@ const Symptomes = () => {
   const fetchSymptomes = async () => {
     try {
       const res = await axios.get(`${config.API_BASE_URL}/api/symptomes/baby/${babyId}/`);
-      setSymptomes(res.data);
-    } catch (e) {
+      console.log('Symptômes récupérés:', res.data);
+      setSymptomes(res.data.data);
+    } catch {
       setSymptomes([]);
     } finally {
       setLoading(false);
@@ -190,9 +192,10 @@ const Symptomes = () => {
       : [...prev, symptom]);
   };
 
-  const filteredSymptomes = symptomesList.filter(symptome =>
-    symptome.label.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredSymptomes = useMemo(() =>
+    symptomesList.filter(symptome =>
+      symptome.label.toLowerCase().includes(search.toLowerCase())
+    ), [search]);
 
   const openEdit = (item) => {
     setEditing(item);
@@ -206,11 +209,20 @@ const Symptomes = () => {
     Alert.alert('Confirmation', 'Supprimer cette entrée ?', [
       { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Supprimer', style: 'destructive', onPress: async () => {
-          await axios.delete(`${config.API_BASE_URL}/api/symptomes/${id}/delete/`);
-          fetchSymptomes();
-        }
-      }
+        text: 'Supprimer',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await axios.delete(`${config.API_BASE_URL}/api/symptomes/${id}/delete/`, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+            fetchSymptomes();
+          } catch (err) {
+            console.error('Erreur suppression:', err.response?.data || err.message);
+            Alert.alert('Erreur', err.response?.data?.error || 'Échec de la suppression.');
+          }
+        },
+      },
     ]);
   };
 
@@ -225,7 +237,12 @@ const Symptomes = () => {
       heure: date.toTimeString().slice(0, 5),
       symptomes: selectedSymptoms,
       remarque,
+      predicted_disease: results?.predicted_disease || '',
+      description: results?.description || '',
+      precautions: results?.precautions || [],
+      top_5_diseases: results?.top_5 || [],
     };
+    setLastPayload(payload);
     try {
       if (editing) {
         await axios.put(`${config.API_BASE_URL}/api/symptomes/${editing.id}/`, payload);
@@ -236,26 +253,33 @@ const Symptomes = () => {
       setModalVisible(false);
       resetForm();
       fetchSymptomes();
-    } catch (e) {
+    } catch (err) {
+      console.error('Erreur sauvegarde:', err);
       Alert.alert('Erreur', "Échec de l'enregistrement");
     }
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.tempText}>Date : {item.date} à {item.heure}</Text>
-        <Text style={styles.tempText}>Symptômes : {item.symptomes.join(', ')}</Text>
-        {item.remarque ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text> : null}
-      </View>
-      <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
-        <FontAwesome5 name="edit" size={20} color="#6366f1" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleDelete(item.id)}>
-        <FontAwesome5 name="trash" size={20} color="#ef4444" />
-      </TouchableOpacity>
+  <View style={styles.card}>
+    <View style={{ flex: 1 }}>
+      <Text style={styles.tempText}>
+        Date : {item.date || 'N/A'} à {item.heure || 'N/A'}
+      </Text>
+      <Text style={styles.tempText}>
+        Symptômes : {Array.isArray(item.symptomes) ? item.symptomes.join(', ') : 'N/A'}
+      </Text>
+      {item.remarque
+        ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text>
+        : null}
     </View>
-  );
+    <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
+      <FontAwesome5 name="edit" size={20} color="#6366f1" />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => handleDelete(item.id)}>
+      <FontAwesome5 name="trash" size={20} color="#ef4444" />
+    </TouchableOpacity>
+  </View>
+);
 
   return (
     <LinearGradient colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} style={styles.gradient}>
@@ -265,7 +289,7 @@ const Symptomes = () => {
       ) : (
         <FlatList
           data={symptomes}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           contentContainerStyle={styles.list}
           ListEmptyComponent={<Text style={styles.emptyText}>Aucun symptôme enregistré.</Text>}
@@ -280,6 +304,7 @@ const Symptomes = () => {
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>{editing ? 'Modifier' : 'Ajouter'} un symptôme</Text>
+
             <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
               <Text>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
@@ -289,86 +314,101 @@ const Symptomes = () => {
                 if (selected) setDate(new Date(selected));
               }} />
             )}
+
             <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
               <Text>{date.toTimeString().slice(0, 5)}</Text>
             </TouchableOpacity>
             {showTimePicker && (
               <DateTimePicker value={date} mode="time" display="default" onChange={(e, selected) => {
                 setShowTimePicker(false);
-                if (selected) setDate(new Date(date.setHours(selected.getHours(), selected.getMinutes())));
+                if (selected) {
+                  const updated = new Date(date);
+                  updated.setHours(selected.getHours(), selected.getMinutes());
+                  setDate(updated);
+                }
               }} />
             )}
-            <View style={{ maxHeight: 300 }}>
-                <TextInput
-                    placeholder="Rechercher un symptôme"
-                    value={search}
-                    onChangeText={setSearch}
-                    style={[styles.input, { marginBottom: 10 }]}
-                />
-                <ScrollView style={{ maxHeight: 150 }}>
-                    {filteredSymptomes.map(({ label, value }) => (
-                    <TouchableOpacity
-                        key={value}
-                        style={[styles.symptomBtn, selectedSymptoms.includes(value) && styles.symptomBtnActive]}
-                        onPress={() => toggleSymptom(value)}>
-                        <Text>{label}</Text>
-                    </TouchableOpacity>
-                    ))}
-                </ScrollView>
+
+            <TextInput
+              placeholder="Rechercher un symptôme"
+              value={search}
+              onChangeText={setSearch}
+              style={styles.input}
+            />
+
+            <ScrollView style={{ maxHeight: 150 }}>
+              {filteredSymptomes.map(({ label, value }) => (
+                <TouchableOpacity
+                  key={value}
+                  style={[styles.symptomBtn, selectedSymptoms.includes(value) && styles.symptomBtnActive]}
+                  onPress={() => toggleSymptom(value)}>
+                  <Text>{label}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <TextInput
+              placeholder="Remarque (optionnel)"
+              value={remarque}
+              onChangeText={setRemarque}
+              multiline
+              style={[styles.input, { height: 60 }]}
+            />
+
+            <TouchableOpacity style={styles.saveBtn} onPress={async () => {
+              if (!selectedSymptoms.length) return Alert.alert("Erreur", "Sélectionnez au moins un symptôme");
+              setPredicting(true);
+              try {
+                const res = await axios.post(`${config.API_BASE_URL}/api/symptomes/predict`, {
+                  baby_id: babyId,
+                  date: date.toISOString().split('T')[0],
+                  heure: date.toTimeString().slice(0, 5),
+                  symptomes: selectedSymptoms,
+                  remarque
+                });
+                setResults(res.data);
+              } catch {
+                Alert.alert("Erreur", "La prédiction a échoué");
+              } finally {
+                setPredicting(false);
+              }
+            }}>
+              {predicting
+                ? <ActivityIndicator color="#fff" />
+                : <Text style={{ color: '#fff', fontWeight: 'bold' }}>Prédire</Text>}
+            </TouchableOpacity>
+
+            {results && (
+              <View style={styles.resultsBox}>
+                <Text style={styles.resultText}>
+                  Maladie prédite : <Text style={styles.predictedDisease}>{results?.predicted_disease || 'N/A'}</Text>
+                </Text>
+                <Text style={styles.resultSub}>Description :</Text>
+                <Text style={styles.resultContent}>{results?.description || 'N/A'}</Text>
+                <Text style={styles.resultSub}>Précautions :</Text>
+                <Text style={styles.resultContent}>
+                  {Array.isArray(results?.precautions)
+                    ? results.precautions.join(', ')
+                    : 'N/A'}
+                </Text>
+                <Text style={[styles.resultSub, { marginTop: 8 }]}>Top 5 maladies possibles :</Text>
+                {Array.isArray(results.top_5) && results.top_5.map(({ disease, probability }, idx) => (
+                  <Text key={idx} style={styles.resultItem}>- {disease} <Text style={styles.probability}>({probability})</Text></Text>
+                ))}
+              </View>
+            )}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+              <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>{editing ? 'Modifier' : 'Ajouter'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.saveBtn, { backgroundColor: '#f3f4f6', borderWidth: 1, borderColor: '#a21caf' }]}
+                onPress={() => { setModalVisible(false); resetForm(); }}>
+                <Text style={{ color: '#a21caf', fontWeight: 'bold' }}>Annuler</Text>
+              </TouchableOpacity>
             </View>
 
-                <TextInput
-                placeholder="Remarque (optionnel)"
-                value={remarque}
-                onChangeText={setRemarque}
-                multiline
-                style={[styles.input, { height: 60 }]}
-                />
-
-                <TouchableOpacity style={styles.saveBtn} onPress={async () => {
-                if (!selectedSymptoms.length) return Alert.alert("Erreur", "Sélectionnez au moins un symptôme");
-                setPredicting(true);
-                try {
-                    const res = await axios.post(`${config.API_BASE_URL}/api/symptomes/predict`, {
-                    baby_id: babyId,
-                    date: date.toISOString().split('T')[0],
-                    heure: date.toTimeString().slice(0, 5),
-                    symptomes: selectedSymptoms,
-                    remarque
-                    });
-                    setResults(res.data);
-                } catch {
-                    Alert.alert("Erreur", "La prédiction a échoué");
-                } finally {
-                    setPredicting(false);
-                }
-                }}>
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Prédire</Text>
-                </TouchableOpacity>
-
-                {/* {results && (
-                <View style={styles.resultsBox}>
-                    <Text style={styles.resultText}>Maladie prédite : {results.predicted_disease}</Text>
-                    <Text>Description : {results.description}</Text>
-                    <Text>Précautions : {results.precautions}</Text>
-                    <Text style={{ fontWeight: 'bold', marginTop: 8 }}>Top 5 maladies possibles :</Text>
-                    {results.top_5?.map((mal, idx) => (
-                    <Text key={idx}>- {mal}</Text>
-                    ))}
-                </View>
-                )} */}
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>{editing ? 'Modifier' : 'Ajouter'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.saveBtn, { backgroundColor: '#f3f4f6', borderWidth: 1, borderColor: '#a21caf' }]}
-                    onPress={() => { setModalVisible(false); resetForm(); }}>
-                    <Text style={{ color: '#a21caf', fontWeight: 'bold' }}>Annuler</Text>
-                </TouchableOpacity>
-                </View>
-            
           </View>
         </View>
       </Modal>
@@ -379,7 +419,7 @@ const Symptomes = () => {
 const styles = StyleSheet.create({
   gradient: { flex: 1, paddingTop: 30 },
   title: { fontSize: 24, fontWeight: 'bold', color: '#a21caf', textAlign: 'center', marginVertical: 10, marginTop: 80 },
-  list: { padding: 16, paddingBottom: 80 },
+  list: { padding: 16, paddingBottom: 80, minHeight: 100 },
   card: {
     flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 18,
     padding: 16, marginBottom: 14, shadowColor: '#a3cef1', shadowOffset: { width: 0, height: 2 },
@@ -426,6 +466,56 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14, fontWeight: '600', marginBottom: 6, marginLeft:10
+  },
+searchInput: {
+  borderWidth: 1,
+  borderColor: '#d1d5db',
+  borderRadius: 8,
+  padding: 10,
+  backgroundColor: '#fff',
+  marginBottom: 10,
+},
+symptomLabel: {
+  fontSize: 14,
+  color: '#111827',
+},
+
+resultsBox: {
+    backgroundColor: '#f9fafb',
+    padding: 16,
+    marginTop: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  resultText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#a21caf',
+    marginBottom: 6,
+  },
+  predictedDisease: {
+    color: '#7c3aed',
+    fontWeight: 'bold',
+  },
+  resultSub: {
+    fontWeight: '600',
+    color: '#111827',
+    marginTop: 6,
+  },
+  resultContent: {
+    fontSize: 14,
+    color: '#374151',
+    marginBottom: 4,
+  },
+  resultItem: {
+    fontSize: 14,
+    color: '#111827',
+    marginVertical: 1,
+  },
+  probability: {
+    color: '#4b5563',
+    fontStyle: 'italic',
   },
 });
 

@@ -211,4 +211,27 @@ class Medicament(models.Model):
         db_table = 'medicament'
 
     def __str__(self):
-        return f"Médicament {self.name} - ({self.type}) ({self.dosage}) - {self.heure} (Baby ID: {self.baby.id})"
+        return f"Médicament {self.name} - ({self.type}) ({self.dosage}) - {self.heure} (Baby ID: {self.baby.name})"
+
+class Symptome(models.Model):
+    id = models.AutoField(primary_key=True)
+    baby = models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='symptom_entries')
+    date = models.DateField()
+    heure = models.TimeField()
+    symptomes = models.JSONField()
+    remarque = models.TextField(blank=True, null=True)
+
+    # Résultats de prédiction
+    predicted_disease = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    precautions = models.JSONField(blank=True, null=True) 
+    top_5_diseases = models.JSONField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'symptome'
+
+    def __str__(self):
+        try:
+            return f"{self.baby.name} - {self.date} {self.heure}"
+        except Exception:
+            return f"Symptôme {self.id} (baby manquant)"

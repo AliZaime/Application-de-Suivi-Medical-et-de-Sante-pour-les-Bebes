@@ -48,7 +48,7 @@ const Suivi = () => {
     <TouchableOpacity
       style={[
         styles.card,
-        { backgroundColor: item.gender === "fille" ? "#ffe4ec" : "#e3f0ff" }
+        { backgroundColor: item.gender === "Fille" ? "#ffe4ec" : "#e3f0ff" }
       ]}
       activeOpacity={0.85}
       onPress={() => router.push(`/SuiviPage?babyId=${item.id ?? item.baby_id}`)}
@@ -57,17 +57,17 @@ const Suivi = () => {
         <FontAwesome5
           name="baby"
           size={54}
-          color={item.gender === "fille" ? "#E75480" : "#4682B4"}
+          color={item.gender === "Fille" ? "#E75480" : "#4682B4"}
         />
         <View style={[
           styles.badge,
-          { backgroundColor: item.gender === "fille" ? "#F4C7C3" : "#A3CEF1" }
+          { backgroundColor: item.gender === "Fille" ? "#F4C7C3" : "#A3CEF1" }
         ]}>
           <Text style={[
             styles.badgeText,
-            { color: item.gender === "fille" ? "#E75480" : "#4682B4" }
+            { color: item.gender === "Fille" ? "#E75480" : "#4682B4" }
           ]}>
-            {item.gender === "fille" ? "Fille" : "Garçon"}
+            {item.gender === "Fille" ? "Fille" : "Garçon"}
           </Text>
         </View>
       </View>

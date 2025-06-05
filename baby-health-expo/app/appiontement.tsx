@@ -320,6 +320,7 @@ const AppointmentPage = () => { // Renamed component
         markingType={'multi-dot'} // Enabled multi-dot marking
         current={selectedDate}
         key={selectedDate} // Re-render calendar if selectedDate month changes
+        style={{ marginTop: 100 }} // Add some margin at the bottom
       />
       <Text style={styles.title}>Calendrier & Rendez-vous</Text>
       {loading ? (
