@@ -172,9 +172,9 @@ const Medicament = () => {
     <View style={styles.card}>
       <View style={{ flex: 1 }}>
         <Text style={styles.dateText}>A {item.heure}</Text>
-        <Text style={styles.tempText}>Nom : {item.name}</Text>
-        <Text style={styles.tempText}>Type : {item.type || 'Non précisé'}</Text>
-        <Text style={styles.tempText}>Dose : {item.dosage} </Text>
+        <Text style={styles.nomText}>Nom : {item.name}</Text>
+        <Text style={styles.typeText}>Type : {item.type || 'Non précisé'}</Text>
+        <Text style={styles.doseText}>Dose : {item.dosage} </Text>
         {item.remarque ? <Text style={styles.remarqueText}>Remarque : {item.remarque}</Text> : null}
       </View>
       <TouchableOpacity onPress={() => openEdit(item)} style={{ marginRight: 10 }}>
@@ -351,18 +351,21 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    padding: 16,
-    marginBottom: 14,
-    shadowColor: "#a3cef1",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.13,
-    shadowRadius: 8,
-    elevation: 3,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: '#fff',
+  borderRadius: 18,
+  padding: 16,
+  marginBottom: 14,
+  borderLeftWidth: 6,
+  borderLeftColor: '#a21caf', // couleur personnalisée
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 6,
+  elevation: 4,
+},
   modalBg: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.18)',
@@ -458,13 +461,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 2,
   },
+  nomText: {
+    fontSize: 15,
+    color: 'rgba(11, 116, 107, 0.8)',
+  },
+  typeText: {
+    fontSize: 15,
+    color: 'rgba(12, 113, 185, 0.8)',
+    marginTop: 4,
+  },
+  doseText: {
+    fontSize: 15,
+    color: 'rgba(245, 158, 11, 0.8)',
+    marginTop: 4,
+  },
+
   tempText: {
     fontSize: 15,
     fontWeight: '500',
     color: '#333',
   },
   remarqueText: {
-    color: '#555',
+    color: '#6b7280',
     fontSize: 13,
     marginTop: 2,
     fontStyle: 'italic',
