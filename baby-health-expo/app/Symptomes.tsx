@@ -159,6 +159,7 @@ const Symptomes = () => {
   const [predicting, setPredicting] = useState(false);
   const [results, setResults] = useState(null);
   const [search, setSearch] = useState('');
+  const [showResults, setShowResults] = useState(true);
   const [lastPayload, setLastPayload] = useState(null);
 
   useEffect(() => {
@@ -307,55 +308,59 @@ const Symptomes = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>{editing ? 'Modifier' : 'Ajouter'} un symptôme</Text>
 
-            <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-              <Text>{date.toLocaleDateString()}</Text>
-            </TouchableOpacity>
-            {showDatePicker && (
-              <DateTimePicker value={date} mode="date" display="default" onChange={(e, selected) => {
-                setShowDatePicker(false);
-                if (selected) setDate(new Date(selected));
-              }} />
-            )}
-
-            <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
-              <Text>{date.toTimeString().slice(0, 5)}</Text>
-            </TouchableOpacity>
-            {showTimePicker && (
-              <DateTimePicker value={date} mode="time" display="default" onChange={(e, selected) => {
-                setShowTimePicker(false);
-                if (selected) {
-                  const updated = new Date(date);
-                  updated.setHours(selected.getHours(), selected.getMinutes());
-                  setDate(updated);
-                }
-              }} />
-            )}
-
-            <TextInput
-              placeholder="Rechercher un symptôme"
-              value={search}
-              onChangeText={setSearch}
-              style={styles.input}
-            />
-
-            <ScrollView style={{ maxHeight: 150 }}>
-              {filteredSymptomes.map(({ label, value }) => (
-                <TouchableOpacity
-                  key={value}
-                  style={[styles.symptomBtn, selectedSymptoms.includes(value) && styles.symptomBtnActive]}
-                  onPress={() => toggleSymptom(value)}>
-                  <Text>{label}</Text>
+            {(!results || !showResults) && (
+              <>
+                <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+                  <Text>{date.toLocaleDateString()}</Text>
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
+                {showDatePicker && (
+                  <DateTimePicker value={date} mode="date" display="default" onChange={(e, selected) => {
+                    setShowDatePicker(false);
+                    if (selected) setDate(new Date(selected));
+                  }} />
+                )}
 
-            <TextInput
-              placeholder="Remarque (optionnel)"
-              value={remarque}
-              onChangeText={setRemarque}
-              multiline
-              style={[styles.input, { height: 60 }]}
-            />
+                <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
+                  <Text>{date.toTimeString().slice(0, 5)}</Text>
+                </TouchableOpacity>
+                {showTimePicker && (
+                  <DateTimePicker value={date} mode="time" display="default" onChange={(e, selected) => {
+                    setShowTimePicker(false);
+                    if (selected) {
+                      const updated = new Date(date);
+                      updated.setHours(selected.getHours(), selected.getMinutes());
+                      setDate(updated);
+                    }
+                  }} />
+                )}
+
+                <TextInput
+                  placeholder="Rechercher un symptôme"
+                  value={search}
+                  onChangeText={setSearch}
+                  style={styles.input}
+                />
+
+                <ScrollView style={{ maxHeight: 150 }}>
+                  {filteredSymptomes.map(({ label, value }) => (
+                    <TouchableOpacity
+                      key={value}
+                      style={[styles.symptomBtn, selectedSymptoms.includes(value) && styles.symptomBtnActive]}
+                      onPress={() => toggleSymptom(value)}>
+                      <Text>{label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+
+                <TextInput
+                  placeholder="Remarque (optionnel)"
+                  value={remarque}
+                  onChangeText={setRemarque}
+                  multiline
+                  style={[styles.input, { height: 60 }]}
+                />
+              </>
+            )}
 
             <TouchableOpacity style={styles.saveBtn} onPress={async () => {
               if (!selectedSymptoms.length) return Alert.alert("Erreur", "Sélectionnez au moins un symptôme");
@@ -381,23 +386,27 @@ const Symptomes = () => {
             </TouchableOpacity>
 
             {results && (
-              <View style={styles.resultsBox}>
-                <Text style={styles.resultText}>
-                  Maladie prédite : <Text style={styles.predictedDisease}>{results?.predicted_disease || 'N/A'}</Text>
-                </Text>
-                <Text style={styles.resultSub}>Description :</Text>
-                <Text style={styles.resultContent}>{results?.description || 'N/A'}</Text>
-                <Text style={styles.resultSub}>Précautions :</Text>
-                <Text style={styles.resultContent}>
-                  {Array.isArray(results?.precautions)
-                    ? results.precautions.join(', ')
-                    : 'N/A'}
-                </Text>
-                <Text style={[styles.resultSub, { marginTop: 8 }]}>Top 5 maladies possibles :</Text>
-                {Array.isArray(results.top_5) && results.top_5.map(({ disease, probability }, idx) => (
-                  <Text key={idx} style={styles.resultItem}>- {disease} <Text style={styles.probability}>({probability})</Text></Text>
-                ))}
-              </View>
+              <>
+                <TouchableOpacity onPress={() => setShowResults(!showResults)} style={styles.saveBtn}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                    {showResults ? 'Masquer les résultats' : 'Afficher les résultats'}
+                  </Text>
+                </TouchableOpacity>
+
+                {showResults && (
+                  <View style={styles.resultsBox}>
+                    <Text style={styles.resultText}>Maladie prédite : <Text style={styles.predictedDisease}>{results.predicted_disease}</Text></Text>
+                    <Text style={styles.resultSub}>Description :</Text>
+                    <Text style={styles.resultContent}>{results.description}</Text>
+                    <Text style={styles.resultSub}>Précautions :</Text>
+                    <Text style={styles.resultContent}>{results.precautions?.join(', ')}</Text>
+                    <Text style={[styles.resultSub, { marginTop: 8 }]}>Top 5 maladies possibles :</Text>
+                    {results.top_5?.map((d, i) => (
+                      <Text key={i} style={styles.resultItem}>- {d.disease} <Text style={styles.probability}>({d.probability})</Text></Text>
+                    ))}
+                  </View>
+                )}
+              </>
             )}
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
@@ -410,7 +419,6 @@ const Symptomes = () => {
                 <Text style={{ color: '#a21caf', fontWeight: 'bold' }}>Annuler</Text>
               </TouchableOpacity>
             </View>
-
           </View>
         </View>
       </Modal>
