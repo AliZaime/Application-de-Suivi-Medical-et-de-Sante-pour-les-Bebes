@@ -60,7 +60,12 @@ export default function LoginForm() {
   };
 
   return (
-    <LinearGradient colors={["#f8b5c8", "#dbeeff"]} style={styles.gradientContainer}>
+    <LinearGradient
+          colors={['#ffb6c1', '#f8f6fa', '#a3cef1']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradientContainer}
+        >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Image
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 200,
     paddingBottom: 30,
   },
   logo: {

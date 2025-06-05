@@ -1,4 +1,19 @@
 from django.shortcuts import render
+<<<<<<< HEAD
+from django.contrib.auth.hashers import make_password, check_password
+from rest_framework.views import APIView
+from AI_models.Symptoms_model.ts3 import MedicalDiagnosisTester
+
+from django.contrib.auth.models import User  # Assure-toi d'importer depuis auth.models
+from rest_framework_simplejwt.tokens import RefreshToken
+
+import jwt
+from datetime import datetime, timedelta
+from django.conf import settings  
+
+from rest_framework.response import Response
+=======
+>>>>>>> main
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
@@ -8,9 +23,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
 
 from rest_framework import status
+<<<<<<< HEAD
+from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SymptomeSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
+from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
+from django.contrib.auth import authenticate
+
+from django.contrib.auth import authenticate
+=======
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
+>>>>>>> main
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 
@@ -22,6 +47,14 @@ import os
 import numpy as np
 import librosa
 import tensorflow as tf
+<<<<<<< HEAD
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser
+from django.conf import settings
+""" from tensorflow.keras.layers import InputLayer """
+from keras.layers import TFSMLayer
+=======
 from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
 import tempfile
 
@@ -39,6 +72,7 @@ from .serializers import (
     BabyTrackingSerializer, CryDetectionSerializer, AdviceSerializer
 )
 
+>>>>>>> main
 
 
 class TestView(APIView):
@@ -726,6 +760,82 @@ def detect_cry(request):
         print(f"Erreur dans detect_cry: {e}")
         return Response({"error": "Erreur interne du serveur"}, status=500)
     
+@api_view(['POST'])
+def add_symptom(request):
+    serializer = SymptomeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Symptôme ajouté avec succès', 'symptom': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_symptoms_by_baby(request, baby_id):
+    symptoms = Symptome.objects.filter(baby_id=baby_id).order_by('-date', '-heure')
+    serializer = SymptomeSerializer(symptoms, many=True)
+    return Response({'message': 'Symptômes récupérés avec succès.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def update_symptom(request, symptom_id):
+    try:
+        symptom = Symptome.objects.get(id=symptom_id)
+    except Symptome.DoesNotExist:
+        return Response({'error': 'Symptôme non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = SymptomeSerializer(symptom, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            'message': 'Symptôme modifié avec succès',
+            'symptom': serializer.data
+        }, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_symptom(request, symptom_id):
+    try:
+        print(f"[DEBUG] Suppression du symptôme ID {symptom_id}")
+        symptom = Symptome.objects.get(id=symptom_id)
+        print(f"[DEBUG] Trouvé : {symptom}")
+        symptom.delete()
+        print(f"[DEBUG] Suppression réussie")
+        return Response({'message': 'Symptôme supprimé avec succès'}, status=status.HTTP_200_OK)
+    except Symptome.DoesNotExist:
+        print(f"[ERROR] Symptôme ID {symptom_id} non trouvé")
+        return Response({'error': 'Symptôme non trouvé'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"[ERROR] Exception lors de la suppression : {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def medical_diagnosis_view(request):
+    symptoms = request.data.get("symptomes")
+
+    if not symptoms or not isinstance(symptoms, list):
+        return Response(
+            {"error": "Le champ 'symptomes' est requis et doit être une liste."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    tester = MedicalDiagnosisTester("C:/Study/PFAv2/medical_diagnosis_model.joblib")
+    result = tester.full_diagnosis(symptoms)
+
+    if "error" in result:
+        return Response(result, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "predicted_disease": result["prediction"],
+        "description": result["details"]["description"],
+        "precautions": result["details"]["precautions"],
+        "top_5": [
+            {
+                "disease": tester.model.classes_[i],
+                "probability": f"{result['probabilities'][i]*100:.2f}%"
+            }
+            for i in result["probabilities"].argsort()[::-1][:5]
+        ]
+    })
 
 @api_view(['GET'])
 def get_cry_detection_by_baby_id(request, baby_id):

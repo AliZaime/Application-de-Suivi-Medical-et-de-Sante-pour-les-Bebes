@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#a21caf',
     textAlign: 'center',
-    marginBottom: 20,
-    marginTop: 80,
+    marginBottom: 100,
+    marginTop: 100,
   },
   list: {
     flexGrow: 1,
