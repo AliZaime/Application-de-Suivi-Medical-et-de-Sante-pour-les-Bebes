@@ -83,7 +83,6 @@ class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicament
         fields = ['id', 'name', 'type', 'heure', 'dosage', 'remarque', 'baby']
-<<<<<<< HEAD
 
 class SymptomeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -100,7 +99,6 @@ class SymptomeSerializer(serializers.ModelSerializer):
             'precautions',
             'top_5_diseases',
         ]
-=======
         
 class CryDetectionSerializer(serializers.ModelSerializer):
     baby_name = serializers.CharField(source='baby.name', read_only=True)
@@ -108,4 +106,3 @@ class CryDetectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CryDetection
         fields = ['id', 'baby', 'baby_name', 'label', 'confidence', 'detected_at']
->>>>>>> main

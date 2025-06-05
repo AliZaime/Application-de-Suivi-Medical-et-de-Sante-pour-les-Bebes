@@ -21,13 +21,10 @@ export default function RootLayout() {
         <Stack.Screen name="Medicaments" options={{ headerShown: false }} />
         <Stack.Screen name="Vaccins" options={{ headerShown: false }} />
         <Stack.Screen name="Symptomes" options={{ headerShown: false }} />
-<<<<<<< HEAD
         <Stack.Screen name="appiontement" options={{ headerShown: false }} />
         <Stack.Screen name="growth" options={{ headerShown: false }} />
-=======
         <Stack.Screen name="PleursPage" options={{ headerShown: false }} />
         <Stack.Screen name="CryDetection" options={{ headerShown: false }} />
->>>>>>> main
         
       </Stack>
     </GestureHandlerRootView>

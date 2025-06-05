@@ -60,13 +60,10 @@ urlpatterns = [
     path('medicaments/<int:medicament_id>/delete/', delete_medicament, name='delete_medicament'),
     path('cry_detection/', detect_cry, name='detect_cry'),
     path('delete_baby/<int:baby_id>/', delete_baby, name='delete_baby'),
-<<<<<<< HEAD
     path('symptomes/', add_symptom, name='add_symptome'),
     path('symptomes/baby/<int:baby_id>/', get_symptoms_by_baby, name='get_symptomes_by_baby'),
     path('symptomes/<int:symptom_id>/', update_symptom, name='update_symptome'),
     path('symptomes/<int:symptom_id>/delete/', delete_symptom, name='delete_symptome'),
     path('symptomes/predict', medical_diagnosis_view, name='predict-disease'),
-=======
     path('cry_detections/<int:baby_id>/', get_cry_detection_by_baby_id, name='cry-detection-by-baby'),
->>>>>>> main
 ]

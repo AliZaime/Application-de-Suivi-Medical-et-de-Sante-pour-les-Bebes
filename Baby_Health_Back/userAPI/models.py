@@ -236,3 +236,17 @@ class Symptome(models.Model):
             return f"{self.baby.name} - {self.date} {self.heure}"
         except Exception:
             return f"Symptôme {self.id} (baby manquant)"
+       
+    
+
+class CryDetection(models.Model):
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='cry_detections')
+    label = models.CharField(max_length=100)  # Exemple : "pleur", "colique", "faim"
+    confidence = models.FloatField()  # Entre 0 et 1
+    detected_at = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        db_table = 'cryDetection'
+
+    def __str__(self):
+        return f"{self.baby.name} - {self.label} ({self.detected_at.strftime('%Y-%m-%d %H:%M:%S')})"

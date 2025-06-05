@@ -760,7 +760,6 @@ def detect_cry(request):
         print(f"Erreur dans detect_cry: {e}")
         return Response({"error": "Erreur interne du serveur"}, status=500)
     
-<<<<<<< HEAD
 @api_view(['POST'])
 def add_symptom(request):
     serializer = SymptomeSerializer(data=request.data)
@@ -837,7 +836,6 @@ def medical_diagnosis_view(request):
             for i in result["probabilities"].argsort()[::-1][:5]
         ]
     })
-=======
 
 @api_view(['GET'])
 def get_cry_detection_by_baby_id(request, baby_id):
@@ -847,4 +845,3 @@ def get_cry_detection_by_baby_id(request, baby_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
->>>>>>> main
