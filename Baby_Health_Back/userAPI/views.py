@@ -836,3 +836,47 @@ def get_cry_detection_by_baby_id(request, baby_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from height_model.test import predict_height  # Import the predict_height function
+
+@api_view(['POST'])
+def predict_baby_height(request):
+    print("Received request to predict baby height")  # Corrected typo
+    """
+    API endpoint to predict the height of a baby based on age, gender, and current height.
+    """
+    # Extract parameters from the request
+    age_months = request.data.get('age_months')
+    gender = request.data.get('gender')
+    height_cm = request.data.get('height_cm')
+    weight_kg = request.data.get('weight_kg')
+    print(f"Received data: age_months={age_months}, gender={gender}, height_cm={height_cm}")
+    # Validate input parameters
+    if age_months is None or gender is None or height_cm is None:
+        return Response(
+            {"error": "Missing required parameters: age_months, gender, and height_cm"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    
+
+    try:
+        # Call the predict_height function
+        prediction = predict_height(age_months, gender, height_cm)
+        return Response(
+            {"prediction": prediction},
+            status=status.HTTP_200_OK
+        )
+    except FileNotFoundError as e:
+        return Response(
+            {"error": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    except Exception as e:
+        return Response(
+            {"error": f"An unexpected error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
