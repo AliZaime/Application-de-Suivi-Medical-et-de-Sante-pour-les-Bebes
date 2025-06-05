@@ -38,9 +38,9 @@ const cards = [
   {
     key: 'Pleurs',
     label: 'Pleurs',
-    icon: <FontAwesome5 name="heartbeat" size={40} color="rgb(197, 71, 128)" />,
+    icon: <FontAwesome5 name="sad-cry" size={40} color="rgb(197, 71, 128)" />,
     color: "#ffe4ec",
-    route: '/Pleurs',
+    route: '/PleursPage',
   },
   {
     key: 'croissance',

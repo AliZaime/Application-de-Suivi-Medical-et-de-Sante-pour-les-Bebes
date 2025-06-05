@@ -1,4 +1,5 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.views import APIView
 from AI_models.Symptoms_model.ts3 import MedicalDiagnosisTester
@@ -11,10 +12,18 @@ from datetime import datetime, timedelta
 from django.conf import settings  
 
 from rest_framework.response import Response
+=======
+>>>>>>> main
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from rest_framework.decorators import api_view
+from django.conf import settings
+
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password, check_password
+
 from rest_framework import status
+<<<<<<< HEAD
 from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SymptomeSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
 from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
 from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
@@ -22,22 +31,48 @@ from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil,
 from django.contrib.auth import authenticate
 
 from django.contrib.auth import authenticate
+=======
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+>>>>>>> main
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
+from rest_framework.parsers import MultiPartParser
 
-from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
 
-##############
+from datetime import datetime, timedelta
+import jwt
 import os
 import numpy as np
 import librosa
 import tensorflow as tf
+<<<<<<< HEAD
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.conf import settings
 """ from tensorflow.keras.layers import InputLayer """
 from keras.layers import TFSMLayer
+=======
+from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
+import tempfile
+
+# MODELS
+from .models import (
+    Parent, Baby, Appointment, Couche, Solides, Sommeil,
+    Tetee, Medicament, Biberon, BabyTracking, CryDetection, advice
+)
+
+# SERIALIZERS
+from .serializers import (
+    ParentSerializer, BabySerializer, AppointmentSerializer,
+    CoucheSerializer, SolidesSerializer, SommeilSerializer,
+    TeteeSerializer, MedicamentSerializer, BiberonSerializer,
+    BabyTrackingSerializer, CryDetectionSerializer, AdviceSerializer
+)
+
+>>>>>>> main
 
 
 class TestView(APIView):
@@ -654,6 +689,8 @@ def delete_medicament(request, medicament_id):
 @api_view(['POST'])
 def detect_cry(request):
     file = request.FILES.get("audio")
+    baby_id = request.data.get("baby_id")
+    print(f"BABY ID reçu : {baby_id}")
     if not file:
         return Response({"error": "Aucun fichier audio reçu"}, status=400)
 
@@ -699,21 +736,31 @@ def detect_cry(request):
 
         prediction = model.predict(input_tensor)
         print(f"prediction raw: {prediction}")
-
         pred_index = int(np.argmax(prediction))
         pred_label = labels[pred_index]
         confidence = float(np.max(prediction))
+        
+        baby = Baby.objects.get(baby_id=baby_id)  # 🧸 vérifier que le bébé existe
+
+        detection = CryDetection.objects.create(
+            baby=baby,
+            label=label_map.get(pred_label, pred_label),
+            confidence=confidence
+        )
 
         return Response({
-            "prediction": pred_label,
-            "label": label_map.get(pred_label, pred_label),
-            "confidence": confidence
+            "label": detection.label,
+            "confidence": detection.confidence,
+            "detected_at": detection.detected_at
         })
+        
+        
 
     except Exception as e:
         print(f"Erreur dans detect_cry: {e}")
         return Response({"error": "Erreur interne du serveur"}, status=500)
     
+<<<<<<< HEAD
 @api_view(['POST'])
 def add_symptom(request):
     serializer = SymptomeSerializer(data=request.data)
@@ -790,3 +837,14 @@ def medical_diagnosis_view(request):
             for i in result["probabilities"].argsort()[::-1][:5]
         ]
     })
+=======
+
+@api_view(['GET'])
+def get_cry_detection_by_baby_id(request, baby_id):
+    try:
+        cry_detections = CryDetection.objects.filter(baby__baby_id=baby_id).order_by('-detected_at')
+        serializer = CryDetectionSerializer(cry_detections, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+>>>>>>> main

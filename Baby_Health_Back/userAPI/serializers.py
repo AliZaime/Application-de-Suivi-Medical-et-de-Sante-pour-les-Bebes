@@ -1,5 +1,9 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import Medicament, Parent, Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
+=======
+from .models import Medicament, Parent, Baby, Appointment, Couche, Temperature, Tetee, advice, CryDetection
+>>>>>>> main
 from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth.hashers import make_password
 
@@ -79,6 +83,7 @@ class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicament
         fields = ['id', 'name', 'type', 'heure', 'dosage', 'remarque', 'baby']
+<<<<<<< HEAD
 
 class SymptomeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -95,3 +100,12 @@ class SymptomeSerializer(serializers.ModelSerializer):
             'precautions',
             'top_5_diseases',
         ]
+=======
+        
+class CryDetectionSerializer(serializers.ModelSerializer):
+    baby_name = serializers.CharField(source='baby.name', read_only=True)
+
+    class Meta:
+        model = CryDetection
+        fields = ['id', 'baby', 'baby_name', 'label', 'confidence', 'detected_at']
+>>>>>>> main
