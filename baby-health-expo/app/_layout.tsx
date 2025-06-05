@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import EditBabyScreen from '../components/EdidtbabyScreen'; // Adjust the path if necessary
 
 export default function RootLayout() {
   return (
@@ -20,6 +21,7 @@ export default function RootLayout() {
         <Stack.Screen name="Medicaments" options={{ headerShown: false }} />
         <Stack.Screen name="Vaccins" options={{ headerShown: false }} />
         <Stack.Screen name="Symptomes" options={{ headerShown: false }} />
+        
       </Stack>
     </GestureHandlerRootView>
   );
