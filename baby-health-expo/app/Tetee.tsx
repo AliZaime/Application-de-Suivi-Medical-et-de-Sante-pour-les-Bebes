@@ -6,7 +6,7 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LineChart } from "react-native-chart-kit";
-
+import config from '../config'; 
 const TeteePage = () => {
   const { babyId } = useLocalSearchParams();
   const [tetees, setTetees] = useState<any[]>([]);
@@ -31,7 +31,7 @@ const TeteePage = () => {
   const fetchTetees = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://172.20.10.4:8000/api/tetees/baby/${babyId}/`);
+      const res = await axios.get(`${config.API_BASE_URL}/api/tetees/baby/${babyId}/`);
       console.log(babyId);
       setTetees(Array.isArray(res.data.data) ? res.data.data : []);
     } catch (e) {
@@ -80,9 +80,9 @@ const TeteePage = () => {
     };
     try {
       if (editing) {
-        await axios.put(`http://172.20.10.4:8000/api/tetees/${editing.id}/`, payload);
+        await axios.put(`${config.API_BASE_URL}/api/tetees/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://172.20.10.4:8000/api/tetees/`, payload);
+        await axios.post(`${config.API_BASE_URL}/api/tetees/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -102,7 +102,7 @@ const TeteePage = () => {
       {
         text: 'Supprimer', style: 'destructive', onPress: async () => {
           try {
-            await axios.delete(`http://172.20.10.4:8000/api/tetees/${id}/delete/`);
+            await axios.delete(`${config.API_BASE_URL}/api/tetees/${id}/delete/`);
             fetchTetees();
           } catch (e) {
             Alert.alert('Erreur', 'Suppression impossible');

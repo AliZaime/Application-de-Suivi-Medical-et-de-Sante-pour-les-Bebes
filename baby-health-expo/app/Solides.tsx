@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LineChart } from "react-native-chart-kit";
 import { useLocalSearchParams } from 'expo-router';
-
+import config from '../config'; 
 const Solides = () => {
   const { babyId } = useLocalSearchParams();
 
@@ -31,7 +31,7 @@ const Solides = () => {
   const fetchSolides = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://172.20.10.4:8000/api/solides/baby/${babyId}/`);
+      const res = await axios.get(`${config.API_BASE_URL}/api/solides/baby/${babyId}/`);
       setSolides(res.data.data || []);
     } catch (error) {
       Alert.alert("Erreur", "Impossible de charger les données des solides.");
@@ -56,9 +56,9 @@ const Solides = () => {
 
     try {
       if (editing) {
-        await axios.put(`http://172.20.10.4:8000/api/solides/${editing.id}/`, payload);
+        await axios.put(`${config.API_BASE_URL}/api/solides/${editing.id}/`, payload);
       } else {
-        await axios.post('http://172.20.10.4:8000/api/solides/', payload);
+        await axios.post('${config.API_BASE_URL}/api/solides/', payload);
       }
       setModalVisible(false);
       setEditing(null);
@@ -125,7 +125,7 @@ const Solides = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`http://172.20.10.4:8000/api/solides/${id}/delete/`);
+            await axios.delete(`${config.API_BASE_URL}/api/solides/${id}/delete/`);
             fetchSolides();
           } catch (e) {
             Alert.alert('Erreur', 'Impossible de supprimer le solide');

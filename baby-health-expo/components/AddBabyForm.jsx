@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {
   View,
   Text,
@@ -9,186 +8,179 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Platform,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
+import config from '../config';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function AddBabyForm() {
-    const router = useRouter();
-    const [name, setName] = useState("");
-    const [date_of_birth, setDateOfBirth] = useState("");
-    const [gender, setGender] = useState("");
-    const [blood_type, setBloodType] = useState("");
-    const [profile_picture, setProfilePicture] = useState("");
-    const [message, setMessage] = useState("");
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [gender, setGender] = useState("");
+  const [bloodType, setBloodType] = useState("");
+  const [timeOfBirth, setTimeOfBirth] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [message, setMessage] = useState("");
 
-    const handleSubmit = async () => {
-  const babyData = {
-    name: name.trim(),
-    date_of_birth: date_of_birth.trim(),
-    gender: gender.trim(),
-    blood_type: blood_type.trim(),
-    profile_picture: profile_picture.trim()
-  };
+  const handleSubmit = async () => {
+    const babyData = {
+      name: name.trim(),
+      date_of_birth: dateOfBirth.toISOString().split("T")[0],
+      time_of_birth: timeOfBirth.trim(),
+      gender,
+      blood_type: bloodType,
+      profile_picture: profilePicture.trim()
+    };
 
-  try {
-    const token = await AsyncStorage.getItem("token");
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        setMessage("Token non trouvé. Veuillez vous reconnecter.");
+        return;
+      }
 
-    if (!token) {
-      setMessage("Token non trouvé. Veuillez vous reconnecter.");
-      return;
-    }
-
-    const response = await axios.post(
-      "http://172.20.10.4:8000/api/user/add_baby/",
-      babyData,
-      {
+      await axios.post(`${config.API_BASE_URL}/api/user/add_baby/`, babyData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         }
-      }
-    );
+      });
 
-    setMessage("Ajout du bébé réussi !");
-    router.push("/home");
+      setMessage("Ajout du bébé réussi !");
+      router.push("/today");
 
-  } catch (error) {
-    let errorMsg = "Erreur lors de l'ajout.";
-
-    if (error.response) {
-      // 🔴 Erreur côté serveur avec réponse
-      console.log("Erreur response.data:", error.response.data);
-      console.log("Erreur status:", error.response.status);
-      console.log("Erreur headers:", error.response.headers);
-
-      if (error.response.data?.error) {
-        errorMsg = error.response.data.error;
-      } else if (typeof error.response.data === "string") {
-        errorMsg = error.response.data;
+    } catch (error) {
+      let errorMsg = "Erreur lors de l'ajout.";
+      if (error.response) {
+        if (error.response.data?.error) {
+          errorMsg = error.response.data.error;
+        } else if (typeof error.response.data === "string") {
+          errorMsg = error.response.data;
+        } else {
+          errorMsg = JSON.stringify(error.response.data, null, 2);
+        }
+      } else if (error.request) {
+        errorMsg = "Aucune réponse reçue du serveur.";
       } else {
-        errorMsg = JSON.stringify(error.response.data, null, 2);
+        errorMsg = error.message;
       }
-
-    } else if (error.request) {
-      // ⚠️ La requête a été faite mais aucune réponse
-      console.log("Erreur request:", error.request);
-      errorMsg = "Aucune réponse reçue du serveur.";
-    } else {
-      // ❌ Erreur inattendue
-      console.log("Erreur générique:", error.message);
-      errorMsg = error.message;
+      setMessage(errorMsg);
     }
+  };
 
-    setMessage(errorMsg);
-  }
-};
+  return (
+    <LinearGradient
+      colors={["#f8b5c8", "#dbeeff"]}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.header}>
+          <Image source={require("../assets/images/baby-icon.png")} style={styles.logo} />
+          <Text style={styles.title}>Baby health</Text>
+        </View>
 
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Nom complet"
+            value={name}
+            onChangeText={setName}
+          />
 
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-          {/* Header avec vague et logo */}
-          <View style={styles.header}>
-            <Svg
-              viewBox="0 0 500 150"
-              preserveAspectRatio="none"
-              style={styles.wave}
-            >
-              <Path
-                d="M-0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L-0.00,150.00 Z"
-                fill="#fff"
-              />
-            </Svg>
-            <Image
-              source={require("../assets/images/baby-icon.png")}
-              style={styles.logo}
+          <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+            <Text>{dateOfBirth.toISOString().split("T")[0]}</Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={dateOfBirth}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDateOfBirth(selectedDate);
+              }}
             />
-            <Text style={styles.title}>Baby health</Text>
+          )}
+
+          <TextInput
+            style={styles.input}
+            placeholder="Heure de naissance (ex: 13:30)"
+            value={timeOfBirth}
+            onChangeText={setTimeOfBirth}
+          />
+
+          <View style={styles.pickerContainer}>
+            <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker}>
+              <Picker.Item label="Sélectionner le sexe" value="" />
+              <Picker.Item label="Garçon" value="Garçon" />
+              <Picker.Item label="Fille" value="Fille" />
+            </Picker>
           </View>
-    
-          {/* Formulaire */}
-          <View style={styles.formContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Nom complet"
-              value={name}
-              onChangeText={setName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Date de naissance (AAAA-MM-JJ)"
-              value={date_of_birth}
-              onChangeText={setDateOfBirth}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Sexe"
-              value={gender}
-              onChangeText={setGender}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Groupe sanguin"
-              value={blood_type}
-              onChangeText={setBloodType}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Photo de profil (URL)"
-              value={profile_picture}
-              onChangeText={setProfilePicture}
-            />
-    
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Ajouter</Text>
-            </TouchableOpacity>
-    
-            {message ? <Text style={{ marginTop: 10 }}>{message}</Text> : null}
-    
-          </View>
-        </ScrollView>
-      );
 
+          <View style={styles.pickerContainer}>
+            <Picker selectedValue={bloodType} onValueChange={setBloodType} style={styles.picker}>
+              <Picker.Item label="Sélectionner le groupe sanguin" value="" />
+              <Picker.Item label="A+" value="A+" />
+              <Picker.Item label="A-" value="A-" />
+              <Picker.Item label="B+" value="B+" />
+              <Picker.Item label="B-" value="B-" />
+              <Picker.Item label="AB+" value="AB+" />
+              <Picker.Item label="AB-" value="AB-" />
+              <Picker.Item label="O+" value="O+" />
+              <Picker.Item label="O-" value="O-" />
+            </Picker>
+          </View>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Photo de profil (URL)"
+            value={profilePicture}
+            onChangeText={setProfilePicture}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Ajouter</Text>
+          </TouchableOpacity>
+
+          {message ? <Text style={{ marginTop: 10 }}>{message}</Text> : null}
+        </View>
+      </ScrollView>
+    </LinearGradient>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    backgroundColor: "white",
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 40,
   },
   header: {
-    position: "relative",
-    backgroundColor: "#F4C7C3",
     alignItems: "center",
-    paddingBottom: 60,
-    paddingTop: 50,
-  },
-  wave: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 250,
+    paddingVertical: 40,
   },
   logo: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
-    zIndex: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     color: "black",
-    zIndex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
   formContainer: {
     paddingHorizontal: 20,
-    paddingTop: 30,
     alignItems: "center",
-    backgroundColor: "white",
   },
   input: {
     width: "100%",
@@ -200,14 +192,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     marginBottom: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
     elevation: 2,
   },
+  pickerContainer: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#F2D7D5",
+    borderRadius: 12,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  picker: {
+    width: "100%",
+    height: 50,
+  },
   button: {
-    backgroundColor: "#F4C7C3",
+    backgroundColor: "#F4A4A0",
     borderRadius: 25,
     paddingVertical: 14,
     width: "100%",
@@ -218,11 +219,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
-  },
-  link: {
-    color: "#F4A4A0",
-    marginTop: 20,
-    fontSize: 14,
-    textDecorationLine: "underline",
   },
 });

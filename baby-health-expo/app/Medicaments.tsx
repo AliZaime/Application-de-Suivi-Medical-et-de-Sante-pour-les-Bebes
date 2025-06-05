@@ -9,7 +9,8 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PieChart } from 'react-native-chart-kit';
-
+import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
+import config from '../config'; 
 const medicamentTypes = [
   {
     label: 'Antalgique',
@@ -68,7 +69,7 @@ const Medicament = () => {
   const fetchMedicaments = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://172.20.10.4:8000/api/medicaments/baby/${babyId}/`);
+      const res = await axios.get(`${config.API_BASE_URL}/api/medicaments/baby/${babyId}/`);
       setMedicaments(Array.isArray(res.data.data) ? res.data.data : []);
     } catch {
       setMedicaments([]);
@@ -121,9 +122,9 @@ const Medicament = () => {
 
     try {
       if (editing) {
-        await axios.put(`http://172.20.10.4:8000/api/medicaments/${editing.id}/`, payload);
+        await axios.put(`${config.API_BASE_URL}/api/medicaments/${editing.id}/`, payload);
       } else {
-        await axios.post(`http://172.20.10.4:8000/api/medicaments/`, payload);
+        await axios.post(`${config.API_BASE_URL}/api/medicaments/`, payload);
       }
       setModalVisible(false);
       resetForm();
@@ -141,7 +142,7 @@ const Medicament = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`http://172.20.10.4:8000/api/medicaments/${id}/delete/`);
+            await axios.delete(`${config.API_BASE_URL}/api/medicaments/${id}/delete/`);
             fetchMedicaments();
           } catch {
             Alert.alert('Erreur', 'Suppression impossible');

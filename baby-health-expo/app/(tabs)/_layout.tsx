@@ -6,7 +6,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "transparent",
           position: "absolute",
           borderTopWidth: 1,
           borderTopColor: "gray", 
@@ -20,24 +19,18 @@ export default function TabLayout() {
         },
       }}
     >
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profil",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
-          ),
-        }}
-      />
+
+     <Tabs.Screen
+      name="today"
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <FontAwesome5 name="calendar-day" color={color} size={size} />
+        ),
+      }}
+    />
+
+      
       <Tabs.Screen
         name="growth"
         options={{
@@ -57,15 +50,28 @@ export default function TabLayout() {
           ),
         }}
       />
+      
+
       <Tabs.Screen
-      name="today"
-      options={{
-        title: "Aujourd'hui",
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome5 name="calendar-day" color={color} size={size} />
-        ),
-      }}
-    />
+        name="profile"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
+          ),
+        }}
+      />
+
+
+    <Tabs.Screen
+        name="more"
+        options={{
+          title: "More",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="dots-horizontal" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -8,20 +8,30 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  Alert,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import axios from "axios";
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { LinearGradient } from 'expo-linear-gradient';
+import config from '../config'; 
 export default function AddTrackingForm() {
   const router = useRouter();
   const [date, setDate] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [headCircumference, setHeadCircumference] = useState("");
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
+
+  const showDatePicker = () => setDatePickerVisibility(true);
+  const hideDatePicker = () => setDatePickerVisibility(false);
+
+  const handleConfirmDate = (selectedDate) => {
+    const isoDate = selectedDate.toISOString().split("T")[0];
+    setDate(isoDate);
+    hideDatePicker();
+  };
 
   const handleSubmit = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -34,7 +44,9 @@ export default function AddTrackingForm() {
 
     try {
       const babyRes = await axios.get(
-        `http://172.20.10.4:8000/api/user/get_babies_by_parent_id/${parentId}/`
+
+        `${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`
+
       );
       const babyId = babyRes.data[0].baby_id;
 
@@ -47,8 +59,8 @@ export default function AddTrackingForm() {
         note: note.trim(),
       };
 
-      const response = await axios.post(
-        "http://172.20.10.4:8000/api/user/add_tracking/",
+      await axios.post(
+        "${config.API_BASE_URL}/api/user/add_tracking/",
         trackingData,
         {
           headers: {
@@ -59,8 +71,7 @@ export default function AddTrackingForm() {
       );
 
       setMessage("Mesure enregistrée avec succès !");
-      router.push("/home"); // ou router.back()
-
+      router.push("/home");
     } catch (error) {
       console.error("Erreur :", error);
       setMessage(
@@ -70,106 +81,102 @@ export default function AddTrackingForm() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* En-tête avec vague et icône */}
-      <View style={styles.header}>
-        <Svg viewBox="0 0 500 150" preserveAspectRatio="none" style={styles.wave}>
-          <Path
-            d="M-0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L-0.00,150.00 Z"
-            fill="#fff"
+    <LinearGradient colors={["#f8b5c8", "#dbeeff"]} style={styles.gradientContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* En-tête sans vague */}
+        <View style={styles.header}>
+          <Image
+            source={require("../assets/images/baby-icon.png")}
+            style={styles.logo}
           />
-        </Svg>
-        <Image
-          source={require("../assets/images/baby-icon.png")}
-          style={styles.logo}
-        />
-        <Text style={styles.title}>Ajouter une nouvelle mesure</Text>
-      </View>
+          <Text style={styles.title}>Ajouter une nouvelle mesure</Text>
+        </View>
 
-      {/* Formulaire */}
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Date de la mesure (YYYY-MM-DD)"
-          value={date}
-          onChangeText={setDate}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Poids (ex: 6.5)"
-          keyboardType="decimal-pad"
-          value={weight}
-          onChangeText={setWeight}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Taille (en cm)"
-          keyboardType="decimal-pad"
-          value={height}
-          onChangeText={setHeight}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Périmètre crânien (en cm)"
-          keyboardType="decimal-pad"
-          value={headCircumference}
-          onChangeText={setHeadCircumference}
-        />
-        <TextInput
-          style={[styles.input, { height: 80 }]}
-          placeholder="Notes (optionnel)"
-          multiline
-          value={note}
-          onChangeText={setNote}
-        />
+        {/* Formulaire */}
+        <View style={styles.formContainer}>
+          <TouchableOpacity onPress={showDatePicker} style={styles.input}>
+            <Text style={{ color: date ? "#000" : "#888" }}>
+              {date || "Sélectionner la date de mesure"}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Enregistrer</Text>
-        </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirmDate}
+            onCancel={hideDatePicker}
+          />
 
-        {message ? <Text style={{ marginTop: 10 }}>{message}</Text> : null}
-      </View>
-    </ScrollView>
+          <TextInput
+            style={styles.input}
+            placeholder="Poids (ex: 6.5)"
+            keyboardType="decimal-pad"
+            value={weight}
+            onChangeText={setWeight}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Taille (en cm)"
+            keyboardType="decimal-pad"
+            value={height}
+            onChangeText={setHeight}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Périmètre crânien (en cm)"
+            keyboardType="decimal-pad"
+            value={headCircumference}
+            onChangeText={setHeadCircumference}
+          />
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            placeholder="Notes (optionnel)"
+            multiline
+            value={note}
+            onChangeText={setNote}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Enregistrer</Text>
+          </TouchableOpacity>
+
+          {message ? (
+            <Text style={{ marginTop: 10, color: "#333" }}>{message}</Text>
+          ) : null}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-    backgroundColor: "white",
+  gradientContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
   },
   header: {
-    position: "relative",
-    backgroundColor: "#F4C7C3",
     alignItems: "center",
-    paddingBottom: 60,
     paddingTop: 50,
-  },
-  wave: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 250,
+    paddingBottom: 30,
   },
   logo: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
-    zIndex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
-    zIndex: 1,
-    marginTop: 20,
+    color: "#333",
   },
   formContainer: {
     paddingHorizontal: 20,
-    paddingTop: 30,
+    paddingTop: 10,
     alignItems: "center",
-    backgroundColor: "white",
   },
   input: {
     width: "100%",
@@ -188,7 +195,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   button: {
-    backgroundColor: "#F4C7C3",
+    backgroundColor: "#F4A4A0",
     borderRadius: 25,
     paddingVertical: 14,
     width: "100%",

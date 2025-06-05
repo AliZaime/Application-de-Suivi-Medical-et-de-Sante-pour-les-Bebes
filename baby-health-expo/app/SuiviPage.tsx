@@ -35,6 +35,20 @@ const cards = [
     color: "#ffe4ec",
     route: '/Sante',
   },
+  {
+    key: 'Pleurs',
+    label: 'Pleurs',
+    icon: <FontAwesome5 name="heartbeat" size={40} color="rgb(197, 71, 128)" />,
+    color: "#ffe4ec",
+    route: '/Pleurs',
+  },
+  {
+    key: 'croissance',
+    label: 'Croissance',
+    icon: <FontAwesome5 name="chart-line" size={40} color="#ff8c00" />,
+    color: "#fff5e6",
+    route: '/growth', // ou autre route si renommée
+  },
 ];
 
 const SuiviPage = () => {
