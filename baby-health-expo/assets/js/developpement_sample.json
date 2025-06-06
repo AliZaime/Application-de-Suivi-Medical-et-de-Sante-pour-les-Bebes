@@ -1,0 +1,82 @@
+{
+  "semaines": [
+    {
+      "id": "week_1",
+      "type": "semaine",
+      "label": "1 semaine",
+      "taille": "45,7 – 55,5 cm",
+      "poids": "2,31 – 4,81 kg",
+      "titre": "Votre nouveau-né d'une semaine",
+      "description": "À une semaine, votre bébé commence à s'ajuster à la vie hors de l'utérus. Il dort beaucoup et ses sens s’éveillent.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "Il peut tousser ou éternuer pour dégager ses voies respiratoires du liquide amniotique."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le lait maternel ou le lait en formule est tout ce dont il a besoin pour l’instant."
+        }
+      ]
+    },
+    {
+      "id": "week_2",
+      "type": "semaine",
+      "label": "2 semaines",
+      "taille": "46,4 – 56,0 cm",
+      "poids": "2,51 – 5,11 kg",
+      "titre": "Votre bébé à 2 semaines",
+      "description": "Votre bébé commence à reconnaître votre voix et vos odeurs. Il est toujours dans une phase d’adaptation au monde extérieur.",
+      "sections": [
+        {
+          "titre": "Le sommeil",
+          "contenu": "Il dort encore jusqu’à 18h par jour, en petites périodes."
+        },
+        {
+          "titre": "Les pleurs",
+          "contenu": "Les pleurs sont normaux, c’est son moyen principal de communication."
+        }
+      ]
+    }
+  ],
+  "mois": [
+    {
+      "id": "month_2",
+      "type": "mois",
+      "label": "2 mois",
+      "taille": "51,6 – 61,2 cm",
+      "poids": "3,50 – 5,70 kg",
+      "titre": "Votre bébé à 2 mois",
+      "description": "À 2 mois, votre bébé commence à sourire socialement et suit les objets du regard.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "Il commence à lever la tête lorsqu’il est sur le ventre."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il babille et commence à émettre des sons différents."
+        }
+      ]
+    },
+    {
+      "id": "month_3",
+      "type": "mois",
+      "label": "3 mois",
+      "taille": "52,4 – 62,0 cm",
+      "poids": "3,75 – 6,05 kg",
+      "titre": "Votre bébé à 3 mois",
+      "description": "Il devient plus expressif et commence à développer des routines de sommeil.",
+      "sections": [
+        {
+          "titre": "Sociabilité",
+          "contenu": "Il sourit davantage et reconnaît les visages familiers."
+        },
+        {
+          "titre": "Vision",
+          "contenu": "Il peut suivre des objets en mouvement avec ses yeux."
+        }
+      ]
+    }
+  ]
+}

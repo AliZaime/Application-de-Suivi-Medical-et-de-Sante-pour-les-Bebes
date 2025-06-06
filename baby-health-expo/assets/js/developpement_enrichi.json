@@ -1,0 +1,519 @@
+{
+  "semaines": [
+    {
+      "id": "week_1",
+      "type": "semaine",
+      "label": "1 semaine",
+      "taille": "46.0 – 56.0 cm",
+      "poids": "2.75 – 4.80 kg",
+      "titre": "Votre bébé à 1 semaine",
+      "description": "À 1 semaine, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 1 semaine, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_2",
+      "type": "semaine",
+      "label": "2 semaines",
+      "taille": "47.0 – 57.0 cm",
+      "poids": "3.00 – 5.10 kg",
+      "titre": "Votre bébé à 2 semaines",
+      "description": "À 2 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 2 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_3",
+      "type": "semaine",
+      "label": "3 semaines",
+      "taille": "48.0 – 58.0 cm",
+      "poids": "3.25 – 5.40 kg",
+      "titre": "Votre bébé à 3 semaines",
+      "description": "À 3 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 3 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_4",
+      "type": "semaine",
+      "label": "4 semaines",
+      "taille": "49.0 – 59.0 cm",
+      "poids": "3.50 – 5.70 kg",
+      "titre": "Votre bébé à 4 semaines",
+      "description": "À 4 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 4 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_5",
+      "type": "semaine",
+      "label": "5 semaines",
+      "taille": "50.0 – 60.0 cm",
+      "poids": "3.75 – 6.00 kg",
+      "titre": "Votre bébé à 5 semaines",
+      "description": "À 5 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 5 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_6",
+      "type": "semaine",
+      "label": "6 semaines",
+      "taille": "51.0 – 61.0 cm",
+      "poids": "4.00 – 6.30 kg",
+      "titre": "Votre bébé à 6 semaines",
+      "description": "À 6 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 6 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_7",
+      "type": "semaine",
+      "label": "7 semaines",
+      "taille": "52.0 – 62.0 cm",
+      "poids": "4.25 – 6.60 kg",
+      "titre": "Votre bébé à 7 semaines",
+      "description": "À 7 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 7 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "week_8",
+      "type": "semaine",
+      "label": "8 semaines",
+      "taille": "53.0 – 63.0 cm",
+      "poids": "4.50 – 6.90 kg",
+      "titre": "Votre bébé à 8 semaines",
+      "description": "À 8 semaines, votre bébé montre une évolution rapide dans tous les aspects : physique, cognitif, social et émotionnel. Il commence à répondre davantage à son environnement et ses besoins deviennent plus expressifs.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 8 semaines, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    }
+  ],
+  "mois": [
+    {
+      "id": "month_2",
+      "type": "mois",
+      "label": "2 mois",
+      "taille": "54.0 – 64.0 cm",
+      "poids": "3.60 – 5.80 kg",
+      "titre": "Votre bébé à 2 mois",
+      "description": "À 2 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 2 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_3",
+      "type": "mois",
+      "label": "3 mois",
+      "taille": "55.0 – 65.0 cm",
+      "poids": "3.90 – 6.20 kg",
+      "titre": "Votre bébé à 3 mois",
+      "description": "À 3 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 3 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_4",
+      "type": "mois",
+      "label": "4 mois",
+      "taille": "56.0 – 66.0 cm",
+      "poids": "4.20 – 6.60 kg",
+      "titre": "Votre bébé à 4 mois",
+      "description": "À 4 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 4 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_5",
+      "type": "mois",
+      "label": "5 mois",
+      "taille": "57.0 – 67.0 cm",
+      "poids": "4.50 – 7.00 kg",
+      "titre": "Votre bébé à 5 mois",
+      "description": "À 5 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 5 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_6",
+      "type": "mois",
+      "label": "6 mois",
+      "taille": "58.0 – 68.0 cm",
+      "poids": "4.80 – 7.40 kg",
+      "titre": "Votre bébé à 6 mois",
+      "description": "À 6 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 6 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_7",
+      "type": "mois",
+      "label": "7 mois",
+      "taille": "59.0 – 69.0 cm",
+      "poids": "5.10 – 7.80 kg",
+      "titre": "Votre bébé à 7 mois",
+      "description": "À 7 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 7 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_8",
+      "type": "mois",
+      "label": "8 mois",
+      "taille": "60.0 – 70.0 cm",
+      "poids": "5.40 – 8.20 kg",
+      "titre": "Votre bébé à 8 mois",
+      "description": "À 8 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 8 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_9",
+      "type": "mois",
+      "label": "9 mois",
+      "taille": "61.0 – 71.0 cm",
+      "poids": "5.70 – 8.60 kg",
+      "titre": "Votre bébé à 9 mois",
+      "description": "À 9 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 9 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_10",
+      "type": "mois",
+      "label": "10 mois",
+      "taille": "62.0 – 72.0 cm",
+      "poids": "6.00 – 9.00 kg",
+      "titre": "Votre bébé à 10 mois",
+      "description": "À 10 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 10 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_11",
+      "type": "mois",
+      "label": "11 mois",
+      "taille": "63.0 – 73.0 cm",
+      "poids": "6.30 – 9.40 kg",
+      "titre": "Votre bébé à 11 mois",
+      "description": "À 11 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 11 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    },
+    {
+      "id": "month_12",
+      "type": "mois",
+      "label": "12 mois",
+      "taille": "64.0 – 74.0 cm",
+      "poids": "6.60 – 9.80 kg",
+      "titre": "Votre bébé à 12 mois",
+      "description": "À 12 mois, votre bébé commence à maîtriser davantage ses mouvements, sa communication devient plus claire et il développe une meilleure conscience de lui-même et de son entourage.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 12 mois, votre bébé commence à développer sa coordination. Il peut bouger ses bras et ses jambes de manière plus contrôlée. Vers la fin de cette période, il pourrait tenter de se retourner ou même se redresser légèrement s’il est sur le ventre."
+        },
+        {
+          "titre": "Développement cognitif",
+          "contenu": "À ce stade, votre bébé observe attentivement son environnement. Il commence à reconnaître les visages familiers, à suivre les objets des yeux et à réagir à différents sons. C’est une période cruciale pour le développement de la mémoire et de l’attention."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente de nouveaux sons et commence à répondre à votre voix. Bien qu’il ne parle pas encore, il exprime ses besoins à travers les pleurs, les sourires et le babillage. La communication non verbale devient plus évidente et diversifiée."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil deviennent un peu plus réguliers. Il dort encore beaucoup, mais les phases d’éveil deviennent plus longues et plus interactives. Il est recommandé d’instaurer des routines de sommeil calmes pour l’aider à se réguler."
+        }
+      ]
+    }
+  ]
+}

@@ -91,6 +91,7 @@ export default function LoginForm() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
+            autoCapitalize="none"
           />
 
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
