@@ -10,6 +10,7 @@ export default function TabLayout() {
           borderTopWidth: 1,
           borderTopColor: "gray", 
           elevation: 0,
+          backgroundColor: "rgba(255, 255, 255, 0.4)",
         },
         tabBarActiveTintColor: "rgb(14, 174, 202)", 
         tabBarInactiveTintColor: "#000", 

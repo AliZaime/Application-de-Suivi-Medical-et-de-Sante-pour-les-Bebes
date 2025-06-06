@@ -1,0 +1,443 @@
+{
+  "semaines": [
+    {
+      "id": "week_1",
+      "type": "semaine",
+      "label": "1 semaine",
+      "taille": "46.0 – 56.0 cm",
+      "poids": "2.70 – 4.80 kg",
+      "titre": "Votre bébé à 1 semaine",
+      "description": "À 1 semaine, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 1, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 1 semaine continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_2",
+      "type": "semaine",
+      "label": "2 semaines",
+      "taille": "47.0 – 57.0 cm",
+      "poids": "2.90 – 5.10 kg",
+      "titre": "Votre bébé à 2 semaines",
+      "description": "À 2 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 2, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 2 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_3",
+      "type": "semaine",
+      "label": "3 semaines",
+      "taille": "48.0 – 58.0 cm",
+      "poids": "3.10 – 5.40 kg",
+      "titre": "Votre bébé à 3 semaines",
+      "description": "À 3 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 3, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 3 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_4",
+      "type": "semaine",
+      "label": "4 semaines",
+      "taille": "49.0 – 59.0 cm",
+      "poids": "3.30 – 5.70 kg",
+      "titre": "Votre bébé à 4 semaines",
+      "description": "À 4 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 4, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 4 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_5",
+      "type": "semaine",
+      "label": "5 semaines",
+      "taille": "50.0 – 60.0 cm",
+      "poids": "3.50 – 6.00 kg",
+      "titre": "Votre bébé à 5 semaines",
+      "description": "À 5 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 5, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 5 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_6",
+      "type": "semaine",
+      "label": "6 semaines",
+      "taille": "51.0 – 61.0 cm",
+      "poids": "3.70 – 6.30 kg",
+      "titre": "Votre bébé à 6 semaines",
+      "description": "À 6 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 6, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 6 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_7",
+      "type": "semaine",
+      "label": "7 semaines",
+      "taille": "52.0 – 62.0 cm",
+      "poids": "3.90 – 6.60 kg",
+      "titre": "Votre bébé à 7 semaines",
+      "description": "À 7 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 7, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 7 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    },
+    {
+      "id": "week_8",
+      "type": "semaine",
+      "label": "8 semaines",
+      "taille": "53.0 – 63.0 cm",
+      "poids": "4.10 – 6.90 kg",
+      "titre": "Votre bébé à 8 semaines",
+      "description": "À 8 semaines, votre bébé continue à se développer rapidement. Il devient plus attentif à son environnement.",
+      "sections": [
+        {
+          "titre": "Le système respiratoire",
+          "contenu": "À la semaine 8, la respiration devient plus rythmée et régulière, bien qu’elle reste nasale."
+        },
+        {
+          "titre": "Le système digestif",
+          "contenu": "Le système digestif de votre bébé à 8 semaines continue de s’adapter au lait maternel ou infantile."
+        },
+        {
+          "titre": "Les interactions",
+          "contenu": "Il commence à établir un contact visuel et réagit parfois aux sons familiers."
+        }
+      ]
+    }
+  ],
+  "mois": [
+    {
+      "id": "month_2",
+      "type": "mois",
+      "label": "2 mois",
+      "taille": "53.0 – 63.0 cm",
+      "poids": "4.00 – 6.20 kg",
+      "titre": "Votre bébé à 2 mois",
+      "description": "Le développement à 2 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 2 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_3",
+      "type": "mois",
+      "label": "3 mois",
+      "taille": "54.0 – 64.0 cm",
+      "poids": "4.25 – 6.55 kg",
+      "titre": "Votre bébé à 3 mois",
+      "description": "Le développement à 3 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 3 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_4",
+      "type": "mois",
+      "label": "4 mois",
+      "taille": "55.0 – 65.0 cm",
+      "poids": "4.50 – 6.90 kg",
+      "titre": "Votre bébé à 4 mois",
+      "description": "Le développement à 4 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 4 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_5",
+      "type": "mois",
+      "label": "5 mois",
+      "taille": "56.0 – 66.0 cm",
+      "poids": "4.75 – 7.25 kg",
+      "titre": "Votre bébé à 5 mois",
+      "description": "Le développement à 5 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 5 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_6",
+      "type": "mois",
+      "label": "6 mois",
+      "taille": "57.0 – 67.0 cm",
+      "poids": "5.00 – 7.60 kg",
+      "titre": "Votre bébé à 6 mois",
+      "description": "Le développement à 6 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 6 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_7",
+      "type": "mois",
+      "label": "7 mois",
+      "taille": "58.0 – 68.0 cm",
+      "poids": "5.25 – 7.95 kg",
+      "titre": "Votre bébé à 7 mois",
+      "description": "Le développement à 7 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 7 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_8",
+      "type": "mois",
+      "label": "8 mois",
+      "taille": "59.0 – 69.0 cm",
+      "poids": "5.50 – 8.30 kg",
+      "titre": "Votre bébé à 8 mois",
+      "description": "Le développement à 8 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 8 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_9",
+      "type": "mois",
+      "label": "9 mois",
+      "taille": "60.0 – 70.0 cm",
+      "poids": "5.75 – 8.65 kg",
+      "titre": "Votre bébé à 9 mois",
+      "description": "Le développement à 9 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 9 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_10",
+      "type": "mois",
+      "label": "10 mois",
+      "taille": "61.0 – 71.0 cm",
+      "poids": "6.00 – 9.00 kg",
+      "titre": "Votre bébé à 10 mois",
+      "description": "Le développement à 10 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 10 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_11",
+      "type": "mois",
+      "label": "11 mois",
+      "taille": "62.0 – 72.0 cm",
+      "poids": "6.25 – 9.35 kg",
+      "titre": "Votre bébé à 11 mois",
+      "description": "Le développement à 11 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 11 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    },
+    {
+      "id": "month_12",
+      "type": "mois",
+      "label": "12 mois",
+      "taille": "63.0 – 73.0 cm",
+      "poids": "6.50 – 9.70 kg",
+      "titre": "Votre bébé à 12 mois",
+      "description": "Le développement à 12 mois s'accélère. Il découvre son corps et commence à explorer activement son environnement.",
+      "sections": [
+        {
+          "titre": "Motricité",
+          "contenu": "À 12 mois, votre bébé peut commencer à rouler, attraper des objets et les porter à sa bouche."
+        },
+        {
+          "titre": "Communication",
+          "contenu": "Il expérimente des sons nouveaux et peut réagir à son prénom avec plus de clarté."
+        },
+        {
+          "titre": "Sommeil",
+          "contenu": "Les cycles de sommeil commencent à se stabiliser avec des périodes de nuit plus longues."
+        }
+      ]
+    }
+  ]
+}
