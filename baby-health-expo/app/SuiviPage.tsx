@@ -49,6 +49,13 @@ const cards = [
     color: "#e3f0ff",
     route: '/growth', // ou autre route si renommée
   },
+  {
+    key: 'geneticPrediction',
+    label: 'Genetic prediction',
+    icon: <FontAwesome5 name="chart-line" size={40} color="#4682B4" />,
+    color: "#ffe4ec",
+    route: '/GeneticPrediction', // ou autre route si renommée
+  },
 ];
 
 const SuiviPage = () => {
@@ -102,7 +109,7 @@ const styles = StyleSheet.create({
     color: '#a21caf',
     textAlign: 'center',
     marginBottom: 20,
-    marginTop: 80,
+    marginTop: 50,
   },
   list: {
     flexGrow: 1,

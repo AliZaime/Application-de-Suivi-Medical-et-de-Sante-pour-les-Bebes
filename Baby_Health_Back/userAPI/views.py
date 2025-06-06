@@ -49,6 +49,9 @@ from django.conf import settings
 from keras.layers import TFSMLayer
 from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
 import tempfile
+import joblib
+
+
 
 # MODELS
 from .models import (
@@ -64,6 +67,52 @@ from .serializers import (
     BabyTrackingSerializer, CryDetectionSerializer, AdviceSerializer
 )
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_DIR = os.path.join(BASE_DIR, 'genetic_prediction')
+
+try:
+    model = joblib.load(os.path.join(MODEL_DIR, 'svm_genetic_model.pkl'))
+    scaler = joblib.load(os.path.join(MODEL_DIR, 'scaler.pkl'))
+    label_encoder = joblib.load(os.path.join(MODEL_DIR, 'label_encoder.pkl'))
+except Exception as e:
+    model = scaler = label_encoder = None
+    print(f"Erreur lors du chargement des modèles : {e}")
+
+@api_view(['POST'])
+def predict_disorder(request):
+    print("base dire = ", BASE_DIR)
+    print("model dir = ", MODEL_DIR)
+    if not model or not scaler or not label_encoder:
+        return Response({'error': 'Modèle non chargé correctement'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    try:
+        print("=== Requête reçue ===")
+        print("Contenu :", request.data)
+        input_data = request.data.get('input_data', None)
+
+        if not input_data or not isinstance(input_data, list):
+            return Response({'error': 'Champ "input_data" requis (liste)'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if len(input_data) != model.n_features_in_:
+            return Response({'error': f"Le modèle attend {model.n_features_in_} valeurs, reçu {len(input_data)}."}, status=status.HTTP_400_BAD_REQUEST)
+
+        input_array = scaler.transform([input_data])
+        prediction = model.predict(input_array)[0]
+        probabilities = model.predict_proba(input_array)[0]
+
+        predicted_index = int(prediction)
+        predicted_label = label_encoder.classes_[predicted_index]
+        predicted_proba = round(float(probabilities[predicted_index]) * 100, 2)
+
+        result = {
+            'predicted_label': predicted_label,
+            'confidence': predicted_proba
+        }
+        return Response(result)
+
+    except Exception as e:
+        print(f"Erreur lors de la prédiction : {e}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class TestView(APIView):

@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   name: { fontSize: 24, fontWeight: "bold", color: "#000" },
   birthDate: { fontSize: 14, color: "#444" },
   tab: { color: "#999", fontSize: 14 },
-  tabActive: { borderBottomWidth: 2, borderBottomColor: "#E57373", paddingBottom: 4, fontWeight: "bold", fontSize: 14 },
+  tabActive: {fontSize: 14,fontWeight: "bold",paddingBottom: 2,marginBottom: 1,borderBottomWidth: 2,borderBottomColor: "#E57373",},
   measureContainer: { flexDirection: "row", justifyContent: "space-around", paddingHorizontal: 16 },
   card: { backgroundColor: "#fff", borderRadius: 16, padding: 16, elevation: 3, width: "45%", alignItems: "center", marginBottom: 20 },
   date: { color: "#999", fontSize: 12 },
