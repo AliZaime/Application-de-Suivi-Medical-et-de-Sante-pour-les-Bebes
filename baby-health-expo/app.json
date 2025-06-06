@@ -9,14 +9,22 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "Cette application utilise les notifications pour rappeler des événements importants."
+      },
+      "bundleIdentifier": "com.esisa.babyhealth"
+
     },
     "android": {
+      "permissions": ["NOTIFICATIONS"],
+      "package": "com.esisa.babyhealth",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
+
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -39,5 +47,6 @@
     "experiments": {
       "typedRoutes": true
     }
+    
   }
 }

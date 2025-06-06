@@ -11,6 +11,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { PieChart } from 'react-native-chart-kit';
 import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
 import config from '../config'; 
+import { scheduleReminder } from '../utils/notifications';
+
 const medicamentTypes = [
   {
     label: 'Antalgique',
@@ -127,6 +129,12 @@ const Medicament = () => {
         await axios.put(`${config.API_BASE_URL}/api/medicaments/${editing.id}/`, payload);
       } else {
         await axios.post(`${config.API_BASE_URL}/api/medicaments/`, payload);
+        // 🔔 Notification quotidienne à l'heure indiquée
+        await scheduleReminder(
+          "Prise de médicament 💊",
+          `N'oubliez pas de prendre ${nom}`,
+          heure
+        );
       }
       setModalVisible(false);
       resetForm();

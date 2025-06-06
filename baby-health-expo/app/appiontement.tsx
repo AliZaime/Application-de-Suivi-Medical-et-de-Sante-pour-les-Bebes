@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { LinearGradient } from 'expo-linear-gradient';
 import config from '../config';
+import { scheduleReminder } from '../utils/notifications';
 
 // Helper function to get today's date in 'YYYY-MM-DD' format
 function getTodayDate() {
@@ -218,6 +219,13 @@ const AppointmentPage = () => { // Renamed component
             'Authorization': `Bearer ${token}` // 🔑 **Add the token here**
           }
         }
+      );
+
+      // 🔔 Notification quotidienne à l'heure du rendez-vous
+      await scheduleReminder(
+        "Rappel 📅",
+        `Rendez-vous : ${formData.value}`,
+        formData.time
       );
       
       Alert.alert('Succès', 'Rendez-vous ajouté avec succès !');

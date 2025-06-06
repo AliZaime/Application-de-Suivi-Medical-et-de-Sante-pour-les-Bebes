@@ -1,8 +1,32 @@
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import EditBabyScreen from '../components/EdidtbabyScreen'; // Adjust the path if necessary
+import EditBabyScreen from '../components/EdidtbabyScreen';
+import * as Notifications from 'expo-notifications';
+import { useEffect } from 'react';
+
+// 🔔 Configuration globale pour les notifications
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,     // 🆕 remplace shouldShowAlert
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowList: true        // pour afficher dans le centre de notifications iOS
+  }),
+});
+
 
 export default function RootLayout() {
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        alert("Les notifications ne sont pas autorisées.");
+      }
+    };
+
+    requestPermissions();
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack>
@@ -26,7 +50,6 @@ export default function RootLayout() {
         <Stack.Screen name="PleursPage" options={{ headerShown: false }} />
         <Stack.Screen name="CryDetection" options={{ headerShown: false }} />
         <Stack.Screen name="addBaby" options={{ headerShown: false }} />
-        
       </Stack>
     </GestureHandlerRootView>
   );
