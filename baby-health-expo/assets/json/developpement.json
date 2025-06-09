@@ -1,0 +1,540 @@
+{
+  "semaines": [
+    {
+        "id": "week_1",
+        "type": "semaine",
+        "label": "1 semaine",
+        "taille": "50.0 cm",
+        "image": "img1.png",
+        "poids": "3.3 kg",
+        "titre": "Votre bébé à 1 semaine",
+        "description": "À seulement 1 semaine, votre bébé commence à apprivoiser son nouvel environnement en dehors de l’utérus. C’est une période d’adaptation intense, durant laquelle il développe peu à peu ses sens, établit les bases de sa motricité et initie ses premiers échanges non verbaux. Chaque journée révèle de nouvelles subtilités : des mouvements plus amples, des réactions aux stimulations, et un début de reconnaissance des voix et visages familiers. C’est un moment précieux, empli de découvertes pour lui comme pour vous.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Votre bébé commence à exercer davantage de contrôle sur ses mouvements. Bien qu’encore saccadés, ses gestes deviennent plus intentionnels : il étire ses bras et jambes, tourne la tête de manière réflexe, et tente parfois de soulever légèrement la tête lorsqu’il est sur le ventre. Ces premiers mouvements sont essentiels pour renforcer ses muscles et initier son développement moteur."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Ses capacités cognitives émergent à travers l’observation. Il fixe les visages, suit les objets de près et réagit à la lumière ou aux sons familiers. Le cerveau de votre bébé est en pleine ébullition : il commence à établir des connexions fondamentales pour sa mémoire, son attention et sa perception du monde qui l’entoure."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Même sans mots, votre bébé communique déjà activement. Ses pleurs sont son principal mode d’expression, mais il peut aussi montrer des mimiques faciales, des mouvements de lèvres et ébaucher des sourires réflexes. Il perçoit les intonations de votre voix et y réagit parfois en se calmant ou en bougeant. Ces premiers échanges sont les prémices d’un lien affectif profond."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil reste un besoin fondamental à cet âge, occupant près de 16 à 18 heures par jour. Cependant, les phases d’éveil, bien que brèves, deviennent plus intenses et interactives. C’est le bon moment pour instaurer un environnement apaisant et des routines simples avant le coucher, qui favoriseront à terme un rythme plus régulier et rassurant pour lui."
+            }
+        ]
+    },
+    {
+        "id": "week_2",
+        "type": "semaine",
+        "label": "2 semaines",
+        "taille": "51.0 cm",
+        "image": "img2.png",
+        "poids": "3.6 kg",
+        "titre": "Votre bébé à 2 semaines",
+        "description": "À 2 semaines, votre bébé poursuit son incroyable processus d’adaptation. Il devient plus attentif à son environnement et ses réactions se font plus nuancées. Son corps s’ajuste progressivement à la vie extra-utérine, avec une amélioration notable de la coordination musculaire, des repères sensoriels qui s’affinent, et des interactions plus fréquentes avec ses proches. Ce sont des jours où les fondements du lien affectif et de la sécurité émotionnelle se construisent.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Ses gestes deviennent moins brusques. Vous pouvez observer des mouvements plus fluides lorsqu’il étire ses bras ou replie ses jambes. Il parvient parfois à se tourner légèrement sur le côté lorsqu’il est sur une surface plane. Il commence aussi à exercer sa prise réflexe en agrippant votre doigt."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Sa perception sensorielle continue d’évoluer. Il réagit plus clairement aux sons forts, montre de l’intérêt pour les lumières contrastées et semble reconnaître votre odeur et votre voix. Ce sont les premiers signes d’une mémoire sensorielle en construction."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Ses pleurs deviennent plus expressifs et peuvent varier selon ses besoins : faim, inconfort ou besoin de contact. Vous remarquerez peut-être de brefs instants de calme lorsqu’il entend votre voix, preuve qu’il commence à associer certains sons à la sécurité."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Bien qu’il dorme encore 16 à 18 heures par jour, les moments d’éveil s’organisent un peu mieux. Le nourrisson peut rester alerte quelques minutes après une tétée ou un câlin, moment idéal pour l’éveil sensoriel. Une ambiance calme et régulière contribue à l’apaisement et favorise l’endormissement."
+            }
+        ]
+    },
+    {
+        "id": "week_3",
+        "type": "semaine",
+        "label": "3 semaines",
+        "taille": "52.0 cm",
+        "image": "img3.png",
+        "poids": "3.9 kg",
+        "titre": "Votre bébé à 3 semaines",
+        "description": "À 3 semaines, votre bébé commence à s’éveiller davantage au monde. Ses sens sont plus affûtés, et ses moments d’éveil, bien que brefs, deviennent plus curieux et actifs. Il commence à exprimer plus nettement ses besoins et à réagir à vos interactions par des mimiques ou des petits sons. Cette période marque les débuts d’un lien d’attachement encore plus profond entre vous et lui.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Les mouvements deviennent plus coordonnés : il peut fléchir ses jambes avec intention ou ouvrir les mains brièvement. Lorsqu’il est couché sur le ventre, il tente parfois de redresser la tête pour de courts instants. Ces efforts, bien que modestes, sont les premières étapes vers le renforcement musculaire."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Votre bébé s’attarde davantage sur les visages. Il regarde plus longtemps les objets contrastés ou lumineux. Il commence à établir des associations simples entre les sons familiers et les personnes ou événements, un signe précoce d’apprentissage par répétition."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Ses pleurs peuvent déjà transmettre des nuances : certains signalent la faim, d’autres l’ennui ou le besoin de réconfort. On note aussi des vocalises courtes, comme des grognements ou gazouillis, qui traduisent sa volonté d’interagir."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil reste essentiel, mais les périodes d’éveil s’allongent légèrement et deviennent plus réactives. Certains bébés commencent à montrer une préférence pour le jour, bien que les rythmes restent irréguliers. Des repères visuels ou sonores constants peuvent déjà l’aider à anticiper les moments de repos."
+            }
+        ]
+    },
+
+    {
+        "id": "week_4",
+        "type": "semaine",
+        "label": "4 semaines",
+        "taille": "53.0 cm",
+        "image": "img1.png",
+        "poids": "4.2 kg",
+        "titre": "Votre bébé à 4 semaines",
+        "description": "Votre bébé a maintenant un mois, et chaque jour révèle un peu plus de sa personnalité naissante. Son regard devient plus expressif, ses interactions plus intentionnelles, et il commence à créer des liens avec les personnes qui l’entourent. Cette quatrième semaine est souvent marquée par une croissance rapide et une plus grande sensibilité aux stimulations. C’est une période propice aux câlins, aux échanges visuels et aux moments de tendresse partagée.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Ses gestes gagnent en précision : il peut agiter ses bras de manière plus fluide, étendre ses jambes avec plus de force et garder brièvement la tête droite lorsqu’il est en position ventrale. Il raffermit aussi ses muscles du cou et du dos, préparant les étapes motrices à venir."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il est de plus en plus réceptif aux stimulations visuelles et sonores. Il suit des objets colorés de gauche à droite et manifeste un intérêt croissant pour les visages. Il commence aussi à mémoriser certaines routines, comme les gestes avant la tétée ou le bain."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Les premiers vrais sourires apparaissent, souvent en réponse à une voix douce ou un visage familier. Votre bébé commence à produire des sons intentionnels, entre le gazouillis et le roucoulement. Ces échanges renforcent son lien affectif avec vous."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Il dort toujours entre 14 et 17 heures par jour, mais les cycles commencent à se structurer. Les périodes d’éveil deviennent plus fréquentes après les repas, et l’on peut déjà instaurer un rituel simple pour favoriser un sommeil serein, comme un moment calme ou une chanson douce."
+            }
+        ]
+    },
+
+    {
+        "id": "week_5",
+        "type": "semaine",
+        "label": "5 semaines",
+        "taille": "54.0 cm",
+        "image": "img2.png",
+        "poids": "4.4 kg",
+        "titre": "Votre bébé à 5 semaines",
+        "description": "À 5 semaines, votre bébé entre dans une phase d’observation plus poussée. Il commence à réagir avec davantage de clarté à ce qui l’entoure : un son, une lumière, une voix familière. Ses capacités motrices s’affinent et ses expressions deviennent plus lisibles. Il s’installe peu à peu dans des routines qui rythment ses journées, entre tétées, sommeil et découvertes.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Votre bébé commence à étendre ses membres avec plus de contrôle et peut même donner quelques coups de pied vigoureux. Il lève la tête un peu plus longtemps lorsqu’il est sur le ventre et commence à apprécier de brefs moments dans cette position, qui renforcent ses muscles cervicaux et dorsaux."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il est fasciné par les contrastes forts (comme le noir et blanc) et suit mieux les objets en mouvement lent. Il développe une meilleure coordination œil-main et peut même tenter d’observer ses propres doigts lorsqu’ils passent devant son champ de vision."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Les premiers sourires sociaux apparaissent plus nettement. Il peut répondre à vos sourires ou à votre voix avec des expressions faciales, des petits sons ou des mouvements d’excitation. Il commence à découvrir qu’il peut influencer vos réactions."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Les phases d’éveil deviennent plus structurées et plus intéressantes. Même si les nuits sont encore fragmentées, certains bébés commencent à allonger un peu leurs plages de sommeil nocturne. C’est un bon moment pour instaurer un rituel apaisant chaque soir."
+            }
+        ]
+    },
+    {
+        "id": "week_6",
+        "type": "semaine",
+        "label": "6 semaines",
+        "taille": "55.0 cm",
+        "image": "img3.png",
+        "poids": "4.7 kg",
+        "titre": "Votre bébé à 6 semaines",
+        "description": "À 6 semaines, votre bébé franchit de nouveaux caps dans sa croissance. Il devient plus expressif, plus éveillé et plus en interaction. Ses pleurs peuvent être plus intenses mais aussi plus significatifs, car il développe de nouvelles façons de vous signaler ce qu’il ressent. C’est une période marquée par des ajustements, parfois des pics de croissance, mais aussi de belles surprises dans ses progrès quotidiens.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il commence à tendre les bras vers des objets ou des formes qu’il perçoit. Les gestes restent imprécis, mais une volonté d’agir apparaît. Il peut aussi mieux maintenir sa tête droite pendant quelques secondes lorsqu’il est assis contre vous ou couché sur votre torse."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il reconnaît de mieux en mieux les visages familiers et réagit aux changements de tonalité dans votre voix. Certains bébés manifestent déjà de l’agacement ou de l’étonnement en réponse à une sensation nouvelle, ce qui démontre un début de traitement sensoriel plus complexe."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Le babillage se structure : il peut émettre des petits sons en “a” ou en “ouh”, répétés plusieurs fois. Il utilise aussi les expressions du visage pour interagir. Il cherche le regard et attend parfois une réponse de votre part, amorçant une forme de dialogue précoce."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Une période de régression du sommeil peut survenir : plus de réveils nocturnes, plus de pleurs. Cela peut être lié à un pic de croissance. Il est important de garder les routines régulières et rassurantes, et de profiter des temps calmes pour favoriser la récupération."
+            }
+        ]
+    },
+    {
+        "id": "week_7",
+        "type": "semaine",
+        "label": "7 semaines",
+        "taille": "56.0 cm",
+        "image": "img1.png",
+        "poids": "4.9 kg",
+        "titre": "Votre bébé à 7 semaines",
+        "description": "À 7 semaines, votre bébé devient de plus en plus alerte. Il commence à exprimer ses émotions de façon plus visible et développe un comportement d’observation actif. Il s’intéresse davantage à ce qui l’entoure et peut rester attentif plus longtemps. C’est une période où les premiers liens sociaux se consolident, avec des interactions plus riches et plus soutenues.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Votre bébé bouge de façon plus fluide. Il peut commencer à lever la tête plus haut lorsqu’il est sur le ventre et maintenir cette position brièvement. Ses mouvements des bras et des jambes deviennent plus dynamiques et contrôlés, parfois même joyeux lorsqu’il est stimulé."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il commence à explorer les visages avec attention, surtout celui de ses parents. Il suit des objets mobiles de manière plus fluide et peut réagir à la voix d’un adulte en tournant la tête. Son cerveau assimile à grande vitesse les sons, les motifs visuels et les routines."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Votre bébé produit de nouveaux sons, comme des roucoulements et des petits cris doux. Il tente parfois d’imiter les sons qu’il entend. Il cherche le contact visuel et sourit plus intentionnellement, surtout lorsqu’il est stimulé par une voix ou une expression faciale engageante."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil nocturne commence à se régulariser, même si les réveils sont encore fréquents. Il commence à faire la distinction entre le jour et la nuit. Les siestes deviennent un peu plus prévisibles, et l’instauration d’un rythme quotidien favorise l’apaisement."
+            }
+        ]
+    },
+    {
+        "id": "week_8",
+        "type": "semaine",
+        "label": "8 semaines",
+        "taille": "57.0 cm",
+        "image": "img2.png",
+        "poids": "5.2 kg",
+        "titre": "Votre bébé à 8 semaines",
+        "description": "À 8 semaines, votre bébé entre dans une phase d’éveil plus prolongée et plus sociale. Il s'intéresse activement aux sons, aux voix, aux mouvements et cherche à interagir. C’est un moment clé dans son développement émotionnel et relationnel : ses réponses deviennent plus expressives et ses besoins mieux différenciés. Le lien d’attachement se renforce à travers les regards, les vocalises et les gestes.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il devient plus stable lorsqu’il est soutenu en position assise, et ses mouvements gagnent en amplitude. Il adore désormais les moments sur le ventre (‘tummy time’) qui stimulent sa tonicité musculaire. Ses mains commencent à s’ouvrir davantage et à explorer son propre visage ou les objets proches."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il reconnaît les visages familiers et montre de l’enthousiasme à leur vue. Il peut suivre un objet en mouvement horizontal sur presque 180°. Son attention est plus soutenue, notamment lorsqu’il observe un mobile ou écoute une mélodie familière."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il gazouille activement et essaie de reproduire certains sons. Il manifeste du plaisir à interagir, parfois en souriant, en émettant des sons ou en battant des bras. C’est une excellente période pour dialoguer avec lui, même si ce n’est encore que du langage corporel et vocal."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Il dort encore beaucoup, mais ses cycles deviennent plus organisés. Certaines nuits peuvent s’allonger légèrement, avec 4 à 6 heures de sommeil d’affilée chez certains bébés. Le maintien d’une routine stable reste essentiel pour l’aider à s’installer dans un rythme apaisant."
+            }
+        ]
+    }
+  ],
+  "mois": [
+    {
+        "id": "month_2",
+        "type": "mois",
+        "label": "2 mois",
+        "taille": "58.0 cm",
+        "image": "img3.png",
+        "poids": "5.5 kg",
+        "titre": "Votre bébé à 2 mois",
+        "description": "À 2 mois, votre bébé vous surprend par sa capacité à interagir et à communiquer. Il devient plus éveillé, plus souriant, et s’intéresse activement à ce qui l’entoure. Ses mouvements gagnent en coordination, et ses temps d’éveil sont plus fréquents. C’est une période riche en échanges et en émerveillements, où chaque regard partagé ou son émis est une petite victoire vers l’autonomie.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Votre bébé commence à contrôler davantage ses gestes. Il bouge ses bras avec plus de précision, pousse sur ses jambes lorsqu’il est couché, et peut maintenir sa tête droite pendant quelques secondes en position verticale. Le 'tummy time' devient plus agréable pour lui et l’aide à renforcer ses muscles du cou et du dos."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il observe avec attention son environnement et peut suivre un objet du regard sur un arc plus large. Il commence à reconnaître les routines du quotidien et peut réagir avec enthousiasme à un rituel qu’il apprécie, comme le bain ou le moment du biberon."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Les sourires sociaux se multiplient, et votre bébé peut vocaliser pour attirer votre attention. Il réagit à vos voix par des sons ou des mouvements de bras, montrant un début de compréhension des interactions humaines. Il aime déjà 'discuter' à sa façon avec vous."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil commence à s’organiser : les phases nocturnes peuvent s’allonger, même si les réveils sont encore fréquents. Il fait souvent 3 à 5 siestes dans la journée. Des rituels calmes avant le coucher aident à ancrer des habitudes sécurisantes."
+            }
+        ]
+    },
+    {
+        "id": "month_3",
+        "type": "mois",
+        "label": "3 mois",
+        "taille": "60.0 cm",
+        "image": "img1.png",
+        "poids": "6.0 kg",
+        "titre": "Votre bébé à 3 mois",
+        "description": "À 3 mois, votre bébé affirme sa présence : il sourit, gazouille, observe, et bouge avec énergie. Il commence à différencier les visages et à anticiper certaines interactions. Il gagne en tonicité, aussi bien au niveau du tronc que des membres, et devient plus expressif dans ses émotions. C’est une étape de grande complicité où la communication devient plus bidirectionnelle.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il devient plus fort : il peut tenir sa tête plus longtemps lorsqu’il est assis sur vos genoux, ou même tenter de la redresser tout seul en position allongée. Il attrape parfois des objets placés près de lui, même si la coordination reste encore approximative."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il est capable de reconnaître la voix de ses parents à distance et tourne la tête pour les suivre. Il manifeste de la surprise ou de l’enthousiasme selon les situations, et semble prendre plaisir à certaines activités régulières comme les comptines ou les jeux de lumière."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Le babillage devient plus mélodieux et varié. Il expérimente des sons en jouant avec sa bouche, imite parfois des expressions faciales et peut rire doucement. Il cherche activement le contact visuel et attend votre réaction à ses 'discours'."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Les nuits s’améliorent chez certains bébés, avec des périodes de sommeil pouvant atteindre 5 à 6 heures. Les siestes se répartissent encore sur la journée, mais deviennent plus régulières. L’atmosphère apaisante du coucher est essentielle pour consolider ces progrès."
+            }
+        ]
+    },
+    {
+        "id": "month_4",
+        "type": "mois",
+        "label": "4 mois",
+        "taille": "62.0 cm",
+        "image": "img2.png",
+        "poids": "6.5 kg",
+        "titre": "Votre bébé à 4 mois",
+        "description": "À 4 mois, votre bébé s’éveille pleinement au monde qui l’entoure. Il devient plus actif, plus expressif, et manifeste une réelle curiosité face aux objets, aux sons et aux visages. Il commence à mieux coordonner ses gestes, à renforcer ses muscles, et à établir des liens de plus en plus solides avec son entourage. C’est une période de joie, d’observation mutuelle et de découvertes partagées.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il est capable de maintenir sa tête avec stabilité et tente souvent de se redresser lorsqu’il est allongé sur le dos. Il saisit volontairement les objets proches et peut les porter à la bouche. Il essaie également de se retourner du ventre vers le dos ou inversement, ce qui marque une étape clé de sa motricité globale."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Votre bébé reconnaît les visages familiers et manifeste de la joie lorsqu’il vous voit. Il explore de plus en plus avec ses yeux et ses mains, et commence à anticiper des séquences comme l’arrivée du biberon ou le moment du bain. Il aime aussi observer les mouvements et les objets colorés avec une attention accrue."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Son babillage devient plus riche et nuancé. Il émet des séries de sons différents, parfois très sonores, et semble vouloir initier des 'conversations'. Il vous observe lorsque vous parlez et peut tenter d’imiter vos intonations. C’est un vrai plaisir d’échanger avec lui."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Les nuits commencent à être plus longues, bien que certains réveils subsistent. Il peut dormir 6 à 8 heures d'affilée selon les bébés. Les siestes sont encore indispensables, souvent au nombre de trois par jour. Les routines du soir contribuent à sécuriser son endormissement."
+            }
+        ]
+    },
+    {
+        "id": "month_5",
+        "type": "mois",
+        "label": "5 mois",
+        "taille": "64.0 cm",
+        "image": "img3.png",
+        "poids": "7.0 kg",
+        "titre": "Votre bébé à 5 mois",
+        "description": "À 5 mois, votre bébé fait preuve d’une plus grande maîtrise de ses gestes et d’une envie croissante d’interagir. Il devient plus mobile, plus observateur et commence à comprendre les réactions qu’il peut provoquer chez les autres. Sa personnalité s’affirme peu à peu et il recherche activement les échanges avec ses proches.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il attrape les objets avec plus de précision, passe parfois un jouet d’une main à l’autre, et peut se balancer légèrement d’avant en arrière. Lorsqu’il est couché sur le ventre, il pousse sur ses bras pour relever son torse. Certains bébés peuvent déjà tenir brièvement assis avec un soutien."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il explore son environnement avec intention. Il observe ce qui se passe autour de lui, s’intéresse aux objets tombés, et commence à comprendre des liens simples de cause à effet. Il manifeste des signes de surprise ou de contentement selon les situations, ce qui reflète une cognition en plein développement."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il gazouille beaucoup et semble s’amuser à produire des sons nouveaux. Il répond activement à vos sourires, intonations et expressions du visage. Certains bébés émettent déjà des syllabes simples comme 'ba' ou 'ma' sans les associer à un sens précis, mais avec beaucoup d’enthousiasme."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil nocturne devient plus régulier, avec parfois une ou deux siestes de moins selon les journées. L’instauration de repères clairs (berceuse, lumière tamisée, bain) avant le coucher continue d’être bénéfique pour la qualité de son repos."
+            }
+        ]
+    },
+    {
+        "id": "month_6",
+        "type": "mois",
+        "label": "6 mois",
+        "taille": "66.0 cm",
+        "image": "img1.png",
+        "poids": "7.5 kg",
+        "titre": "Votre bébé à 6 mois",
+        "description": "À 6 mois, votre bébé atteint un tournant passionnant. Il devient plus autonome dans ses mouvements, explore activement son environnement et interagit avec une curiosité grandissante. C’est aussi le moment où l’introduction des aliments solides peut commencer, marquant une nouvelle étape dans son développement sensoriel et moteur.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il tient désormais assis avec un minimum de soutien, voire seul pendant quelques secondes. Il attrape des objets avec plus de précision et peut les passer d’une main à l’autre. Lorsqu’il est sur le ventre, il tente parfois de ramper ou de pivoter sur lui-même pour atteindre un jouet."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Votre bébé est fasciné par la découverte. Il observe les objets sous différents angles, les secoue, les mordille. Il commence à comprendre la permanence de certains éléments : un objet caché n’est pas forcément perdu. Il s’attache aux routines et reconnaît de mieux en mieux les visages familiers."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Le babillage devient plus expressif : il enchaîne des sons comme 'ba-ba', 'da-da' ou 'ma-ma', sans forcément leur donner de signification. Il écoute activement votre voix, vous observe quand vous parlez, et peut répondre avec enthousiasme ou frustration selon ses émotions."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "La majorité des bébés dorment plus longtemps la nuit, parfois jusqu’à 8 heures d’affilée. Les siestes, souvent au nombre de deux ou trois, rythment encore la journée. Une ambiance calme avant le coucher, associée à des gestes répétés (berceuse, câlin), renforce les repères sécurisants."
+            }
+        ]
+    },
+    {
+        "id": "month_7",
+        "type": "mois",
+        "label": "7 mois",
+        "taille": "67.5 cm",
+        "image": "img2.png",
+        "poids": "7.9 kg",
+        "titre": "Votre bébé à 7 mois",
+        "description": "À 7 mois, votre bébé s'affirme avec plus de personnalité. Il bouge davantage, explore son espace, et manifeste clairement ses préférences. Ses interactions deviennent plus riches, plus sociales, et ses réactions à votre présence ou à des situations nouvelles montrent une plus grande conscience émotionnelle.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il maîtrise mieux la position assise et joue avec ses mains librement. Certains bébés commencent à se déplacer par roulades ou en rampant. Il adore tapoter, frapper ou faire tomber des objets — un moyen pour lui d’apprendre cause et effet."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il reconnaît les voix et les objets familiers. Il peut anticiper une action simple (comme voir une cuillère et ouvrir la bouche) et montre parfois des signes de frustration quand il ne parvient pas à faire quelque chose. Il adore les jeux de cache-cache et les comptines à gestes."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Votre bébé babille avec enthousiasme et commence à associer certains sons à des objets ou personnes. Il vous imite souvent, notamment les mimiques du visage. Il rit, appelle ou crie pour attirer l’attention, et peut déjà reconnaître son prénom."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Son rythme veille-sommeil devient plus prévisible. Les siestes sont souvent plus régulières (matin et après-midi), et il peut dormir entre 10 et 12 heures par nuit avec quelques brefs réveils. Un rituel du coucher stable aide à renforcer ces habitudes."
+            }
+        ]
+    },
+    {
+        "id": "month_8",
+        "type": "mois",
+        "label": "8 mois",
+        "taille": "69.0 cm",
+        "image": "img3.png",
+        "poids": "8.3 kg",
+        "titre": "Votre bébé à 8 mois",
+        "description": "À 8 mois, votre bébé est un véritable explorateur ! Il veut toucher, bouger, goûter tout ce qui l’entoure. Ses progrès moteurs lui permettent d’interagir plus librement avec son environnement, tandis que sa mémoire s’affine. Il comprend mieux les intentions de ceux qui l'entourent et commence à manifester des préférences claires, voire une petite timidité envers les inconnus.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il se déplace souvent par rampement ou à quatre pattes. Il s’assied seul de manière stable et peut commencer à essayer de se hisser en position debout en s’agrippant aux meubles. Il manipule les objets avec plus de dextérité, passant facilement d’une main à l’autre."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il comprend des relations simples : par exemple, que le jouet tombe quand il le lâche. Il adore jouer à 'coucou/caché', ce qui montre qu’il assimile peu à peu la notion de permanence de l’objet. Il peut aussi reconnaître certains mots comme son prénom ou 'non'."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Ses vocalisations deviennent plus riches : il combine des sons, babille avec insistance, et tente d’imiter votre intonation. Il réagit à des consignes simples et vous regarde avec insistance lorsqu’il cherche une réaction, démontrant un début d’intention de communication claire."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Il dort entre 11 et 14 heures par 24h, réparties entre la nuit et deux siestes en journée. Des réveils nocturnes peuvent encore survenir, surtout en période de poussées dentaires ou d’acquisitions motrices. Un cadre régulier et rassurant reste essentiel."
+            }
+        ]
+    },
+    {
+        "id": "month_9",
+        "type": "mois",
+        "label": "9 mois",
+        "taille": "70.0 cm",
+        "image": "img1.png",
+        "poids": "8.6 kg",
+        "titre": "Votre bébé à 9 mois",
+        "description": "À 9 mois, votre bébé gagne en assurance et en autonomie. Il devient plus habile, plus expressif, et développe une vraie compréhension des interactions sociales. Il commence à tester les limites et peut manifester de l'anxiété face à la séparation, signe de l'attachement sécurisant qu’il construit avec vous.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il se déplace avec agilité, en rampant, à quatre pattes ou même en marchant à l’aide d’un appui. Il se tient parfois debout quelques secondes, et explore les objets en les tapant, les secouant, ou en essayant de les imbriquer. Sa coordination œil-main s’affine nettement."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il reconnaît les objets usuels (biberon, doudou, cuillère…) et montre du doigt ce qu’il désire. Il comprend mieux les gestes quotidiens et peut anticiper certaines actions (comme tendre les bras avant d’être porté). Il commence aussi à explorer la notion de cause à effet de manière plus complexe."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il répond à son prénom, imite certains gestes (comme applaudir ou dire au revoir) et tente parfois d’associer une syllabe à une personne ('mama', 'dada'). Il comprend de mieux en mieux l’intonation de votre voix, et peut montrer de l’enthousiasme ou de la contrariété en retour."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil devient plus stable. Deux siestes rythment encore la journée. Il peut cependant traverser une période de régression du sommeil, souvent liée à ses nouvelles compétences motrices ou à l’angoisse de séparation. Patience et régularité sont les clés."
+            }
+        ]
+    },
+    {
+        "id": "month_10",
+        "type": "mois",
+        "label": "10 mois",
+        "taille": "71.0 cm",
+        "image": "img2.png",
+        "poids": "8.9 kg",
+        "titre": "Votre bébé à 10 mois",
+        "description": "À 10 mois, votre bébé multiplie les initiatives et les découvertes. Il gagne en autonomie, développe des capacités motrices avancées et manifeste une meilleure compréhension du langage. Il aime répéter des gestes, jouer avec les objets du quotidien, et devient plus expressif dans ses interactions sociales. L’exploration est désormais son activité principale.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il peut se déplacer rapidement à quatre pattes, se lever en s’agrippant aux meubles, et parfois rester debout sans soutien quelques instants. Il adore pousser, tirer, et manipuler des objets avec précision, comme empiler des blocs ou faire rouler une balle."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il observe attentivement les actions des adultes et commence à les imiter : tenir un téléphone à l’oreille, balayer, ou faire semblant de manger. Il comprend plusieurs mots et peut suivre une consigne simple comme « donne-moi ». Il explore activement les causes et conséquences de ses actes."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il prononce des syllabes reconnaissables et les répète souvent. Il comprend des mots clés comme « non », « bravo », ou son propre prénom. Il pointe, tend les bras ou agite la main pour communiquer, et rit aux jeux d’interaction comme les chatouilles ou le coucou."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Le sommeil nocturne devient plus stable, entrecoupé parfois de réveils passagers liés à des poussées dentaires ou à l’anxiété de séparation. Deux siestes en journée restent habituelles. Une routine douce avant le coucher favorise un sommeil apaisé."
+            }
+        ]
+    },
+    {
+        "id": "month_11",
+        "type": "mois",
+        "label": "11 mois",
+        "taille": "72.0 cm",
+        "image": "img3.png",
+        "poids": "9.2 kg",
+        "titre": "Votre bébé à 11 mois",
+        "description": "À 11 mois, votre bébé démontre une réelle volonté d’indépendance. Il prend des initiatives, teste ses limites et développe des compétences sociales et cognitives impressionnantes. Il manifeste une forte curiosité et vous observe avec attention pour apprendre à faire par lui-même. C’est une période riche en apprentissages et en affirmations de caractère.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Il marche parfois en tenant la main ou en s’appuyant sur les meubles. Il se baisse pour attraper un objet au sol et se relève seul. Ses gestes sont plus précis, ce qui lui permet de manipuler des objets plus petits et d'explorer des textures variées."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il comprend des enchaînements simples comme « on met les chaussures », et peut participer à certaines tâches avec plaisir. Il manifeste des préférences marquées pour certains jouets ou livres. La mémoire associative commence à se développer, et il peut anticiper des actions courantes."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il utilise plusieurs gestes pour se faire comprendre (pointer, applaudir, saluer) et peut dire quelques mots simples avec intention. Il imite les sons que vous faites et apprécie particulièrement les chansons et les comptines, auxquelles il tente de participer."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "Les nuits sont généralement complètes, bien que des éveils nocturnes soient encore possibles. Il fait souvent deux siestes dans la journée, mais certaines transitions vers une seule longue sieste commencent. Les routines rassurantes sont précieuses dans cette phase d'affirmation."
+            }
+        ]
+    },
+    {
+        "id": "month_12",
+        "type": "mois",
+        "label": "12 mois",
+        "taille": "73.5 cm",
+        "image": "img1.png",
+        "poids": "9.6 kg",
+        "titre": "Votre bébé à 12 mois",
+        "description": "À 12 mois, votre bébé fête sa première année avec une personnalité bien affirmée. Il comprend de nombreuses choses, interagit avec aisance et développe un attachement fort à ses repères. Ses acquisitions motrices et langagières s’enrichissent chaque jour, et il montre une volonté croissante de faire seul. C’est une étape clé où la marche, les premiers mots et l’autonomie s’installent doucement.",
+        "sections": [
+            {
+            "titre": "Motricité",
+            "contenu": "Beaucoup de bébés commencent à marcher ou marchent déjà avec assurance. Il peut pousser un jouet roulant ou grimper sur de petits obstacles. Il maîtrise bien la pince fine (pouce/index) pour attraper des objets de petite taille et explorer les détails."
+            },
+            {
+            "titre": "Développement cognitif",
+            "contenu": "Il comprend des ordres simples et y répond avec intention. Il adore les jeux d’imitation et les routines familières. Il peut montrer des émotions comme la fierté, la colère ou la gêne, traduisant une conscience de soi naissante. Il commence à catégoriser les objets (animaux, aliments, jouets)."
+            },
+            {
+            "titre": "Communication",
+            "contenu": "Il prononce quelques mots significatifs comme « maman », « papa », « tiens » ou « encore ». Il comprend bien plus de mots qu’il n’en dit. Son babillage s’enrichit et il cherche souvent à dialoguer, même par des gestes ou des regards insistants."
+            },
+            {
+            "titre": "Sommeil",
+            "contenu": "La plupart des bébés dorment environ 11 à 12 heures par nuit. Beaucoup passent progressivement à une seule sieste longue dans la journée. Un environnement calme, constant et rassurant reste essentiel pour l’aider à bien dormir et à gérer les nouvelles stimulations de la journée."
+            }
+        ]
+    }
+  ]
+}

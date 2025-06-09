@@ -52,6 +52,8 @@ export default function RootLayout() {
         <Stack.Screen name="GeneticPrediction" options={{ headerShown: false }} />
         <Stack.Screen name="addtracking" options={{ headerShown: false }} />
         <Stack.Screen name="vaccination" options={{ headerShown: false }} />
+        <Stack.Screen name="Developpement" options={{ headerShown: false }} />
+
       </Stack>
     </GestureHandlerRootView>
   );
