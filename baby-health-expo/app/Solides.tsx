@@ -58,7 +58,7 @@ const Solides = () => {
       if (editing) {
         await axios.put(`${config.API_BASE_URL}/api/solides/${editing.id}/`, payload);
       } else {
-        await axios.post('${config.API_BASE_URL}/api/solides/', payload);
+        await axios.post(`${config.API_BASE_URL}/api/solides/`, payload);
       }
       setModalVisible(false);
       setEditing(null);

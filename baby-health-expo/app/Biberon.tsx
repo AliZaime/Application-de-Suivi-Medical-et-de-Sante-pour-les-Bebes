@@ -104,7 +104,7 @@ const Biberon = () => {
       if (editing) {
         await axios.put(`${config.API_BASE_URL}/api/biberons/${editing.id}/`, payload);
       } else {
-        await axios.post('${config.API_BASE_URL}/api/biberons/', payload);
+        await axios.post(`${config.API_BASE_URL}/api/biberons/`, payload);
       }
       setModalVisible(false);
       fetchBiberons();
