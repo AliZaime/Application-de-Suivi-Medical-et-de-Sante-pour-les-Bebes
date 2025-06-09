@@ -155,7 +155,7 @@ const Today = () => {
       end={{ x: 1, y: 1 }}
       style={styles.gradient}
     >
-      <View style={{ flex: 1,height: '100%', marginBottom: 83 }}>
+      <View style={{ flex: 1,height: '100%', marginBottom: 73 }}>
       <ScrollView contentContainerStyle={styles.container}>
         {isLoading ? (
           <View style={styles.loadingContainer}>
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
-  marginBottom: 80,
+    marginBottom: 80,
     marginTop: 80,
   },
   headerSection: {
