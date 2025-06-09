@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../../config';
+import { scheduleReminder } from '../../utils/notifications';
 
 
 const Today = () => {
@@ -14,7 +15,6 @@ const Today = () => {
   );
   const router = useRouter();
   const [parent, setParent] = useState<{ name: string} | null>(null);
-
   const [currentChildIndex, setCurrentChildIndex] = useState(0);
   const [advices, setAdvices] = useState<{ image: string; title: string; content: string }[]>([]);
   const [expandedAdvices, setExpandedAdvices] = useState<boolean[]>([]);
@@ -85,9 +85,47 @@ const Today = () => {
         }
       };
 
+      const checkTrackingAlert = async () => {
+        try {
+          const parentId = await AsyncStorage.getItem("parent_id");
+          if (!parentId) return;
+          
+          const babiesRes = await axios.get(`${config.API_BASE_URL}/api/user/get_babies_by_parent_id/${parentId}/`);
+          const babies = babiesRes.data;
+          
+          for (const baby of babies) {
+            const trackingRes = await axios.get(`${config.API_BASE_URL}/api/user/get_last_traking/${baby.baby_id}/`);
+            const trackings = trackingRes.data;
+            console.log("Checking tracking for baby:", baby.name, "->", baby.baby_id);
+
+            if (!Array.isArray(trackings) || trackings.length === 0) {
+              await scheduleReminder(
+                "Suivi de croissance 📈",
+                `Vous n'avez encore rien ajouté pour ${baby.name} cette semaine.`,
+                "09:00"
+              );
+            } else {
+              const lastDate = new Date(trackings[0].date_recorded);
+              const now = new Date();
+              const diffInDays = (now - lastDate) / (1000 * 60 * 60 * 24);
+              if (diffInDays > 7) {
+                await scheduleReminder(
+                  "Suivi de croissance 📈",
+                  `Aucune nouvelle mesure pour ${baby.name} depuis plus d'une semaine.`,
+                  "09:00"
+                );
+              }
+            }
+          }
+        } catch (e) {
+          console.error("Erreur lors du check de suivi :", e);
+        }
+      };
+
+
       // Execute all fetch functions concurrently
       await Promise.all([fetchParentData(), fetchAdvices(), fetchChildrenSchedules()]);
-
+      await checkTrackingAlert();
       setIsLoading(false); // End loading after all fetches are done
     };
 

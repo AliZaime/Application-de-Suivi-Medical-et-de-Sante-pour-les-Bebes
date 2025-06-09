@@ -17,6 +17,8 @@ import { LineChart } from "react-native-chart-kit";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
 import config from '../config'; 
+import { scheduleReminder } from "../utils/notifications";
+
 
 export default function CroissanceScreen() {
   const router = useRouter();
@@ -43,12 +45,36 @@ export default function CroissanceScreen() {
         const trackings = trackingResponse.data;
         setAllTrackings(trackings);
         setTracking(trackings.length > 0 ? trackings[0] : null);
+        checkTrackingAndAlert(trackings);
       } catch (error) {
         console.error("Erreur lors du chargement :", error);
         setTracking(null);
       }
     };
     fetchData();
+    const checkTrackingAndAlert = async (trackings) => {
+      if (!Array.isArray(trackings) || trackings.length === 0) {
+        await scheduleReminder(
+          "Suivi de croissance 📈",
+          "Vous n'avez ajouté aucune mesure cette semaine pour " + (baby?.name || "votre bébé"),
+          "09:00" // tu peux changer l'heure du rappel ici
+        );
+        return;
+      }
+
+      const lastDate = new Date(trackings[0].date_recorded);
+      const now = new Date();
+      const diffInDays = (now - lastDate) / (1000 * 60 * 60 * 24);
+
+      if (diffInDays > 7) {
+        await scheduleReminder(
+          "Suivi de croissance 📈",
+          "N'oubliez pas de suivre la croissance de " + (baby?.name || "votre bébé") + " cette semaine",
+          "09:00"
+        );
+      }
+    };
+
   }, []);
 
   const calculateAgeInMonths = (dob) => {
