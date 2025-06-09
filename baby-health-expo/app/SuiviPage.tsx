@@ -49,6 +49,13 @@ const cards = [
     color: "#e3f0ff",
     route: '/growth', // ou autre route si renommée
   },
+  {
+    key: 'geneticPrediction',
+    label: 'Genetic prediction',
+    icon: <FontAwesome5 name="chart-line" size={40} color="#4682B4" />,
+    color: "#e3f0ff",
+    route: '/GeneticPrediction', // ou autre route si renommée
+  },
 ];
 
 const SuiviPage = () => {

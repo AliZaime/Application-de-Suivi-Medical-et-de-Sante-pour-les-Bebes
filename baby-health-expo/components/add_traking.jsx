@@ -60,7 +60,7 @@ export default function AddTrackingForm() {
       };
 
       await axios.post(
-        "${config.API_BASE_URL}/api/user/add_tracking/",
+        `${config.API_BASE_URL}/api/user/add_tracking/`,
         trackingData,
         {
           headers: {
@@ -71,7 +71,7 @@ export default function AddTrackingForm() {
       );
 
       setMessage("Mesure enregistrée avec succès !");
-      router.push("/home");
+      router.push("/today");
     } catch (error) {
       console.error("Erreur :", error);
       setMessage(

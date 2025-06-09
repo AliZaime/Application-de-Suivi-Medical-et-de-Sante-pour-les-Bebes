@@ -152,23 +152,28 @@ export default function CroissanceScreen() {
         </View>
 
         {/* TABS */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 16 }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 0 }}>
           <View style={{ flexDirection: "row", paddingHorizontal: 10, gap: 20 }}>
             {["overview", "weight", "height", "head_circumference", "bmi"].map(tab => (
-              <Text
-                key={tab}
-                style={selectedTab === tab ? styles.tabActive : styles.tab}
-                onPress={() => setSelectedTab(tab)}
-              >
-                {tab === "overview" ? "Vue d’ensemble" :
-                tab === "weight" ? "Poids" :
-                tab === "height" ? "Taille" :
-                tab === "head_circumference" ? "Périmètre crânien" :
-                "Indice IMC"}
-              </Text>
+              <View key={tab} style={{ alignItems: "center" }}>
+                <Text
+                  onPress={() => setSelectedTab(tab)}
+                  style={selectedTab === tab ? styles.tabActive : styles.tab}
+                >
+                  {tab === "overview" ? "Vue d’ensemble" :
+                  tab === "weight" ? "Poids" :
+                  tab === "height" ? "Taille" :
+                  tab === "head_circumference" ? "Périmètre crânien" :
+                  "Indice IMC"}
+                </Text>
+                {selectedTab === tab && (
+                  <View style={{ height: 2, backgroundColor: "#EC879D", width: "100%", marginTop: 2 }} />
+                )}
+              </View>
             ))}
           </View>
         </ScrollView>
+
 
         {/* OVERVIEW */}
         {selectedTab === "overview" && tracking && (
@@ -372,8 +377,18 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: "bold", color: "#E57373", marginBottom: 8 },
   name: { fontSize: 24, fontWeight: "bold", color: "#000" },
   birthDate: { fontSize: 14, color: "#444" },
-  tab: { color: "#999", fontSize: 14 },
-  tabActive: { borderBottomWidth: 2, borderBottomColor: "#E57373", paddingBottom: 4, fontWeight: "bold", fontSize: 14 },
+   tab: {
+    fontSize: 14,
+    color: "gray",
+    paddingVertical: 6,
+    fontWeight: "500",
+  },
+  tabActive: {
+    fontSize: 14,
+    color: "#EC879D",
+    paddingVertical: 6,
+    fontWeight: "bold",
+  },
   measureContainer: { flexDirection: "row", justifyContent: "space-around", paddingHorizontal: 16 },
   card: { backgroundColor: "#fff", borderRadius: 16, padding: 16, elevation: 3, width: "45%", alignItems: "center", marginBottom: 20 },
   date: { color: "#999", fontSize: 12 },
