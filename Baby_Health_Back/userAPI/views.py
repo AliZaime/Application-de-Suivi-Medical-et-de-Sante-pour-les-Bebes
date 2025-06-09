@@ -21,8 +21,8 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from rest_framework import status
 from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SymptomeSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
-from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice
-from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer
+from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, Vaccination
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer, VaccinationSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
@@ -46,9 +46,15 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.conf import settings
 """ from tensorflow.keras.layers import InputLayer """
+from keras.layers import TFSMLayer
+from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
 import tempfile
 import joblib
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from height_model.test import predict_height
 # MODELS
 from .models import (
     Parent, Baby, Appointment, Couche, Solides, Sommeil,
@@ -73,6 +79,7 @@ try:
 except Exception as e:
     model = scaler = label_encoder = None
     print(f"Erreur lors du chargement des modèles : {e}")
+
 
 @api_view(['POST'])
 def predict_disorder(request):
@@ -923,3 +930,45 @@ def predict_baby_height(request):
             {"error": f"An unexpected error occurred: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@api_view(['GET'])
+def get_vaccination_by_baby_id(request, baby_id):
+    try:
+        print(f"Fetching vaccinations for baby_id: {baby_id}")  # Debug log
+        vaccinations = Vaccination.objects.filter(baby_id=baby_id).order_by('-date_administered')
+        print(f"Vaccinations found: {vaccinations}")  # Debug log
+        if not vaccinations.exists():
+            return Response({'message': 'Aucune vaccination trouvée pour ce bébé.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = VaccinationSerializer(vaccinations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error in get_vaccination_by_baby_id: {str(e)}")  # Debug log
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['POST'])
+def add_vaccination(request):
+    serializer = VaccinationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Vaccination ajoutée avec succès', 'vaccination': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_vaccination(request, vaccination_id):
+    try:
+        vaccination = Vaccination.objects.get(id=vaccination_id)
+        serializer = VaccinationSerializer(vaccination, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Vaccination modifiée avec succès', 'vaccination': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Vaccination.DoesNotExist:
+        return Response({'error': 'Vaccination non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+@api_view(['DELETE'])
+def delete_vaccination(request, vaccination_id):
+    try:
+        vaccination = Vaccination.objects.get(id=vaccination_id)
+        vaccination.delete()
+        return Response({'message': 'Vaccination supprimée avec succès'}, status=status.HTTP_200_OK)
+    except Vaccination.DoesNotExist:
+        return Response({'error': 'Vaccination non trouvée'}, status=status.HTTP_404_NOT_FOUND)

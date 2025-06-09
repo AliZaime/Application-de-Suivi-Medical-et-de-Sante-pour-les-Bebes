@@ -43,7 +43,6 @@ export default function RootLayout() {
         <Stack.Screen name="Sante" options={{ headerShown: false }} />
         <Stack.Screen name="Temperature" options={{ headerShown: false }} />
         <Stack.Screen name="Medicaments" options={{ headerShown: false }} />
-        <Stack.Screen name="Vaccins" options={{ headerShown: false }} />
         <Stack.Screen name="Symptomes" options={{ headerShown: false }} />
         <Stack.Screen name="appiontement" options={{ headerShown: false }} />
         <Stack.Screen name="growth" options={{ headerShown: false }} />
@@ -52,6 +51,7 @@ export default function RootLayout() {
         <Stack.Screen name="addBaby" options={{ headerShown: false }} />
         <Stack.Screen name="GeneticPrediction" options={{ headerShown: false }} />
         <Stack.Screen name="addtracking" options={{ headerShown: false }} />
+        <Stack.Screen name="vaccination" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

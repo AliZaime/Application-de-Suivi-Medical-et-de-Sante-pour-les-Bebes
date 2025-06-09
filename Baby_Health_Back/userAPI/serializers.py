@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Medicament, Parent, Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, CryDetection
-from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
+from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking, Vaccination
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -102,3 +102,11 @@ class CryDetectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CryDetection
         fields = ['id', 'baby', 'baby_name', 'label', 'confidence', 'detected_at']
+
+class VaccinationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vaccination
+        fields = ['id', 'baby', 'vaccine_name', 'date_administered', 'next_due_date', 'remarks']
+
+    def create(self, validated_data):
+        return super().create(validated_data)

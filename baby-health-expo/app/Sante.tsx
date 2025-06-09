@@ -22,11 +22,11 @@ const repasTypes = [
     route: '/Medicaments',
   },
   {
-    key: 'vaccins',
-    label: 'Vaccins',
+    key: 'vaccination',
+    label: 'vaccination',
     icon: <FontAwesome5 name="syringe" size={40} color="#FFA500" />,
     color: "#fff5e6",
-    route: '/Vaccins',
+    route: '/vaccination',
   },
   {
     key: 'symptomes',

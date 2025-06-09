@@ -250,3 +250,18 @@ class CryDetection(models.Model):
 
     def __str__(self):
         return f"{self.baby.name} - {self.label} ({self.detected_at.strftime('%Y-%m-%d %H:%M:%S')})"
+
+
+class Vaccination(models.Model):
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='vaccinations')
+    vaccine_name = models.CharField(max_length=255)
+    date_administered = models.DateField()
+    next_due_date = models.DateField(blank=True, null=True)
+    remarks = models.TextField(blank=True, null=True)
+    class Meta:
+        db_table = 'vaccination'
+
+
+
+    def _str_(self):
+        return f"{self.vaccine_name} - {self.baby.name} ({self.date_administered})"
