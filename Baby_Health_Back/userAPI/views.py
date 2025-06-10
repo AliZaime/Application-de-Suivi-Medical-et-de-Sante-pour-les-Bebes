@@ -21,8 +21,8 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from rest_framework import status
 from .serializers import MedicamentSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SymptomeSerializer, TemperatureSerializer, TeteeSerializer, AdviceSerializer
-from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, Vaccination
-from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer, VaccinationSerializer
+from .models import Medicament, Parent,Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, Vaccination, note
+from .serializers import BiberonSerializer, ParentSerializer, BabySerializer, AppointmentSerializer, CoucheSerializer, SolidesSerializer, SommeilSerializer, TeteeSerializer,BabyTrackingSerializer, VaccinationSerializer, NoteSerializer
 from .models import Biberon, Parent,Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking
 from django.contrib.auth import authenticate
 
@@ -976,3 +976,49 @@ def delete_vaccination(request, vaccination_id):
         return Response({'message': 'Vaccination supprimée avec succès'}, status=status.HTTP_200_OK)
     except Vaccination.DoesNotExist:
         return Response({'error': 'Vaccination non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def add_note(request):
+    serializer = NoteSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Note créée avec succès', 'note': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_notes_by_parent(request, parent_id):
+    try:
+        notes = note.objects.filter(parent_id=parent_id)
+        if not notes.exists():
+            return Response({'message': 'Aucune note trouvée pour ce parent.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = NoteSerializer(notes, many=True)
+        return Response({'notes': serializer.data}, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error in get_notes_by_parent: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def delet_note(request, note_id):
+    try:
+        note_instance = note.objects.get(id=note_id)
+        note_instance.delete()
+        return Response({'message': 'Note supprimée avec succès'}, status=status.HTTP_200_OK)
+    except note.DoesNotExist:
+        return Response({'error': 'Note non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error in delet_note: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['PUT'])
+def update_note(request, note_id):
+    try:
+        note_instance = note.objects.get(id=note_id)
+        serializer = NoteSerializer(note_instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Note mise à jour avec succès', 'note': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except note.DoesNotExist:
+        return Response({'error': 'Note non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
