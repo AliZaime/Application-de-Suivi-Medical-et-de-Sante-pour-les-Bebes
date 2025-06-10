@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import EditBabyScreen from '../components/EdidtbabyScreen';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
 
@@ -53,6 +52,7 @@ export default function RootLayout() {
         <Stack.Screen name="addtracking" options={{ headerShown: false }} />
         <Stack.Screen name="vaccination" options={{ headerShown: false }} />
         <Stack.Screen name="Developpement" options={{ headerShown: false }} />
+        <Stack.Screen name="note" options={{ headerShown: false }} />
 
       </Stack>
     </GestureHandlerRootView>

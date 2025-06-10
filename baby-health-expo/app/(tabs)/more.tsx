@@ -22,18 +22,11 @@ const cards = [
         route: '/Developpement',
     },
     {
-        key: 'appiontements',
-        label: 'Appiontements',
-        icon: <FontAwesome5 name="calendar-check" size={36} color="#4682B4" />,
-        color: "#e3f0ff",
-        route: '/appiontement',
-    },
-    {
-        key: 'appiontements',
-        label: 'Appiontements',
-        icon: <FontAwesome5 name="calendar-check" size={36} color="rgb(197, 71, 128)" />,
+        key: 'note',
+        label: 'Note',
+        icon: <FontAwesome5 name="sticky-note" size={36} color="#a21caf" />,
         color: "#ffe4ec",
-        route: '/appiontement',
+        route: '/note',
     },
 ];
 

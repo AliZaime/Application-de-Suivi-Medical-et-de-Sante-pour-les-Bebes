@@ -265,3 +265,14 @@ class Vaccination(models.Model):
 
     def _str_(self):
         return f"{self.vaccine_name} - {self.baby.name} ({self.date_administered})"
+
+
+class note(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='notes')
+    class Meta:
+        db_table = 'note'
+        

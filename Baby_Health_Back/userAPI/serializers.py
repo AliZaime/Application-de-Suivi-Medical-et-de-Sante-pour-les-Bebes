@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Medicament, Parent, Baby, Appointment, Couche, Symptome, Temperature, Tetee, advice, CryDetection
-from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking, Vaccination
+from .models import Biberon, Parent, Baby, Appointment, Couche, Solides, Sommeil, Tetee,BabyTracking, Vaccination, note
 from django.contrib.auth.hashers import make_password
 
 class ParentSerializer(serializers.ModelSerializer):
@@ -107,6 +107,14 @@ class VaccinationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vaccination
         fields = ['id', 'baby', 'vaccine_name', 'date_administered', 'next_due_date', 'remarks']
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = note
+        fields = ['id', 'title', 'parent', 'content', 'date_created']
 
     def create(self, validated_data):
         return super().create(validated_data)
