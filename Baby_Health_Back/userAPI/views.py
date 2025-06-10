@@ -46,8 +46,11 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.conf import settings
 """ from tensorflow.keras.layers import InputLayer """
-from keras.layers import TFSMLayer
-from keras.layers import TFSMLayer  # Si tu utilises keras TFSMLayer, sinon à adapter
+try:
+    from tensorflow.keras.layers import TFSMLayer
+except ImportError:
+    from keras.layers import TFSMLayer
+    
 import tempfile
 import joblib
 
@@ -753,8 +756,9 @@ def detect_cry(request):
         # Charger le modèle Keras
         
         model_path = os.path.join(settings.BASE_DIR, "mstc_baby_cry_model")
-        model = tf.keras.models.load_model(model_path)
-
+        model = tf.keras.Sequential([
+            TFSMLayer(model_path, call_endpoint='serve')
+        ])
 
         print("Modèle chargé avec succès")
 

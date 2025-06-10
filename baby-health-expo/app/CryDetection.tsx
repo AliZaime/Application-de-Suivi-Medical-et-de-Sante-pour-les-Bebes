@@ -25,7 +25,7 @@ export default function CryDetection() {
 
   const showMessage = (msg) => {
     setMessage(msg);
-    setTimeout(() => setMessage(null), 2000);
+    setTimeout(() => setMessage(null), 5000);
   };
 
   const startRecording = async () => {
@@ -86,7 +86,7 @@ export default function CryDetection() {
       });
 
       setCryPrediction(response.data);
-      setTimeout(() => router.back(), 2000);
+      setTimeout(() => router.back(), 5000);
     } catch {
       Alert.alert('Erreur', 'Erreur lors de la détection');
     } finally {
