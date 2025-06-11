@@ -358,6 +358,7 @@ const Symptomes = () => {
                   onChangeText={setRemarque}
                   multiline
                   style={[styles.input, { height: 60 }]}
+                  placeholderTextColor= '#888'
                 />
               </>
             )}

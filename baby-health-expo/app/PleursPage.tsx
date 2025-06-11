@@ -129,7 +129,7 @@ export default function PleursPage() {
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 80,
   },
   title: {
     fontSize: 24,

@@ -315,6 +315,7 @@ const Medicament = () => {
               numberOfLines={2}
               value={remarque}
               onChangeText={setRemarque}
+              placeholderTextColor= '#888'
             />
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>

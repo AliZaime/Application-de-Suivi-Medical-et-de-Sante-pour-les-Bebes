@@ -134,6 +134,7 @@ export default function AddTrackingForm() {
             multiline
             value={note}
             onChangeText={setNote}
+            placeholderTextColor= '#888'
           />
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>

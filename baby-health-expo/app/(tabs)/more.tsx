@@ -9,7 +9,7 @@ const CARD_SIZE = (Dimensions.get('window').width - 48) / 2;
 const cards = [
     {
         key: 'Guides',
-        label: 'Guides',
+        label: 'Calendrier & Rendez-vous',
         icon: <FontAwesome5 name="calendar-check" size={36} color="rgb(197, 71, 128)" />,
         color: "#ffe4ec",
         route: '/appiontement',

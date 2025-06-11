@@ -117,7 +117,7 @@ export default function AddBabyForm() {
 
           <View style={styles.pickerContainer}>
             <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker}>
-              <Picker.Item label="Sélectionner le sexe" value="" />
+              <Picker.Item label="Sélectionner le sexe" value=""/>
               <Picker.Item label="Garçon" value="Garçon" />
               <Picker.Item label="Fille" value="Fille" />
             </Picker>

@@ -83,6 +83,7 @@ export default function LoginForm() {
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
+            placeholderTextColor= '#888'
           />
 
           <TextInput
@@ -92,6 +93,7 @@ export default function LoginForm() {
             onChangeText={setPassword}
             secureTextEntry
             autoCapitalize="none"
+            placeholderTextColor= '#888'
           />
 
           <TouchableOpacity style={styles.button} onPress={handleLogin}>

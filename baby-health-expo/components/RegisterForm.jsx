@@ -68,6 +68,7 @@ export default function RegisterForm() {
             placeholder="Nom complet"
             value={name}
             onChangeText={setName}
+            placeholderTextColor= '#888'
           />
           <TextInput
             style={styles.input}
@@ -76,6 +77,7 @@ export default function RegisterForm() {
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
+            placeholderTextColor= '#888'
           />
           <TextInput
             style={styles.input}
@@ -83,6 +85,7 @@ export default function RegisterForm() {
             value={phone}
             onChangeText={setPhone}
             keyboardType="phone-pad"
+            placeholderTextColor= '#888'
           />
 
           {/* Genre */}
@@ -91,11 +94,13 @@ export default function RegisterForm() {
               selectedValue={gender}
               onValueChange={(itemValue) => setGender(itemValue)}
               style={styles.picker}
+              placeholderTextColor= '#888'
             >
               <Picker.Item label="Sélectionner le genre" value="" />
               <Picker.Item label="Homme" value="homme" />
               <Picker.Item label="Femme" value="femme" />
             </Picker>
+
           </View>
 
           <TextInput
@@ -104,6 +109,7 @@ export default function RegisterForm() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
+            placeholderTextColor= '#888'
           />
 
           {/* Préférence de notification */}
@@ -114,6 +120,7 @@ export default function RegisterForm() {
                 setNotificationPreferences(itemValue)
               }
               style={styles.picker}
+              placeholderTextColor= '#888'
             >
               <Picker.Item label="Préférence de notification" value="" />
               <Picker.Item label="Email" value="email" />
