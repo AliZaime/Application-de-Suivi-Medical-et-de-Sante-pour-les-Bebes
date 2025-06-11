@@ -107,6 +107,7 @@ const Profile = () => {
   }
 
   return (
+    
     <LinearGradient
               colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} // Rose → blanc → bleu clair
               start={{ x: 0, y: 0 }}
@@ -397,6 +398,7 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+    marginBottom: 84, 
   },
   buttonRow: {
     flexDirection: 'row',
