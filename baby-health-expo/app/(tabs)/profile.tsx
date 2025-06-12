@@ -109,7 +109,7 @@ const Profile = () => {
   return (
     
     <LinearGradient
-              colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} // Rose → blanc → bleu clair
+              colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} 
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.gradient}
@@ -117,12 +117,12 @@ const Profile = () => {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Profil du Parent</Text>
-        {parent?.gender === "female" ? (
+        {parent?.gender === "femme" ? (
           <Image
             source={require('@/assets/images/female.png')}
             style={styles.avatar}
           />
-        ) : parent?.gender === "male" ? (
+        ) : parent?.gender === "homme" ? (
           <Image
             source={require('@/assets/images/man.png')}
             style={styles.avatar}
