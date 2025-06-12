@@ -350,7 +350,7 @@ const AppointmentPage = () => { // Renamed component
                     Time: {appointment.time.split('T')[1].substring(0,5)}
                   </Text>
                   <View style={styles.buttonAppointment}>
-                      <Button color={"red"}  title='suprimer' onPress={ () => daletAppiontemment(appointment.appointment_id) } />
+                      <Button color={"red"}  title='supprimer' onPress={ () => daletAppiontemment(appointment.appointment_id) } />
                       <Button color={"green"} title='modifier' onPress={() => handleEditAppointment(appointment)} />
                   </View>
                     
