@@ -85,6 +85,31 @@ const Sommeil = () => {
     }
   };
 
+  const showDateTimePicker = (initialDate, onConfirm) => {
+  DateTimePickerAndroid.open({
+    value: initialDate,
+    mode: 'date',
+    is24Hour: true,
+    onChange: (_, date) => {
+      if (date) {
+        DateTimePickerAndroid.open({
+          value: date,
+          mode: 'time',
+          is24Hour: true,
+          onChange: (_, time) => {
+            if (time) {
+              const finalDateTime = new Date(date);
+              finalDateTime.setHours(time.getHours());
+              finalDateTime.setMinutes(time.getMinutes());
+              onConfirm(finalDateTime);
+            }
+          },
+        });
+      }
+    },
+  });
+};
+
   const openModal = () => {
     setDateDebut(new Date());
     setDateFin(new Date());
@@ -244,64 +269,66 @@ const Sommeil = () => {
             <Text style={styles.modalTitle}>{editing ? "Modifier" : "Ajouter"} un sommeil</Text>
 
             {/* Champ pour la date et l'heure de début */}
-            <TouchableOpacity style={styles.input} onPress={() => {
-            if (Platform.OS === 'android') {
-              DateTimePickerAndroid.open({
-                value: dateDebut,
-                mode: 'datetime',
-                is24Hour: true,
-                onChange: (_, selectedDate) => {
-                  if (selectedDate) setDateDebut(selectedDate);
-                },
-              });
-            } else {
-              setShowStartPicker(true);
-            }
-          }}>
-            <Text>{dateDebut ? dateDebut.toLocaleString() : "Sélectionnez date et heure de début"}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.input}
+                onPress={() => {
+                  if (Platform.OS === 'android') {
+                    showDateTimePicker(dateDebut, setDateDebut);
+                  } else {
+                    setShowStartPicker(true);
+                  }
+                }}
+              >
+                <Text>
+                  {dateDebut
+                    ? dateDebut.toLocaleString()
+                    : "Sélectionnez date et heure de début"}
+                </Text>
+              </TouchableOpacity>
 
-          {Platform.OS === 'ios' && showStartPicker && (
-            <DateTimePicker
-              value={dateDebut}
-              mode="datetime"
-              display="default"
-              onChange={(event, selectedDate) => {
-                setShowStartPicker(false);
-                if (selectedDate) setDateDebut(selectedDate);
-              }}
-            />
-          )}
+              {Platform.OS === 'ios' && showStartPicker && (
+                <DateTimePicker
+                  value={dateDebut}
+                  mode="datetime"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowStartPicker(false);
+                    if (selectedDate) setDateDebut(selectedDate);
+                  }}
+                />
+              )}
+
 
            
-            <TouchableOpacity style={styles.input} onPress={() => {
-              if (Platform.OS === 'android') {
-                DateTimePickerAndroid.open({
-                  value: dateFin,
-                  mode: 'datetime',
-                  is24Hour: true,
-                  onChange: (_, selectedDate) => {
-                    if (selectedDate) setDateFin(selectedDate);
-                  },
-                });
-              } else {
-                setShowEndPicker(true);
-              }
-            }}>
-              <Text>{dateFin ? dateFin.toLocaleString() : "Sélectionnez date et heure de fin"}</Text>
-            </TouchableOpacity>
-
-            {Platform.OS === 'ios' && showEndPicker && (
-              <DateTimePicker
-                value={dateFin}
-                mode="datetime"
-                display="default"
-                onChange={(event, selectedDate) => {
-                  setShowEndPicker(false);
-                  if (selectedDate) setDateFin(selectedDate);
+            <TouchableOpacity
+                style={styles.input}
+                onPress={() => {
+                  if (Platform.OS === 'android') {
+                    showDateTimePicker(dateFin, setDateFin);
+                  } else {
+                    setShowEndPicker(true);
+                  }
                 }}
-              />
-            )}
+              >
+                <Text>
+                  {dateFin
+                    ? dateFin.toLocaleString()
+                    : "Sélectionnez date et heure de fin"}
+                </Text>
+              </TouchableOpacity>
+
+              {Platform.OS === 'ios' && showEndPicker && (
+                <DateTimePicker
+                  value={dateFin}
+                  mode="datetime"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowEndPicker(false);
+                    if (selectedDate) setDateFin(selectedDate);
+                  }}
+                />
+              )}
+
 
             {(duration > 0 ) ? (
                 <Text style={[styles.durationText, {color : 'green'}]}>Durée : {duration} min</Text>
