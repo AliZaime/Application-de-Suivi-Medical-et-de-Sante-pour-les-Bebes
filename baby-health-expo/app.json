@@ -14,17 +14,17 @@
         "NSUserNotificationUsageDescription": "Cette application utilise les notifications pour rappeler des événements importants."
       },
       "bundleIdentifier": "com.esisa.babyhealth"
-
     },
     "android": {
-      "permissions": ["NOTIFICATIONS"],
+      "permissions": [
+        "NOTIFICATIONS"
+      ],
       "package": "com.esisa.babyhealth",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
-
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -46,7 +46,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c2529b1b-602e-4b0f-be1e-e6c49bbb9a2e"
+      }
     }
-    
   }
 }

@@ -108,43 +108,81 @@ export default function GeneticForm() {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Prédiction de maladie génétique</Text>
 
-        <TextInput style={styles.input} placeholder="Âge du bébé" keyboardType="numeric" onChangeText={(v) => handleChange("age", v)} />
+        <TextInput
+          style={styles.input}
+          placeholder="Âge du bébé"
+          keyboardType="numeric"
+          onChangeText={(v) => handleChange("age", v)}
+        />
 
         <Text style={styles.label}>Sexe</Text>
-        <Picker selectedValue={form.gender} onValueChange={(v) => handleChange("gender", v)}>
-          <Picker.Item label="Garçon" value="0" />
-          <Picker.Item label="Fille" value="1" />
-        </Picker>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.gender} onValueChange={(v) => handleChange("gender", v)}>
+            <Picker.Item label="Garçon" value="0" />
+            <Picker.Item label="Fille" value="1" />
+          </Picker>
+        </View>
 
         <Text style={styles.label}>Gènes hérités de la mère</Text>
-        <Picker selectedValue={form.genes_mother} onValueChange={(v) => handleChange("genes_mother", v)}>
-          <Picker.Item label="Non" value="0" />
-          <Picker.Item label="Oui" value="1" />
-        </Picker>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.genes_mother} onValueChange={(v) => handleChange("genes_mother", v)}>
+            <Picker.Item label="Non" value="0" />
+            <Picker.Item label="Oui" value="1" />
+          </Picker>
+        </View>
 
         <Text style={styles.label}>Gènes hérités du père</Text>
-        <Picker selectedValue={form.inherited_father} onValueChange={(v) => handleChange("inherited_father", v)}>
-          <Picker.Item label="Non" value="0" />
-          <Picker.Item label="Oui" value="1" />
-        </Picker>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.inherited_father} onValueChange={(v) => handleChange("inherited_father", v)}>
+            <Picker.Item label="Non" value="0" />
+            <Picker.Item label="Oui" value="1" />
+          </Picker>
+        </View>
 
-        <TextInput style={styles.input} placeholder="Résultat Test 1" keyboardType="numeric" onChangeText={(v) => handleChange("test1", v)} />
-        <TextInput style={styles.input} placeholder="Résultat Test 2" keyboardType="numeric" onChangeText={(v) => handleChange("test2", v)} />
-        <TextInput style={styles.input} placeholder="Résultat Test 3" keyboardType="numeric" onChangeText={(v) => handleChange("test3", v)} />
+        <Text style={styles.label}>Dosage hormonal</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.test1} onValueChange={(v) => handleChange("test1", v)}>
+            <Picker.Item label="Faible" value="1" />
+            <Picker.Item label="Normal" value="2.5" />
+            <Picker.Item label="Élevé" value="4" />
+          </Picker>
+        </View>
+
+        <Text style={styles.label}>Évaluation neurologique</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.test2} onValueChange={(v) => handleChange("test2", v)}>
+            <Picker.Item label="Normal" value="2.5" />
+            <Picker.Item label="Ralentissement léger" value="1.5" />
+            <Picker.Item label="Anomalie détectée" value="4" />
+          </Picker>
+        </View>
+
+        <Text style={styles.label}>Bilan génétique</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.test3} onValueChange={(v) => handleChange("test3", v)}>
+            <Picker.Item label="Non effectué" value="0" />
+            <Picker.Item label="Résultat normal" value="2.5" />
+            <Picker.Item label="Anomalie détectée" value="4" />
+          </Picker>
+        </View>
 
         <Text style={styles.label}>Asphyxie à la naissance</Text>
-        <Picker selectedValue={form.birth_asphyxia} onValueChange={(v) => handleChange("birth_asphyxia", v)}>
-          <Picker.Item label="Non" value="0" />
-          <Picker.Item label="Oui" value="1" />
-        </Picker>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.birth_asphyxia} onValueChange={(v) => handleChange("birth_asphyxia", v)}>
+            <Picker.Item label="Non" value="0" />
+            <Picker.Item label="Oui" value="1" />
+          </Picker>
+        </View>
 
         <Text style={styles.label}>Résultat du test sanguin</Text>
-        <Picker selectedValue={form.blood_test_result} onValueChange={(v) => handleChange("blood_test_result", v)}>
-          <Picker.Item label="Normal" value="0" />
-          <Picker.Item label="Inconclusif" value="1" />
-          <Picker.Item label="Légèrement anormal" value="2" />
-          <Picker.Item label="Anormal" value="3" />
-        </Picker>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.blood_test_result} onValueChange={(v) => handleChange("blood_test_result", v)}>
+            <Picker.Item label="Normal" value="0" />
+            <Picker.Item label="Inconclusif" value="1" />
+            <Picker.Item label="Légèrement anormal" value="2" />
+            <Picker.Item label="Anormal" value="3" />
+          </Picker>
+        </View>
 
         <Button title="Prédire la maladie génétique" onPress={handleSubmit} />
       </ScrollView>
@@ -169,7 +207,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#333",
     marginBottom: 10,
     padding: 10,
     borderRadius: 6,
@@ -177,5 +215,11 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 15,
     fontWeight: "bold",
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#888",
+    borderRadius: 6,
+    marginBottom: 10,
   },
 });

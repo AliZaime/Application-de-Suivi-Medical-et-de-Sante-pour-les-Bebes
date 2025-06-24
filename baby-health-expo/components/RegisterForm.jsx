@@ -20,7 +20,6 @@ export default function RegisterForm() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [notification_preferences, setNotificationPreferences] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = () => {
@@ -30,11 +29,11 @@ export default function RegisterForm() {
       phone: phone.trim(),
       password,
       gender,
-      notification_preferences,
+      notification_preferences:"email",
     };
 
     axios
-      .post(`${config.API_BASE_URL}/api/user/register/`, userData)
+      .post(`${config.API_BASE_URL}/api/user/registe/`, userData)
       .then(() => {
 
         setMessage("Inscription réussie !");
@@ -111,23 +110,6 @@ export default function RegisterForm() {
             secureTextEntry
             placeholderTextColor= '#888'
           />
-
-          {/* Préférence de notification */}
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={notification_preferences}
-              onValueChange={(itemValue) =>
-                setNotificationPreferences(itemValue)
-              }
-              style={styles.picker}
-              placeholderTextColor= '#888'
-            >
-              <Picker.Item label="Préférence de notification" value="" />
-              <Picker.Item label="Email" value="email" />
-              <Picker.Item label="SMS" value="sms" />
-              <Picker.Item label="Aucun" value="aucun" />
-            </Picker>
-          </View>
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>S'inscrire</Text>
