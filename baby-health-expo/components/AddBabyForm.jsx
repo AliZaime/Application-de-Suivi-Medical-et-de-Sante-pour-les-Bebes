@@ -165,6 +165,7 @@ export default function AddBabyForm() {
   const [name, setName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false); // 👈 ajouté
   const [gender, setGender] = useState("");
   const [bloodType, setBloodType] = useState("");
   const [timeOfBirth, setTimeOfBirth] = useState("");
@@ -235,7 +236,7 @@ export default function AddBabyForm() {
           />
 
           <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-            <Text>{dateOfBirth.toISOString().split("T")[0]}</Text>
+            <Text style={{ color: '#fffbe4' }}>{dateOfBirth.toISOString().split("T")[0]}</Text>
           </TouchableOpacity>
           {showDatePicker && (
             <DateTimePicker
@@ -249,12 +250,28 @@ export default function AddBabyForm() {
             />
           )}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Heure de naissance (ex: 13:30)"
-            value={timeOfBirth}
-            onChangeText={setTimeOfBirth}
-          />
+          {/* 🎯 Picker d'heure natif */}
+          <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
+            <Text style={{ color: '#fffbe4' }}>
+              {timeOfBirth ? timeOfBirth : "Sélectionner l'heure de naissance"}
+            </Text>
+          </TouchableOpacity>
+          {showTimePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={(event, selectedTime) => {
+                setShowTimePicker(false);
+                if (selectedTime) {
+                  const hours = selectedTime.getHours().toString().padStart(2, '0');
+                  const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+                  setTimeOfBirth(`${hours}:${minutes}`);
+                }
+              }}
+            />
+          )}
 
           <View style={styles.pickerContainer}>
             <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker}>
