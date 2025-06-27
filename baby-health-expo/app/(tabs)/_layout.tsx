@@ -7,17 +7,22 @@ export default function TabLayout() {
       screenOptions={{
         tabBarStyle: {
           position: "absolute",
-          borderTopWidth: 1,
-          borderTopColor: "gray", 
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          borderTopWidth: 1.5,
+          borderTopColor: "#7c5fff55", // violet doux
+          backgroundColor: 'rgba(24, 29, 54, 0.92)', // fond nuit translucide
           elevation: 0,
+          height: 82,
+          paddingBottom: 6,
+          paddingTop: 6,
         },
-        tabBarActiveTintColor: "rgb(14, 174, 202)", 
-        tabBarInactiveTintColor: "#000", 
+        tabBarActiveTintColor: "#7c5fff", // violet vif
+        tabBarInactiveTintColor: "#b8c1ec", // lavande claire
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: "bold",
+          letterSpacing: 0.5,
         },
+        headerShown: false,
       }}
     >
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,7 +7,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../../config';
 import { Path } from 'react-native-svg';
-
+import { Animated, Easing } from 'react-native'; // Ajout pour animations
+import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Path as SvgPath } from 'react-native-svg';
 
 const Today = () => {
   const [todayDate, setTodayDate] = useState(
@@ -147,22 +148,53 @@ const Today = () => {
     }
   };
 
+  // Animation pour les cartes planning et conseils
+  const scheduleAnim = useRef(new Animated.Value(0)).current;
+  const adviceAnim = useRef(new Animated.Value(0)).current;
+  const modalImageAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(scheduleAnim, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true,
+      easing: Easing.out(Easing.exp),
+    }).start();
+    Animated.timing(adviceAnim, {
+      toValue: 1,
+      duration: 900,
+      delay: 300,
+      useNativeDriver: true,
+      easing: Easing.out(Easing.exp),
+    }).start();
+  }, [childrenSchedules, advices]);
+
+  // Animation image modal
+  useEffect(() => {
+    if (selectedAdvice !== null) {
+      modalImageAnim.setValue(0);
+      Animated.spring(modalImageAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        friction: 6,
+        tension: 60,
+      }).start();
+    }
+  }, [selectedAdvice]);
+
   return (
-    <LinearGradient
-      colors={['#ffb6c1', '#f8f6fa', '#a3cef1']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.gradient}
-    >
-      <View style={{ flex: 1, height: '100%', marginBottom: 84 }}>
+    <View style={{ flex: 1, backgroundColor: '#181d36' }}>
+      <AnimatedNightBackground />
+      <View style={{ flex: 1, height: '100%', marginBottom: 80 }}>
         <ScrollView
           contentContainerStyle={styles.container}
           onScroll={handleScroll}
-          scrollEventThrottle={16} // Adjust for performance
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
         >
           {isLoading ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#0000ff" />
+              <ActivityIndicator size="large" color="#a3cef1" />
             </View>
           ) : (
             <>
@@ -172,7 +204,22 @@ const Today = () => {
                 <Text style={styles.greeting}>Hello, {parent?.name} </Text>
               </View>
 
-              <View style={styles.scheduleSection}>
+              <Animated.View
+                style={[
+                  styles.scheduleSection,
+                  {
+                    opacity: scheduleAnim,
+                    transform: [
+                      {
+                        translateY: scheduleAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [40, 0],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              >
                 <View style={styles.scheduleHeader}>
                   <Text style={styles.sectionTitle}>
                     {childrenSchedules.length > 0
@@ -180,38 +227,70 @@ const Today = () => {
                       : 'Baby'}
                   </Text>
                   <View style={styles.scheduleIcons}>
-                    <TouchableOpacity onPress={switchChildCards}>
-                      <FontAwesome name="exchange" size={24} color="black" style={styles.icon} />
+                    <TouchableOpacity
+                      onPress={switchChildCards}
+                      style={styles.iconButton}
+                      accessibilityLabel="Switch child"
+                    >
+                      <FontAwesome name="exchange" size={24} color="#7b8fa1" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={redirectToTracking}>
-                      <FontAwesome name="arrow-right" size={24} color="black" style={styles.icon} />
+                    <TouchableOpacity
+                      onPress={redirectToTracking}
+                      style={styles.iconButton}
+                      accessibilityLabel="Go to tracking"
+                    >
+                      <FontAwesome name="arrow-right" size={24} color="#7b8fa1" />
                     </TouchableOpacity>
                   </View>
                 </View>
                 {(childrenSchedules[currentChildIndex]?.schedules || []).map(
                   (schedule: { text: string; subText: string; color: string }, index: number) => (
-                    <View
+                    <Animated.View
                       key={index}
                       style={[
                         styles.scheduleCard,
                         {
                           backgroundColor:
                             childrenSchedules[currentChildIndex]?.gender.toLowerCase() === 'boy'
-                              ? '#a3cef1' // Blue for boys
-                              : '#ffb6c1', // Pink for girls
+                              ? '#b5e3ff'
+                              : '#b8c1ec', // lavande claire, douce et compatible nuit
+                          opacity: scheduleAnim,
+                          transform: [
+                            {
+                              scale: scheduleAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0.95, 1],
+                              }),
+                            },
+                          ],
                         },
                       ]}
                     >
                       <Text style={styles.scheduleText}>{schedule.text}</Text>
                       <Text style={styles.scheduleSubText}>{schedule.subText}</Text>
-                    </View>
+                    </Animated.View>
                   )
                 )}
-              </View>
+              </Animated.View>
 
               {advices.map((advice, index) => (
-                <View key={index} style={styles.adviceSection}>
-                  
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.adviceSection,
+                    {
+                      opacity: adviceAnim,
+                      transform: [
+                        {
+                          translateY: adviceAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [40, 0],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
                   <Image
                     source={images[advice.image]}
                     style={styles.adviceImage}
@@ -223,10 +302,11 @@ const Today = () => {
                   <TouchableOpacity
                     onPress={() => openAdviceModal(index)}
                     style={styles.expandIcon}
+                    accessibilityLabel="Show more advice"
                   >
-                    <FontAwesome name="expand" size={24} color="black" />
+                    <FontAwesome name="expand" size={24} color="#7b8fa1" />
                   </TouchableOpacity>
-                </View>
+                </Animated.View>
               ))}
             </>
           )}
@@ -234,23 +314,37 @@ const Today = () => {
           {selectedAdvice !== null && (
             <Modal
               visible={true}
-              animationType="slide"
+              animationType="fade"
               transparent={true}
               onRequestClose={closeAdviceModal}
             >
               <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                  <Image
+                  <Animated.Image
                     source={images[advices[selectedAdvice].image]}
-                    style={styles.adviceImage}
+                    style={[
+                      styles.modalAdviceImage,
+                      {
+                        transform: [
+                          {
+                            scale: modalImageAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [0.85, 1],
+                            }),
+                          },
+                        ],
+                        opacity: modalImageAnim,
+                      },
+                    ]}
                   />
                   <Text style={styles.adviceTitle}>{advices[selectedAdvice].title}</Text>
                   <Text style={styles.adviceText}>{advices[selectedAdvice].content}</Text>
                   <TouchableOpacity
                     onPress={closeAdviceModal}
                     style={styles.closeButton}
+                    accessibilityLabel="Close advice"
                   >
-                    <FontAwesome name="close" size={24} color="black" />
+                    <FontAwesome name="close" size={28} color="#7b8fa1" />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -258,139 +352,260 @@ const Today = () => {
           )}
         </ScrollView>
       </View>
-    </LinearGradient>
+    </View>
+  );
+};
+
+const AnimatedNightBackground = () => {
+  // 3 bulles animées
+  const anim1 = useRef(new Animated.Value(0)).current;
+  const anim2 = useRef(new Animated.Value(0)).current;
+  const anim3 = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(anim1, { toValue: 1, duration: 9000, useNativeDriver: false }),
+        Animated.timing(anim1, { toValue: 0, duration: 9000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(anim2, { toValue: 1, duration: 12000, useNativeDriver: false }),
+        Animated.timing(anim2, { toValue: 0, duration: 12000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(anim3, { toValue: 1, duration: 15000, useNativeDriver: false }),
+        Animated.timing(anim3, { toValue: 0, duration: 15000, useNativeDriver: false }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <View style={StyleSheet.absoluteFill}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: anim1.interpolate({ inputRange: [0, 1], outputRange: [100, 250] }),
+          left: 30,
+          width: 120,
+          height: 120,
+          borderRadius: 60,
+          backgroundColor: '#e3f6fd88',
+          opacity: 0.5,
+          zIndex: 0,
+        }}
+      />
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: anim2.interpolate({ inputRange: [0, 1], outputRange: [400, 200] }),
+          right: 40,
+          width: 90,
+          height: 90,
+          borderRadius: 45,
+          backgroundColor: '#f8e1f488',
+          opacity: 0.5,
+          zIndex: 0,
+        }}
+      />
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: anim3.interpolate({ inputRange: [0, 1], outputRange: [80, 200] }),
+          left: 120,
+          width: 160,
+          height: 160,
+          borderRadius: 80,
+          backgroundColor: '#e0f7fa88',
+          opacity: 0.4,
+          zIndex: 0,
+        }}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
   container: {
     padding: 16,
-  marginBottom: 80,
-    marginTop: 80,
+    marginBottom: 80,
+    marginTop: 60,
   },
   headerSection: {
-    marginBottom: 20,
+    marginBottom: 24,
+    alignItems: 'center',
   },
   dateText: {
     fontSize: 18,
-    color: '#999',
+    color: '#b8c1ec',
     textAlign: 'center',
+    fontWeight: '500',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 8,
+    color: '#fffbe4',
+    letterSpacing: 1,
   },
   greeting: {
     fontSize: 18,
     textAlign: 'center',
-    color: '#555',
+    color: '#b8c1ec',
+    marginTop: 2,
   },
   scheduleSection: {
-    marginBottom: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 16,
-    borderRadius: 8,
-    
+    marginBottom: 28,
+    backgroundColor: '#232946ee',
+    padding: 18,
+    borderRadius: 24,
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.13,
+    shadowRadius: 12,
+    elevation: 4,
   },
   scheduleHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   scheduleIcons: {
     flexDirection: 'row',
     gap: 10,
   },
-  icon: {
-    marginHorizontal: 5,
+  iconButton: {
+    backgroundColor: '#181d36',
+    borderRadius: 16,
+    padding: 8,
+    marginHorizontal: 2,
+    elevation: 2,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
+    color: '#7c5fff',
+    marginBottom: 0,
+    letterSpacing: 0.5,
   },
   scheduleCard: {
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: '#000',
+    padding: 16,
+    borderRadius: 18,
+    marginBottom: 12,
+    shadowColor: '#7c5fff',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: '#7c5fff55',
+    backgroundColor: '#232946',
   },
   scheduleText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fffbe4',
+    marginBottom: 2,
   },
   scheduleSubText: {
-    fontSize: 14,
-    color: '#999',
+    fontSize: 15,
+    color: 'rgb(22, 154, 210)'
   },
   adviceSection: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-    marginBottom: 20,
+    backgroundColor: '#232946ee',
+    padding: 18,
+    borderRadius: 24,
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 3,
+    marginBottom: 24,
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#7c5fff55',
   },
   adviceImage: {
     width: '100%',
-    height: 250,
-    borderRadius: 8,
-    marginBottom: 10,
+    height: 180,
+    borderRadius: 18,
+    marginBottom: 12,
+    backgroundColor: '#181d36',
   },
   adviceTitle: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#fffbe4',
+    textAlign: 'center',
   },
   adviceText: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 15,
+    color: '#b8c1ec',
+    textAlign: 'center',
+    marginBottom: 6,
   },
   expandIcon: {
     marginTop: 10,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
+    backgroundColor: '#181d36',
+    borderRadius: 16,
+    padding: 8,
+    elevation: 2,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(24, 29, 54, 0.18)',
   },
   modalContent: {
     width: '90%',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
+    backgroundColor: '#232946',
+    borderRadius: 28,
+    padding: 20,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 8,
+    borderWidth: 1.5,
+    borderColor: '#7c5fff55',
+  },
+  modalAdviceImage: {
+    width: '100%',
+    height: 220,
+    borderRadius: 20,
+    marginBottom: 14,
+    backgroundColor: '#181d36',
   },
   closeButton: {
-    marginTop: 20,
+    marginTop: 18,
+    backgroundColor: '#181d36',
+    borderRadius: 16,
+    padding: 10,
+    elevation: 2,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 1000,
+    height: 400,
+  },
+  cardGradient: {
+    padding: 18,
+    borderRadius: 24,
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
+    elevation: 2,
   },
 });
 
