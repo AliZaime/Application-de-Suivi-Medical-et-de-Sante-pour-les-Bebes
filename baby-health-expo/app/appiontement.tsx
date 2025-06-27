@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native'; // Corrected TextInput import
+import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native'; // Corrected TextInput import
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { LinearGradient } from 'expo-linear-gradient';
 import config from '../config';
 import { scheduleReminder } from '../utils/notifications';
+import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Path as SvgPath } from 'react-native-svg';
+import { Animated, Easing } from 'react-native';
 
 // Helper function to get today's date in 'YYYY-MM-DD' format
 function getTodayDate() {
@@ -311,26 +313,411 @@ const AppointmentPage = () => { // Renamed component
     }
   };
 
+  const AnimatedBackground = () => {
+    const flowAnim = React.useRef(new Animated.Value(0)).current;
+
+    React.useEffect(() => {
+      Animated.loop(
+        Animated.timing(flowAnim, {
+          toValue: 1,
+          duration: 16000,
+          useNativeDriver: true,
+          easing: Easing.linear,
+        })
+      ).start();
+    }, []);
+
+    const translateX = flowAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -120],
+    });
+
+    return (
+      <View style={StyleSheet.absoluteFill} pointerEvents="none">
+        <Animated.View style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '120%',
+          height: 340,
+          transform: [{ translateX }],
+          opacity: 0.18,
+        }}>
+          <Svg width="120%" height="340" viewBox="0 0 500 340">
+            <Defs>
+              <SvgLinearGradient id="flow1" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0%" stopColor="#232946" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#7c5fff" stopOpacity="1" />
+              </SvgLinearGradient>
+            </Defs>
+            <SvgPath
+              d="M0,120 Q125,200 250,120 T500,120 V340 H0 Z"
+              fill="url(#flow1)"
+            />
+          </Svg>
+        </Animated.View>
+        <Animated.View style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: '120%',
+          height: 220,
+          transform: [{ translateX: Animated.multiply(translateX, -1) }],
+          opacity: 0.13,
+        }}>
+          <Svg width="120%" height="220" viewBox="0 0 500 220">
+            <Defs>
+              <SvgLinearGradient id="flow2" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0%" stopColor="#2ec4b6" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#232946" stopOpacity="1" />
+              </SvgLinearGradient>
+            </Defs>
+            <SvgPath
+              d="M0,80 Q150,180 300,80 T500,80 V220 H0 Z"
+              fill="url(#flow2)"
+            />
+          </Svg>
+        </Animated.View>
+      </View>
+    );
+  };
+
+  const AnimatedLightBackground = () => {
+    const anim = React.useRef(new Animated.Value(0)).current;
+    const bubble1 = React.useRef(new Animated.Value(0)).current;
+    const bubble2 = React.useRef(new Animated.Value(0)).current;
+
+    React.useEffect(() => {
+      Animated.loop(
+        Animated.timing(anim, {
+          toValue: 1,
+          duration: 16000,
+          useNativeDriver: true,
+          easing: Easing.linear,
+        })
+      ).start();
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(bubble1, { toValue: 1, duration: 9000, useNativeDriver: false }),
+          Animated.timing(bubble1, { toValue: 0, duration: 9000, useNativeDriver: false }),
+        ])
+      ).start();
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(bubble2, { toValue: 1, duration: 12000, useNativeDriver: false }),
+          Animated.timing(bubble2, { toValue: 0, duration: 12000, useNativeDriver: false }),
+        ])
+      ).start();
+    }, []);
+
+    const translateX = anim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -80],
+    });
+
+    return (
+      <View style={StyleSheet.absoluteFill} pointerEvents="none">
+        {/* Vague pastel haut */}
+        <Animated.View style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '120%',
+          height: 180,
+          transform: [{ translateX }],
+          opacity: 0.18,
+        }}>
+          <Svg width="120%" height="180" viewBox="0 0 500 180">
+            <Defs>
+              <SvgLinearGradient id="light1" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0%" stopColor="#b8e0fe" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#f8f6fa" stopOpacity="1" />
+              </SvgLinearGradient>
+            </Defs>
+            <SvgPath
+              d="M0,60 Q125,120 250,60 T500,60 V180 H0 Z"
+              fill="url(#light1)"
+            />
+          </Svg>
+        </Animated.View>
+        {/* Vague pastel bas */}
+        <Animated.View style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: '120%',
+          height: 160,
+          transform: [{ translateX: Animated.multiply(translateX, -1) }],
+          opacity: 0.15,
+        }}>
+          <Svg width="120%" height="160" viewBox="0 0 500 160">
+            <Defs>
+              <SvgLinearGradient id="light2" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0%" stopColor="#ffe4f0" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#e0f7fa" stopOpacity="1" />
+              </SvgLinearGradient>
+            </Defs>
+            <SvgPath
+              d="M0,80 Q150,140 300,80 T500,80 V160 H0 Z"
+              fill="url(#light2)"
+            />
+          </Svg>
+        </Animated.View>
+        {/* Bulles flottantes */}
+        <Animated.View style={{
+          position: 'absolute',
+          top: bubble1.interpolate({ inputRange: [0, 1], outputRange: [100, 40] }),
+          left: 30,
+          width: 70,
+          height: 70,
+          borderRadius: 35,
+          backgroundColor: '#b8e0fe55',
+          opacity: 0.4,
+        }} />
+        <Animated.View style={{
+          position: 'absolute',
+          top: bubble2.interpolate({ inputRange: [0, 1], outputRange: [320, 180] }),
+          right: 60,
+          width: 100,
+          height: 100,
+          borderRadius: 50,
+          backgroundColor: '#ffe4f055',
+          opacity: 0.4,
+        }} />
+      </View>
+    );
+  };
+
+const AnimatedNightBackground = () => {
+  const waveAnim = React.useRef(new Animated.Value(0)).current;
+  const starAnim = React.useRef(new Animated.Value(0)).current;
+  const toyAnim = React.useRef(new Animated.Value(0)).current;
+  const bubble1 = React.useRef(new Animated.Value(0)).current;
+  const bubble2 = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    Animated.loop(
+      Animated.timing(waveAnim, {
+        toValue: 1,
+        duration: 16000,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      })
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(starAnim, { toValue: 1, duration: 3000, useNativeDriver: false }),
+        Animated.timing(starAnim, { toValue: 0, duration: 3000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(toyAnim, { toValue: 1, duration: 9000, useNativeDriver: false }),
+        Animated.timing(toyAnim, { toValue: 0, duration: 9000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(bubble1, { toValue: 1, duration: 11000, useNativeDriver: false }),
+        Animated.timing(bubble1, { toValue: 0, duration: 11000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(bubble2, { toValue: 1, duration: 14000, useNativeDriver: false }),
+        Animated.timing(bubble2, { toValue: 0, duration: 14000, useNativeDriver: false }),
+      ])
+    ).start();
+  }, []);
+
+  const waveTranslate = waveAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -100],
+  });
+
+  const starOpacity = starAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.4, 1],
+  });
+
+  const toyY = toyAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [60, 120],
+  });
+
   return (
-    <LinearGradient
-          colors={['#ffb6c1', '#f8f6fa', '#a3cef1']} // Rose → blanc → bleu clair
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        >
-    
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      {/* Dégradé nuit */}
+      <View style={{
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#181d36',
+      }} />
+      {/* Vague nuit */}
+      <Animated.View style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '120%',
+        height: 180,
+        transform: [{ translateX: waveTranslate }],
+        opacity: 0.22,
+      }}>
+        <Svg width="120%" height="180" viewBox="0 0 500 180">
+          <Defs>
+            <SvgLinearGradient id="night1" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0%" stopColor="#232946" stopOpacity="1" />
+              <Stop offset="100%" stopColor="#3a506b" stopOpacity="1" />
+            </SvgLinearGradient>
+          </Defs>
+          <SvgPath
+            d="M0,60 Q125,120 250,60 T500,60 V180 H0 Z"
+            fill="url(#night1)"
+          />
+        </Svg>
+      </Animated.View>
+      {/* Bulles pastel */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: bubble1.interpolate({ inputRange: [0, 1], outputRange: [120, 60] }),
+        left: 40,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#b8e0fe55',
+        opacity: 0.4,
+      }} />
+      <Animated.View style={{
+        position: 'absolute',
+        top: bubble2.interpolate({ inputRange: [0, 1], outputRange: [300, 180] }),
+        right: 60,
+        width: 90,
+        height: 90,
+        borderRadius: 45,
+        backgroundColor: '#ffd6e055',
+        opacity: 0.4,
+      }} />
+      {/* Étoiles scintillantes */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: 40,
+        left: 40,
+        opacity: starOpacity,
+      }}>
+        <Svg width={24} height={24} viewBox="0 0 24 24">
+          <SvgPath
+            d="M12 2 L13.09 8.26 L19 8.27 L14 12.14 L15.18 18.02 L12 14.77 L8.82 18.02 L10 12.14 L5 8.27 L10.91 8.26 Z"
+            fill="#fffbe4"
+          />
+        </Svg>
+      </Animated.View>
+      <Animated.View style={{
+        position: 'absolute',
+        top: 100,
+        right: 60,
+        opacity: starOpacity,
+      }}>
+        <Svg width={16} height={16} viewBox="0 0 24 24">
+          <SvgPath
+            d="M12 2 L13.09 8.26 L19 8.27 L14 12.14 L15.18 18.02 L12 14.77 L8.82 18.02 L10 12.14 L5 8.27 L10.91 8.26 Z"
+            fill="#ffe4b8"
+          />
+        </Svg>
+      </Animated.View>
+      {/* Plusieurs étoiles scintillantes */}
+      {[...Array(18)].map((_, i) => {
+        // Répartition sur toute la page
+        const top = 20 + (i % 6) * 100; // 6 lignes
+        const left = 20 + (i * 40) % 320; // positions horizontales variées
+        return (
+          <Animated.View
+            key={'star'+i}
+            style={{
+              position: 'absolute',
+              top,
+              left,
+              opacity: starOpacity,
+              zIndex: 1,
+            }}>
+            <Svg width={i % 3 === 0 ? 18 : 12} height={i % 3 === 0 ? 18 : 12} viewBox="0 0 24 24">
+              <SvgPath
+                d="M12 2 L13.09 8.26 L19 8.27 L14 12.14 L15.18 18.02 L12 14.77 L8.82 18.02 L10 12.14 L5 8.27 L10.91 8.26 Z"
+                fill={i % 2 === 0 ? "#fffbe4" : "#ffe4b8"}
+              />
+            </Svg>
+          </Animated.View>
+        );
+      })}
+
+      {/* Jouet flottant : cube */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: toyY,
+        left: 180,
+        opacity: 0.85,
+      }}>
+        <Svg width={32} height={32} viewBox="0 0 32 32">
+          <SvgPath d="M8 12 L16 8 L24 12 L16 16 Z" fill="#b8e0fe"/>
+          <SvgPath d="M8 12 L8 20 L16 24 L16 16 Z" fill="#ffd6e0"/>
+          <SvgPath d="M24 12 L24 20 L16 24 L16 16 Z" fill="#b8c1ec"/>
+        </Svg>
+      </Animated.View>
+      {/* Cube bas */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: 420,
+        left: 60,
+        opacity: 0.7,
+      }}>
+        <Svg width={28} height={28} viewBox="0 0 32 32">
+          <SvgPath d="M8 12 L16 8 L24 12 L16 16 Z" fill="#b8e0fe"/>
+          <SvgPath d="M8 12 L8 20 L16 24 L16 16 Z" fill="#ffd6e0"/>
+          <SvgPath d="M24 12 L24 20 L16 24 L16 16 Z" fill="#b8c1ec"/>
+        </Svg>
+      </Animated.View>
+      {/* Jouet flottant : canard */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: toyY,
+        right: 120,
+        opacity: 0.85,
+      }}>
+        <Svg width={32} height={32} viewBox="0 0 32 32">
+          <SvgPath d="M8 24 Q6 20 12 18 Q10 12 18 12 Q28 12 24 22 Q28 22 26 24 Q24 26 8 24 Z" fill="#ffe4b8"/>
+          <SvgPath d="M25 18 Q27 17 26 20" fill="#ffb6b6"/>
+          <SvgPath d="M20 16 Q21 15 22 16" stroke="#222" strokeWidth={1}/>
+        </Svg>
+      </Animated.View>
+      {/* Canard bas */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: 500,
+        right: 40,
+        opacity: 0.7,
+      }}>
+        <Svg width={28} height={28} viewBox="0 0 32 32">
+          <SvgPath d="M8 24 Q6 20 12 18 Q10 12 18 12 Q28 12 24 22 Q28 22 26 24 Q24 26 8 24 Z" fill="#ffe4b8"/>
+          <SvgPath d="M25 18 Q27 17 26 20" fill="#ffb6b6"/>
+          <SvgPath d="M20 16 Q21 15 22 16" stroke="#222" strokeWidth={1}/>
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+};
+
+  return (
+    <View style={{ flex: 1, backgroundColor: '#181d36' }}>
+    <AnimatedNightBackground />
     <View style={styles.container}>
-      
-      <ScrollView>
-      <Calendar
-        onDayPress={handleDayPress}
-        markedDates={markedDates}
-        markingType={'multi-dot'} // Enabled multi-dot marking
-        current={selectedDate}
-        key={selectedDate} // Re-render calendar if selectedDate month changes
-        style={{ marginTop: 100 }} // Add some margin at the bottom
-      />
-      <Text style={styles.title}>Calendrier & Rendez-vous</Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+        <Text style={styles.title}>Calendrier & Rendez-vous</Text>
+        <Calendar
+          onDayPress={handleDayPress}
+          markedDates={markedDates}
+          markingType={'multi-dot'}
+          current={selectedDate}
+          key={selectedDate}
+          style={styles.calendar}
+        />
       {loading ? (
         <Text>Loading appointments...</Text>
       ) : (
@@ -391,28 +778,52 @@ const AppointmentPage = () => { // Renamed component
             onConfirm={handleConfirm}
             onCancel={hideDateTimePicker}
           />
-          <Button
-            title={editingAppointment ? 'Modifier' : 'Ajouter'}
-            onPress={editingAppointment ? saveEditedAppointment : addAppointment}
-          />
-          <Button
-            color={"red"}
-            title="Annuler"
-            onPress={() => {
-              setFormVisible(false);
-              setFormData({ value: '', place: '', time: '' });
-              setEditingAppointment(null);
-            }}
-          />
+          <TouchableOpacity style={styles.addButton} onPress={editingAppointment ? saveEditedAppointment : addAppointment}>
+            <Text style={styles.addButtonText}>{editingAppointment ? 'Modifier' : 'Ajouter'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => {
+            setFormVisible(false);
+            setFormData({ value: '', place: '', time: '' });
+            setEditingAppointment(null);
+          }}>
+            <Text style={styles.cancelButtonText}>Annuler</Text>
+          </TouchableOpacity>
         </View>
       )}
       {!formVisible && (
-        <Button title="Ajouter un rendez-vous" onPress={() => setFormVisible(true)} />
+        <TouchableOpacity
+          style={{
+            marginTop: 24,
+            marginBottom: 24,
+            alignSelf: 'center',
+            backgroundColor: '#7c5fff',
+            borderRadius: 22,
+            paddingVertical: 15,
+            paddingHorizontal: 38,
+            shadowColor: '#7c5fff',
+            shadowOffset: { width: 0, height: 3 },
+            shadowOpacity: 0.18,
+            shadowRadius: 10,
+            elevation: 4,
+          }}
+          onPress={() => setFormVisible(true)}
+          activeOpacity={0.85}
+        >
+          <Text style={{
+            color: '#fffbe4',
+            fontSize: 18,
+            fontWeight: 'bold',
+            letterSpacing: 1,
+            textAlign: 'center',
+          }}>
+            Ajouter un rendez-vous
+          </Text>
+        </TouchableOpacity>
       )}
 
       </ScrollView>
     </View>
-      </LinearGradient>
+      </View>
   );
 };
 
@@ -420,104 +831,167 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    height: '100%',
-    
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    marginTop: 80,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 32,
+    marginBottom: 38,
     textAlign: 'center',
-    color: '#333', // Darker text for better contrast
+    color: '#fffbe4', // jaune pastel très lisible sur fond nuit
+    letterSpacing: 1,
+  },
+  calendar: {
+    borderRadius: 18,
+    overflow: 'hidden',
+    marginBottom: 18,
+    alignSelf: 'center',
+    width: 340,
+    elevation: 2,
+    backgroundColor: '#232956',
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
   },
   dateText: {
     fontSize: 18,
     fontWeight: '600',
     marginTop: 10,
     marginBottom: 8,
-    color: '#555',
-  },
-  appointmentText: {
-    fontSize: 16,
-    marginTop: 5,
-    padding: 12,
-
-    borderRadius: 8,
-    marginBottom: 8,
-    color: 'black', // Teal text color
-  },
-  noAppointmentText: {
-    fontSize: 16,
-    marginTop: 5,
-    color: '#999',
+    color: '#b8c1ec', // lavande claire
     textAlign: 'center',
   },
   appointmentsList: {
     marginTop: 10,
-    paddingHorizontal: 8,
+    width: '100%',
+    alignItems: 'center',
+  },
+  appointmentCard: {
+    backgroundColor: '#232946',
+    padding: 16,
+    borderRadius: 18,
+    borderWidth: 1.5,
+    borderColor: '#7c5fff',
+    marginBottom: 14,
+    width: '95%',
+    shadowColor: '#7c5fff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.13,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  appointmentText: {
+    fontSize: 16,
+    marginTop: 2,
+    marginBottom: 2,
+    color: '#fffbe4', // jaune pastel
+    backgroundColor: 'transparent',
+  },
+  noAppointmentText: {
+    fontSize: 16,
+    marginTop: 5,
+    color: '#b8c1ec',
+    textAlign: 'center',
+  },
+  buttonAppointment: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    gap: 10,
   },
   formContainer: {
-    alignSelf: 'center',
-    width: '90%',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -0.45 * 360 }, { translateY: -0.5 * 320 }], // Approximate centering
-    // Adjust 360 and 320 to your form's width/height if needed
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    backgroundColor: '#fdfdfd',
-  },
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  width: '88%',
+  minHeight: 280,
+  padding: 28,
+  backgroundColor: '#232946ee', // légère transparence
+  borderRadius: 32,
+  elevation: 12,
+  shadowColor: '#7c5fff',
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.22,
+  shadowRadius: 24,
+  justifyContent: 'center',
+  alignItems: 'center',
+  transform: [
+    { translateX: -0.44 * 360 }, // centré (360 = largeur estimée)
+    { translateY: -0.5 * 320 }
+  ],
+  zIndex: 20,
+  borderWidth: 1.5,
+  borderColor: '#7c5fff55',
+},
+input: {
+  width: '100%',
+  height: 48,
+  borderColor: '#7c5fff',
+  borderWidth: 1.5,
+  marginBottom: 16,
+  paddingHorizontal: 14,
+  borderRadius: 14,
+  backgroundColor: '#181d36',
+  color: '#fffbe4',
+  fontSize: 17,
+  shadowColor: '#7c5fff',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.09,
+  shadowRadius: 6,
+},
+addButton: {
+  marginTop: 10,
+  paddingVertical: 13,
+  paddingHorizontal: 32,
+  borderRadius: 18,
+  alignItems: 'center',
+  backgroundColor: '#7c5fff',
+  marginBottom: 8,
+  width: '100%',
+  shadowColor: '#7c5fff',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.13,
+  shadowRadius: 8,
+  
+},
+cancelButton: {
+  marginTop: 0,
+  paddingVertical: 11,
+  paddingHorizontal: 32,
+  borderRadius: 18,
+  alignItems: 'center',
+  backgroundColor: '#232946',
+  borderWidth: 1.5,
+  borderColor: '#7c5fff',
+  width: '100%',
+},
+addButtonText: {
+  color: '#fffbe4',
+  fontSize: 17,
+  fontWeight: 'bold',
+  letterSpacing: 1,
+},
+cancelButtonText: {
+  color: '#7c5fff',
+  fontSize: 16,
+  fontWeight: 'bold',
+  letterSpacing: 1,
+},
   button: {
     marginTop: 10,
     paddingVertical: 12,
-     // Teal button color
-      borderRadius: 6,
-      alignItems: 'center',
-      },
-      buttonText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: '600',
-      },
-      buttonAppointment : {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginTop: 10,
-      },
-      appointmentCard : {
-      backgroundColor: 'transparent', // Light teal background for appointments
-    padding: 10,
     borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#ccc',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3, // For Android shadow
+    alignItems: 'center',
+    backgroundColor: '#7c5fff',
   },
-  gradient: {
-    flex: 1,
+  buttonText: {
+    color: '#fffbe4',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

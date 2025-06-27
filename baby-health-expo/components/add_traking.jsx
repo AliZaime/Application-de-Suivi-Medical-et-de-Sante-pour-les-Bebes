@@ -81,9 +81,8 @@ export default function AddTrackingForm() {
   };
 
   return (
-    <LinearGradient colors={["#f8b5c8", "#dbeeff"]} style={styles.gradientContainer}>
+    <View style={styles.gradientContainer}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* En-tête sans vague */}
         <View style={styles.header}>
           <Image
             source={require("../assets/images/baby-icon.png")}
@@ -91,28 +90,25 @@ export default function AddTrackingForm() {
           />
           <Text style={styles.title}>Ajouter une nouvelle mesure</Text>
         </View>
-
-        {/* Formulaire */}
         <View style={styles.formContainer}>
           <TouchableOpacity onPress={showDatePicker} style={styles.input}>
-            <Text style={{ color: date ? "#000" : "#888" }}>
+            <Text style={{ color: date ? "#232946" : "#b8c1ec" }}>
               {date || "Sélectionner la date de mesure"}
             </Text>
           </TouchableOpacity>
-
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
             onConfirm={handleConfirmDate}
             onCancel={hideDatePicker}
           />
-
           <TextInput
             style={styles.input}
             placeholder="Poids (ex: 6.5)"
             keyboardType="decimal-pad"
             value={weight}
             onChangeText={setWeight}
+            placeholderTextColor="#b8c1ec"
           />
           <TextInput
             style={styles.input}
@@ -120,6 +116,7 @@ export default function AddTrackingForm() {
             keyboardType="decimal-pad"
             value={height}
             onChangeText={setHeight}
+            placeholderTextColor="#b8c1ec"
           />
           <TextInput
             style={styles.input}
@@ -127,6 +124,7 @@ export default function AddTrackingForm() {
             keyboardType="decimal-pad"
             value={headCircumference}
             onChangeText={setHeadCircumference}
+            placeholderTextColor="#b8c1ec"
           />
           <TextInput
             style={[styles.input, { height: 80 }]}
@@ -134,25 +132,24 @@ export default function AddTrackingForm() {
             multiline
             value={note}
             onChangeText={setNote}
-            placeholderTextColor= '#888'
+            placeholderTextColor="#888"
           />
-
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Enregistrer</Text>
           </TouchableOpacity>
-
           {message ? (
-            <Text style={{ marginTop: 10, color: "#333" }}>{message}</Text>
+            <Text style={styles.message}>{message}</Text>
           ) : null}
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   gradientContainer: {
     flex: 1,
+    backgroundColor: '#181d36',
   },
   scrollContent: {
     flexGrow: 1,
@@ -160,8 +157,9 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    paddingTop: 50,
-    paddingBottom: 30,
+    paddingTop: 90,
+    paddingBottom: 40,
+    gap: 10,
   },
   logo: {
     width: 100,
@@ -172,40 +170,59 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    color: "#fffbe4",
+    letterSpacing: 1,
+    textShadowColor: "#7c5fff",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
   },
   formContainer: {
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingBlock: 30,
+    marginHorizontal: 10,
+    borderRadius: 20,
     alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   input: {
     width: "100%",
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#F2D7D5",
+    backgroundColor: "#f4f3ff",
+    borderWidth: 1.5,
+    borderColor: "#fgegg",
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 16,
     fontSize: 16,
     marginBottom: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
+    color: "#232946",
+    shadowColor: "#7c5fff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
     elevation: 2,
   },
   button: {
-    backgroundColor: "#F4A4A0",
+    backgroundColor: "#7c5fff",
     borderRadius: 25,
     paddingVertical: 14,
     width: "100%",
     alignItems: "center",
     marginTop: 10,
+    shadowColor: "#7c5fff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.13,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonText: {
-    color: "#fff",
+    color: "#fffbe4",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  message: {
+    marginTop: 10,
+    color: "#a21caf",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

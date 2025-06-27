@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions } from '
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Path as SvgPath } from 'react-native-svg';
+import { Animated, Easing } from 'react-native';
 
 const CARD_SIZE = (Dimensions.get('window').width - 48) / 2;
 
@@ -58,6 +60,147 @@ const cards = [
   },
 ];
 
+const AnimatedNightBackground = () => {
+  const waveAnim = React.useRef(new Animated.Value(0)).current;
+  const starAnim = React.useRef(new Animated.Value(0)).current;
+  const toyAnim = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    Animated.loop(
+      Animated.timing(waveAnim, {
+        toValue: 1,
+        duration: 16000,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      })
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(starAnim, { toValue: 1, duration: 3000, useNativeDriver: false }),
+        Animated.timing(starAnim, { toValue: 0, duration: 3000, useNativeDriver: false }),
+      ])
+    ).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(toyAnim, { toValue: 1, duration: 9000, useNativeDriver: false }),
+        Animated.timing(toyAnim, { toValue: 0, duration: 9000, useNativeDriver: false }),
+      ])
+    ).start();
+  }, []);
+
+  const waveTranslate = waveAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -100],
+  });
+
+  const starOpacity = starAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.4, 1],
+  });
+
+  const toyY = toyAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [60, 320],
+  });
+
+  return (
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      <View style={{
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#181d36',
+      }} />
+      <Animated.View style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '120%',
+        height: 180,
+        transform: [{ translateX: waveTranslate }],
+        opacity: 0.22,
+      }}>
+        <Svg width="120%" height="180" viewBox="0 0 500 180">
+          <Defs>
+            <SvgLinearGradient id="night1" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0%" stopColor="#232946" stopOpacity="1" />
+              <Stop offset="100%" stopColor="#3a506b" stopOpacity="1" />
+            </SvgLinearGradient>
+          </Defs>
+          <SvgPath
+            d="M0,60 Q125,120 250,60 T500,60 V180 H0 Z"
+            fill="url(#night1)"
+          />
+        </Svg>
+      </Animated.View>
+      <Animated.View style={{
+        position: 'absolute',
+        top: 80,
+        left: 40,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#b8e0fe55',
+        opacity: 0.4,
+      }} />
+      <Animated.View style={{
+        position: 'absolute',
+        top: 320,
+        right: 60,
+        width: 90,
+        height: 90,
+        borderRadius: 45,
+        backgroundColor: '#ffd6e055',
+        opacity: 0.4,
+      }} />
+      {[...Array(18)].map((_, i) => {
+        const top = 20 + (i % 6) * 100;
+        const left = 20 + (i * 40) % 320;
+        return (
+          <Animated.View
+            key={'star'+i}
+            style={{
+              position: 'absolute',
+              top,
+              left,
+              opacity: starOpacity,
+              zIndex: 1,
+            }}>
+            <Svg width={i % 3 === 0 ? 18 : 12} height={i % 3 === 0 ? 18 : 12} viewBox="0 0 24 24">
+              <SvgPath
+                d="M12 2 L13.09 8.26 L19 8.27 L14 12.14 L15.18 18.02 L12 14.77 L8.82 18.02 L10 12.14 L5 8.27 L10.91 8.26 Z"
+                fill={i % 2 === 0 ? "#fffbe4" : "#ffe4b8"}
+              />
+            </Svg>
+          </Animated.View>
+        );
+      })}
+      <Animated.View style={{
+        position: 'absolute',
+        top: toyY,
+        left: 180,
+        opacity: 0.85,
+      }}>
+        <Svg width={32} height={32} viewBox="0 0 32 32">
+          <SvgPath d="M8 12 L16 8 L24 12 L16 16 Z" fill="#b8e0fe"/>
+          <SvgPath d="M8 12 L8 20 L16 24 L16 16 Z" fill="#ffd6e0"/>
+          <SvgPath d="M24 12 L24 20 L16 24 L16 16 Z" fill="#b8c1ec"/>
+        </Svg>
+      </Animated.View>
+      <Animated.View style={{
+        position: 'absolute',
+        top: toyY,
+        right: 120,
+        opacity: 0.85,
+      }}>
+        <Svg width={32} height={32} viewBox="0 0 32 32">
+          <SvgPath d="M8 24 Q6 20 12 18 Q10 12 18 12 Q28 12 24 22 Q28 22 26 24 Q24 26 8 24 Z" fill="#ffe4b8"/>
+          <SvgPath d="M25 18 Q27 17 26 20" fill="#ffb6b6"/>
+          <SvgPath d="M20 16 Q21 15 22 16" stroke="#222" strokeWidth={1}/>
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+};
+
 const SuiviPage = () => {
   const { babyId } = useLocalSearchParams();
   const router = useRouter();
@@ -67,12 +210,8 @@ const SuiviPage = () => {
 };
 
   return (
-    <LinearGradient
-      colors={['#ffb6c1', '#f8f6fa', '#a3cef1']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.gradient}
-    >
+    <View style={{ flex: 1, backgroundColor: '#181d36' }}>
+      <AnimatedNightBackground />
       <View style={styles.container}>
         <Text style={styles.title}>Suivi du bébé</Text>
         <FlatList
@@ -82,9 +221,9 @@ const SuiviPage = () => {
           contentContainerStyle={styles.list}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={[styles.card, { backgroundColor: item.color }]}
-              onPress={() => handleCardPress(item.route)}
+              style={[styles.card, { backgroundColor: "#232946", borderColor: "#7c5fff55" }]}
               activeOpacity={0.85}
+              onPress={() => handleCardPress(item.route)}
             >
               {item.icon}
               <Text style={styles.cardText}>{item.label}</Text>
@@ -92,7 +231,7 @@ const SuiviPage = () => {
           )}
         />
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -106,7 +245,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#a21caf',
+    color: '#fffbe4',
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 80,
@@ -123,16 +262,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 8,
-    shadowColor: '#000',
+    backgroundColor: "#232946",
+    borderWidth: 1.5,
+    borderColor: "#7c5fff55",
+    shadowColor: "#7c5fff",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.13,
     shadowRadius: 8,
     elevation: 4,
   },
   cardText: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fffbe4',
     marginTop: 10,
     textAlign: 'center',
   },
